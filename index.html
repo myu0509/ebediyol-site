@@ -3,98 +3,81 @@
 <head>
   <meta charset="UTF-8" />
   <title>Ebedi Yol</title>
-</head>
   <style>
-body {
-  background-image: url("merhaba.png");
-  background-size: cover;        /* Tüm ekranı kaplar */
-  background-position: center;   /* Ortalanır */
-  background-repeat: no-repeat;  /* Tekrarlamaz */
-  height: 100vh;                 /* Ekran yüksekliği kadar alan */
-  margin: 0;
-  color: white;                  /* Yazılar beyaz olur, istersen değiştirilebilir */
-  font-family: Arial, sans-serif;
-}
-</style>
-<div style="
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: -1;">
-</div>
+    body {
+      background-image: url("merhaba.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      margin: 0;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Dikey ortalama */
+      align-items: center;     /* Yatay ortalama */
+      text-align: center;
+    }
 
-</style>
+    /* Arka plan karartma efekti */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: -1;
+    }
 
-<body style="font-family: sans-serif; text-align: center; margin-top: 50px;">
+    h1 {
+      font-size: clamp(28px, 6vw, 64px);
+      margin-bottom: 10px;
+      color: white;
+    }
+
+    p {
+      font-size: clamp(16px, 3vw, 28px);
+      color: white;
+      margin-bottom: 40px; /* yazılarla buton arasında boşluk */
+    }
+
+    .button {
+      background-color: #2b9348;
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px; /* köşeli kutu */
+      font-size: 1.2rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: 0.3s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .button:hover {
+      background-color: #1f6f35;
+    }
+
+    .visit-subtext {
+      color: #e0e0e0;
+      font-size: clamp(14px, 2.5vw, 20px);
+      margin-top: 15px;
+      text-align: center;
+      opacity: 0.8;
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
   <h1>🌿 Ebedi Yol’a Hoş Geldiniz</h1>
   <p>Bu site yakında sanal bir ziyaret alanına dönüşecek.</p>
+
   <div class="button-container">
-  <a href="ziyaret.html" class="button">Ziyaret Alanına Gir</a>
- <p class="visit-subtext">Yakında aktif olacak sanal ziyaret alanımıza adım atın.</p>
-</div>
-
-<style>
-.button {
-  background-color: #2b9348;
-  color: white;
-  padding: 15px 30px;
-  border: none;
-  border-radius: 10px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  text-decoration: none;
-  transition: 0.3s;
-}
-
-.button:hover {
-  background-color: #1f6f35;
-}
-
-
-.visit-button {
-  display: inline-block;
-  padding: 15px 40px;
-  font-size: clamp(18px, 3vw, 26px);
-  color: white;
-  background: linear-gradient(135deg, #2a2a2a, #3f3f3f);
-  border: 2px solid #ffffff55;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: bold;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-}
-
-.visit-button:hover {
-  background: linear-gradient(135deg, #4b4b4b, #6b6b6b);
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-}
-
-.visit-subtext {
-  color: #e0e0e0;
-  font-size: clamp(14px, 2.5vw, 20px);
-  margin-top: 15px;
-  text-align: center;
-  opacity: 0.8;
-  font-style: italic;
-}
-</style>
-  <style>
-h1 {
-  font-size: clamp(28px, 6vw, 64px);
-  text-align: center;
-  margin-top: 5vh;
-  color: white;
-}
-
-p {
-  font-size: clamp(16px, 3vw, 28px);
-  text-align: center;
-  color: white;
-}
-</style>
+    <a href="ziyaret.html" class="button">Ziyaret Alanına Gir</a>
+    <p class="visit-subtext">Yakında aktif olacak sanal ziyaret alanımıza adım atın.</p>
+  </div>
 </body>
 </html>
+
