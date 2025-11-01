@@ -5,7 +5,38 @@
   <title>Ebedi Yol</title>
 </head>
 <style>
-body {
+<style>
+.button-container {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.visit-button {
+  display: inline-block;
+  padding: 15px 40px;
+  font-size: clamp(18px, 3vw, 26px);
+  color: white;
+  background: linear-gradient(135deg, #2a2a2a, #3f3f3f);
+  border: 2px solid #ffffff55;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.visit-button:hover {
+  background: linear-gradient(135deg, #4b4b4b, #6b6b6b);
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+</style>
+
+  body {
+ <div class="button-container">
+  <a href="#" class="visit-button">Ziyaret Alanına Gir</a>
+</div>
   background-image: url("merhaba.png");
   background-size: cover;        /* Tüm ekranı kaplar */
   background-position: center;   /* Ortalanır */
