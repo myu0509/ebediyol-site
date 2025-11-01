@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ebedi Yol</title>
   <style>
     body {
@@ -11,75 +12,75 @@
       background-repeat: no-repeat;
       height: 100vh;
       margin: 0;
-      color: white;
-      font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
-      justify-content: center; /* Dikey ortalama */
-      align-items: center;     /* Yatay ortalama */
+      justify-content: flex-start; /* Üste hizalar */
+      align-items: center;
       text-align: center;
-    }
-
-    /* Arka plan karartma efekti */
-    body::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.4);
-      z-index: -1;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding-top: 40px; /* Yazıyı sayfanın üstüne yakınlaştırır */
     }
 
     h1 {
       font-size: clamp(28px, 6vw, 64px);
       margin-bottom: 10px;
-      color: white;
     }
 
     p {
-      font-size: clamp(16px, 3vw, 28px);
-      color: white;
-      margin-bottom: 90px; /* yazılarla buton arasında boşluk */
+      font-size: clamp(16px, 3vw, 26px);
+      margin: 0;
+    }
+
+    .button-container {
+      margin-top: 40px;
     }
 
     .button {
+      display: inline-block;
       background-color: #2b9348;
       color: white;
       padding: 15px 30px;
       border: none;
-      border-radius: 10px; /* köşeli kutu */
-      font-size: 1.2rem;
+      border-radius: 12px;
+      font-size: clamp(16px, 3vw, 22px);
       cursor: pointer;
       text-decoration: none;
-      transition: 0.3s;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      transition: 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     }
 
     .button:hover {
       background-color: #1f6f35;
+      transform: scale(1.05);
     }
 
     .visit-subtext {
       color: #e0e0e0;
       font-size: clamp(14px, 2.5vw, 20px);
-      margin-top: 2px;
-      text-align: center;
+      margin-top: 18px;
       opacity: 0.8;
       font-style: italic;
     }
+
+    /* Arka plan karartması */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: -1;
+    }
   </style>
 </head>
-
 <body>
- <body style="font-family: sans-serif; text-align: center; margin-top: 5px;">
+  <div class="overlay"></div>
 
   <h1>🌿 Ebedi Yol’a Hoş Geldiniz</h1>
   <p>Bu site yakında sanal bir ziyaret alanına dönüşecek.</p>
 
   <div class="button-container">
-    <a href="ziyaret.html" class="button">Ziyaret Alanına Gir</a>
-    <p class="visit-subtext">Yakında aktif olacak sanal ziyaret alanımıza adım atın.</p>
-  </div>
-</body>
-</html>
+    <a href="ziyaret.
 
