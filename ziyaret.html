@@ -1,47 +1,80 @@
 <!DOCTYPE html>
 <html lang="tr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ziyaret Alanı | Ebediyol</title>
-  <link rel="icon" type="image/png" href="favicon.png" />
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background-color: #0b0b0b;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      flex-direction: column;
-      text-align: center;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <title>A Blok - Sanal Mezarlık</title>
+    <style>
+      body { margin: 0; overflow: hidden; background: #000; }
+      canvas { display: block; }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
+    <script>
+      // 🚀 Temel sahne kurulumu
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
 
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-    }
+      // 🌄 Zemin (çimen rengi)
+      const groundGeo = new THREE.PlaneGeometry(200, 200);
+      const groundMat = new THREE.MeshStandardMaterial({ color: 0x226622 });
+      const ground = new THREE.Mesh(groundGeo, groundMat);
+      ground.rotation.x = -Math.PI / 2;
+      scene.add(ground);
 
-    a {
-      text-decoration: none;
-      color: #fff;
-      background-color: #2b9348;
-      padding: 12px 24px;
-      border-radius: 10px;
-      font-size: 1rem;
-      transition: 0.3s;
-    }
+      // 🪦 Mezar taşı geometrisi
+      const graveGeo = new THREE.BoxGeometry(2, 3, 0.6);
+      const graveMat = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
 
-    a:hover {
-      background-color: #1f6f35;
-    }
-  </style>
-</head>
-<body>
-  <h1>3D Ziyaret Alanı Hazırlanıyor...</h1>
-  <p>Çok Yakında</p>
-  <a href="index.html">← Ana Sayfaya Dön</a>
-</body>
+      // 📏 5 sütun × 4 sıra düzen
+      const rows = 4;
+      const cols = 5;
+      const spacingX = 5; // yatay aralık
+      const spacingZ = 6; // dikey aralık
+      const startX = -((cols - 1) * spacingX) / 2;
+      const startZ = -((rows - 1) * spacingZ) / 2;
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const grave = new THREE.Mesh(graveGeo, graveMat);
+          grave.position.set(startX + c * spacingX, 1.5, startZ + r * spacingZ);
+          scene.add(grave);
+        }
+      }
+
+      // 💡 Işıklar
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(ambientLight);
+
+      const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+      dirLight.position.set(10, 20, 10);
+      scene.add(dirLight);
+
+      // 🎥 Kamera konumu
+      camera.position.set(0, 12, 25);
+      camera.lookAt(0, 0, 0);
+
+      // 🔁 Animasyon döngüsü
+      function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // 📱 Pencere yeniden boyutlandırma
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    </script>
+  </body>
 </html>
