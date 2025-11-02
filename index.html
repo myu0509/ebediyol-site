@@ -2,7 +2,33 @@
 <html>
 <head>
 <style>
+
+  body {
+<div class="button-container">
+  <a href="#" class="visit-button">Ziyaret Alanına Gir</a>
+  <p class="visit-subtext">Yakında aktif olacak sanal ziyaret alanımıza adım atın.</p>
+</div>
+
+
+  background-image: url("merhaba.png");
+  background-size: cover;        /* Tüm ekranı kaplar */
+  background-position: center;   /* Ortalanır */
+  background-repeat: no-repeat;  /* Tekrarlamaz */
+  height: 100vh;                 /* Ekran yüksekliği kadar alan */
+  margin: 0;
+  color: white;                  /* Yazılar beyaz olur, istersen değiştirilebilir */
+  font-family: Arial, sans-serif;
+}
+</style>
+<div style="
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: -1;">
+</div>
 <style>
+  <style>
 .button-container {
   text-align: center;
   margin-top: 40px;
@@ -38,31 +64,6 @@
   font-style: italic;
 }
 </style>
-  body {
-<div class="button-container">
-  <a href="#" class="visit-button">Ziyaret Alanına Gir</a>
-  <p class="visit-subtext">Yakında aktif olacak sanal ziyaret alanımıza adım atın.</p>
-</div>
-
-
-  background-image: url("merhaba.png");
-  background-size: cover;        /* Tüm ekranı kaplar */
-  background-position: center;   /* Ortalanır */
-  background-repeat: no-repeat;  /* Tekrarlamaz */
-  height: 100vh;                 /* Ekran yüksekliği kadar alan */
-  margin: 0;
-  color: white;                  /* Yazılar beyaz olur, istersen değiştirilebilir */
-  font-family: Arial, sans-serif;
-}
-</style>
-<div style="
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: -1;">
-</div>
-<style>
 h1 {
   font-size: clamp(28px, 8vw, 64px);
   text-align: center;
