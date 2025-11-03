@@ -2,23 +2,13 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Ebedi Yol - Ziyaret Alanı (Yerel Sürüm)</title>
+  <title>Ebedi Yol - Tek Taş Testi</title>
   <style>
     html, body { margin: 0; padding: 0; overflow: hidden; background: #1a1a1a; }
-    #info {
-      position: absolute; top: 10px; left: 10px;
-      color: white; font-family: Arial, sans-serif; font-size: 14px;
-      background: rgba(0,0,0,0.5); padding: 8px 12px; border-radius: 8px;
-      z-index: 10;
-    }
   </style>
 </head>
 <body>
-  <div id="info">Tıkla → fare kilitlenir | WASD ile yürü | ESC: çıkış</div>
-
   <script>
-    // Minimal THREE.js çekirdeği (basitleştirilmiş hali)
-    class Vec3 {constructor(x=0,y=0,z=0){this.x=x;this.y=y;this.z=z;} add(v){this.x+=v.x;this.y+=v.y;this.z+=v.z;return this;}}
     const canvas=document.createElement('canvas');
     document.body.appendChild(canvas);
     const gl=canvas.getContext('webgl');
@@ -26,61 +16,39 @@
     gl.clearColor(0.1,0.15,0.1,1);
     gl.enable(gl.DEPTH_TEST);
 
-    // Basit shader’lar
     const vs=`attribute vec3 pos;uniform mat4 mvp;void main(){gl_Position=mvp*vec4(pos,1.0);} `;
-    const fs=`precision mediump float;void main(){gl_FragColor=vec4(0.7,0.7,0.7,1.0);} `;
-    function makeShader(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s;}
-    const prog=gl.createProgram();
-    gl.attachShader(prog,makeShader(gl.VERTEX_SHADER,vs));
-    gl.attachShader(prog,makeShader(gl.FRAGMENT_SHADER,fs));
-    gl.linkProgram(prog);gl.useProgram(prog);
+    const fs=`precision mediump float;void main(){gl_FragColor=vec4(0.8,0.8,0.8,1.0);} `;
+    function sh(t,s){const x=gl.createShader(t);gl.shaderSource(x,s);gl.compileShader(x);return x;}
+    const p=gl.createProgram();
+    gl.attachShader(p,sh(gl.VERTEX_SHADER,vs));
+    gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs));
+    gl.linkProgram(p);gl.useProgram(p);
 
-    // Basit küp geometri (mezar taşı gibi)
     const verts=new Float32Array([
-      -0.3,0,0.1,  0.3,0,0.1,  0.3,1,0.1,  -0.3,1,0.1,  // ön
-      -0.3,0,-0.1, 0.3,0,-0.1, 0.3,1,-0.1, -0.3,1,-0.1  // arka
+      -0.3,0,0.1, 0.3,0,0.1, 0.3,1,0.1, -0.3,1,0.1,
+      -0.3,0,-0.1, 0.3,0,-0.1, 0.3,1,-0.1, -0.3,1,-0.1
     ]);
-    const indices=new Uint16Array([
-      0,1,2,0,2,3, 4,5,6,4,6,7, 0,4,7,0,7,3,
-      1,5,6,1,6,2, 3,2,6,3,6,7, 0,1,5,0,5,4
+    const ind=new Uint16Array([
+      0,1,2,0,2,3,4,5,6,4,6,7,0,4,7,0,7,3,1,5,6,1,6,2,3,2,6,3,6,7,0,1,5,0,5,4
     ]);
     const vbo=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,vbo);gl.bufferData(gl.ARRAY_BUFFER,verts,gl.STATIC_DRAW);
-    const ibo=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ibo);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,indices,gl.STATIC_DRAW);
-    const loc=gl.getAttribLocation(prog,"pos");
-    gl.enableVertexAttribArray(loc);
-    gl.vertexAttribPointer(loc,3,gl.FLOAT,false,0,0);
+    const ibo=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ibo);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,ind,gl.STATIC_DRAW);
+    const loc=gl.getAttribLocation(p,"pos");gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,3,gl.FLOAT,false,0,0);
+    const mvpLoc=gl.getUniformLocation(p,"mvp");
 
-    const mvpLoc=gl.getUniformLocation(prog,"mvp");
-
-    // Kamera basit ayarlar
-    let camZ=6;
-    function persp(fov,aspect,near,far){
-      const f=1/Math.tan(fov/2),nf=1/(near-far);
-      return [f/aspect,0,0,0,0,f,0,0,0,0,(far+near)*nf,-1,0,0,(2*far*near)*nf,0];
+    function persp(fov,a,n,f){const t=Math.tan(fov/2);return [
+      1/(a*t),0,0,0,0,1/t,0,0,0,0,(f+n)/(n-f),-1,0,0,(2*f*n)/(n-f),0];
     }
 
-    // Basit yürüyüş kontrolleri
-    let posZ=0, posX=0, velX=0, velZ=0;
-    const pressed={};
-    document.addEventListener('keydown',e=>pressed[e.code]=true);
-    document.addEventListener('keyup',e=>pressed[e.code]=false);
-    canvas.addEventListener('click',()=>canvas.requestPointerLock());
-
-    // Render döngüsü
     function draw(){
       gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
-      const aspect=canvas.width/canvas.height;
-      const proj=persp(Math.PI/4,aspect,0.1,100);
-      const zCount=4, xCount=5;
-      for(let r=0;r<zCount;r++){
-        for(let c=0;c<xCount;c++){
-          const tx=(c-2)*2, tz=(r-1.5)*2.5+posZ;
-          const mvp=new Float32Array(proj);
-          mvp[12]=tx; mvp[13]=0; mvp[14]=-tz-camZ;
-          gl.uniformMatrix4fv(mvpLoc,false,mvp);
-          gl.drawElements(gl.TRIANGLES,indices.length,gl.UNSIGNED_SHORT,0);
-        }
-      }
+      const a=canvas.width/canvas.height;
+      const pr=persp(Math.PI/4,a,0.1,100);
+      const z=-2.5; // kamera önüne 2.5 metre
+      const mvp=new Float32Array(pr);
+      mvp[12]=0; mvp[13]=-0.5; mvp[14]=z;
+      gl.uniformMatrix4fv(mvpLoc,false,mvp);
+      gl.drawElements(gl.TRIANGLES,ind.length,gl.UNSIGNED_SHORT,0);
       requestAnimationFrame(draw);
     }
     draw();
