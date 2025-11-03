@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Ebedi Yol - A Blok</title>
+  <meta charset="UTF-8" />
+  <title>Ebedi Yol - Ziyaret Alanı (Fix)</title>
   <style>
     html, body { margin: 0; padding: 0; overflow: hidden; background: #1a1a1a; }
     #info {
@@ -14,25 +14,28 @@
   </style>
 </head>
 <body>
-  <div id="info">WASD: yürü | Fare: bak | ESC: çıkış</div>
+  <div id="info">Tıkla → fare kilitlenir | WASD ile yürü | ESC: çıkış</div>
 
+  <!-- ✅ Düzgün çalışan CDN sürümleri -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/controls/PointerLockControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/jsm/controls/PointerLockControls.min.js"></script>
 
   <script>
-    // SAHNE, KAMERA, RENDERER
+    // Kontrol sınıfını global değişkenden al
+    const { PointerLockControls } = THREE_EXAMPLES;
+
+    // Sahne, kamera, renderer
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x202d20);
+    scene.background = new THREE.Color(0x223322);
 
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     camera.position.set(0, 2, 8);
-    camera.lookAt(0, 0.5, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    // IŞIKLANDIRMA
+    // Işıklar
     const ambient = new THREE.AmbientLight(0xffffff, 1.2);
     scene.add(ambient);
 
@@ -40,14 +43,14 @@
     sun.position.set(5, 10, 7);
     scene.add(sun);
 
-    // ZEMİN
+    // Zemin
     const groundGeo = new THREE.PlaneGeometry(100, 100);
     const groundMat = new THREE.MeshStandardMaterial({ color: 0x335533 });
     const ground = new THREE.Mesh(groundGeo, groundMat);
     ground.rotation.x = -Math.PI / 2;
     scene.add(ground);
 
-    // MEZAR TAŞLARI (5 sütun x 4 sıra)
+    // Mezar taşları (5x4)
     const graveGeo = new THREE.BoxGeometry(0.6, 1, 0.2);
     const graveMat = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
     const rows = 4, cols = 5, spacingX = 2, spacingZ = 2.5;
@@ -59,18 +62,11 @@
         const grave = new THREE.Mesh(graveGeo, graveMat);
         grave.position.set(startX + c * spacingX, 0.5, startZ + r * spacingZ);
         scene.add(grave);
-
-        // Önüne toprak höyüğü
-        const moundGeo = new THREE.CylinderGeometry(0.5, 0.9, 0.2, 16);
-        const moundMat = new THREE.MeshStandardMaterial({ color: 0x5a3e1b });
-        const mound = new THREE.Mesh(moundGeo, moundMat);
-        mound.position.set(grave.position.x, 0.1, grave.position.z + 0.4);
-        scene.add(mound);
       }
     }
 
-    // POINTER LOCK (hareket kontrolleri)
-    const controls = new THREE.PointerLockControls(camera, document.body);
+    // Pointer Lock kontrolleri
+    const controls = new PointerLockControls(camera, document.body);
     document.body.addEventListener('click', () => controls.lock());
 
     const move = { f: false, b: false, l: false, r: false };
@@ -124,5 +120,6 @@
   </script>
 </body>
 </html>
+
 
 
