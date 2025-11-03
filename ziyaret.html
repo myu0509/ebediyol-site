@@ -2,37 +2,126 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Görsel Test</title>
+  <title>Ebedi Yol - A Blok</title>
   <style>
-    body { margin: 0; overflow: hidden; }
+    html, body { margin: 0; padding: 0; overflow: hidden; background: #1a1a1a; }
+    #info {
+      position: absolute; top: 10px; left: 10px;
+      color: white; font-family: Arial, sans-serif; font-size: 14px;
+      background: rgba(0,0,0,0.5); padding: 8px 12px; border-radius: 8px;
+      z-index: 10;
+    }
   </style>
 </head>
 <body>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
-  <script>
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x003366); // mavi arka plan
+  <div id="info">WASD: yürü | Fare: bak | ESC: çıkış</div>
 
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5;
+  <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/controls/PointerLockControls.js"></script>
+
+  <script>
+    // SAHNE, KAMERA, RENDERER
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x202d20);
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 2, 8);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // kırmızı
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
+    // IŞIKLANDIRMA
+    const ambient = new THREE.AmbientLight(0xffffff, 1.2);
+    scene.add(ambient);
+
+    const sun = new THREE.DirectionalLight(0xffffff, 1.5);
+    sun.position.set(5, 10, 7);
+    scene.add(sun);
+
+    // ZEMİN
+    const groundGeo = new THREE.PlaneGeometry(100, 100);
+    const groundMat = new THREE.MeshStandardMaterial({ color: 0x335533 });
+    const ground = new THREE.Mesh(groundGeo, groundMat);
+    ground.rotation.x = -Math.PI / 2;
+    scene.add(ground);
+
+    // MEZAR TAŞLARI (5 sütun x 4 sıra)
+    const graveGeo = new THREE.BoxGeometry(0.6, 1, 0.2);
+    const graveMat = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
+    const rows = 4, cols = 5, spacingX = 2, spacingZ = 2.5;
+    const startX = -((cols - 1) * spacingX) / 2;
+    const startZ = -((rows - 1) * spacingZ) / 2;
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const grave = new THREE.Mesh(graveGeo, graveMat);
+        grave.position.set(startX + c * spacingX, 0.5, startZ + r * spacingZ);
+        scene.add(grave);
+
+        // Önüne toprak höyüğü
+        const moundGeo = new THREE.CylinderGeometry(0.5, 0.9, 0.2, 16);
+        const moundMat = new THREE.MeshStandardMaterial({ color: 0x5a3e1b });
+        const mound = new THREE.Mesh(moundGeo, moundMat);
+        mound.position.set(grave.position.x, 0.1, grave.position.z + 0.4);
+        scene.add(mound);
+      }
+    }
+
+    // POINTER LOCK (hareket kontrolleri)
+    const controls = new THREE.PointerLockControls(camera, document.body);
+    document.body.addEventListener('click', () => controls.lock());
+
+    const move = { f: false, b: false, l: false, r: false };
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'KeyW') move.f = true;
+      if (e.code === 'KeyS') move.b = true;
+      if (e.code === 'KeyA') move.l = true;
+      if (e.code === 'KeyD') move.r = true;
+    });
+    window.addEventListener('keyup', (e) => {
+      if (e.code === 'KeyW') move.f = false;
+      if (e.code === 'KeyS') move.b = false;
+      if (e.code === 'KeyA') move.l = false;
+      if (e.code === 'KeyD') move.r = false;
+    });
+
+    const clock = new THREE.Clock();
+    const speed = 4;
 
     function animate() {
       requestAnimationFrame(animate);
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
+      const dt = clock.getDelta();
+
+      if (controls.isLocked) {
+        const dir = new THREE.Vector3();
+        camera.getWorldDirection(dir);
+        dir.y = 0; dir.normalize();
+        const right = new THREE.Vector3().crossVectors(dir, camera.up).normalize();
+        const moveVec = new THREE.Vector3();
+
+        if (move.f) moveVec.add(dir);
+        if (move.b) moveVec.sub(dir);
+        if (move.l) moveVec.add(right);
+        if (move.r) moveVec.sub(right);
+
+        if (moveVec.lengthSq() > 0) {
+          moveVec.normalize().multiplyScalar(speed * dt);
+          camera.position.add(moveVec);
+        }
+      }
+
       renderer.render(scene, camera);
     }
     animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
   </script>
 </body>
 </html>
+
 
