@@ -33,6 +33,12 @@
       // Kamera
       const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
       camera.attachControl(canvas, true);
+      // Kamera yerden fazla yükselmesin veya zeminin altına girmesin
+scene.registerBeforeRender(function () {
+  if (camera.position.y < 1.6) camera.position.y = 1.6;   // yere sabitle
+  if (camera.position.y > 3) camera.position.y = 3;       // fazla yükselmesin
+});
+
       // WASD tuşlarını da aktif et
 scene.actionManager = new BABYLON.ActionManager(scene);
 scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyDownTrigger, function (evt) {
