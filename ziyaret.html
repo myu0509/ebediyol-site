@@ -1,57 +1,87 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Ebedi Yol - Tek Taş Testi</title>
+  <meta charset="UTF-8" />
+  <title>Ebedi Yol - A Blok (Babylon.js)</title>
   <style>
-    html, body { margin: 0; padding: 0; overflow: hidden; background: #1a1a1a; }
+    html, body { margin: 0; padding: 0; overflow: hidden; width: 100%; height: 100%; background: #1a1a1a; }
+    #renderCanvas { width: 100%; height: 100%; touch-action: none; }
+    #info {
+      position: absolute; top: 10px; left: 10px;
+      color: white; font-family: Arial, sans-serif; font-size: 14px;
+      background: rgba(0,0,0,0.5); padding: 8px 12px; border-radius: 8px;
+      z-index: 10;
+    }
   </style>
 </head>
 <body>
+  <div id="info">Fareyle dön | W,A,S,D ile yürü | Çift tıkla: kilitle</div>
+  <canvas id="renderCanvas"></canvas>
+
+  <!-- ✅ Babylon.js CDN -->
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+
   <script>
-    const canvas=document.createElement('canvas');
-    document.body.appendChild(canvas);
-    const gl=canvas.getContext('webgl');
-    canvas.width=innerWidth;canvas.height=innerHeight;
-    gl.clearColor(0.1,0.15,0.1,1);
-    gl.enable(gl.DEPTH_TEST);
+    const canvas = document.getElementById("renderCanvas");
+    const engine = new BABYLON.Engine(canvas, true);
 
-    const vs=`attribute vec3 pos;uniform mat4 mvp;void main(){gl_Position=mvp*vec4(pos,1.0);} `;
-    const fs=`precision mediump float;void main(){gl_FragColor=vec4(0.8,0.8,0.8,1.0);} `;
-    function sh(t,s){const x=gl.createShader(t);gl.shaderSource(x,s);gl.compileShader(x);return x;}
-    const p=gl.createProgram();
-    gl.attachShader(p,sh(gl.VERTEX_SHADER,vs));
-    gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs));
-    gl.linkProgram(p);gl.useProgram(p);
+    const createScene = function () {
+      const scene = new BABYLON.Scene(engine);
+      scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
 
-    const verts=new Float32Array([
-      -0.3,0,0.1, 0.3,0,0.1, 0.3,1,0.1, -0.3,1,0.1,
-      -0.3,0,-0.1, 0.3,0,-0.1, 0.3,1,-0.1, -0.3,1,-0.1
-    ]);
-    const ind=new Uint16Array([
-      0,1,2,0,2,3,4,5,6,4,6,7,0,4,7,0,7,3,1,5,6,1,6,2,3,2,6,3,6,7,0,1,5,0,5,4
-    ]);
-    const vbo=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,vbo);gl.bufferData(gl.ARRAY_BUFFER,verts,gl.STATIC_DRAW);
-    const ibo=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ibo);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,ind,gl.STATIC_DRAW);
-    const loc=gl.getAttribLocation(p,"pos");gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,3,gl.FLOAT,false,0,0);
-    const mvpLoc=gl.getUniformLocation(p,"mvp");
+      // Kamera
+      const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
+      camera.attachControl(canvas, true);
+      camera.speed = 0.5;
 
-    function persp(fov,a,n,f){const t=Math.tan(fov/2);return [
-      1/(a*t),0,0,0,0,1/t,0,0,0,0,(f+n)/(n-f),-1,0,0,(2*f*n)/(n-f),0];
-    }
+      // Işık
+      const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+      light.intensity = 1.2;
 
-    function draw(){
-      gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
-      const a=canvas.width/canvas.height;
-      const pr=persp(Math.PI/4,a,0.1,100);
-      const z=-2.5; // kamera önüne 2.5 metre
-      const mvp=new Float32Array(pr);
-      mvp[12]=0; mvp[13]=-0.5; mvp[14]=z;
-      gl.uniformMatrix4fv(mvpLoc,false,mvp);
-      gl.drawElements(gl.TRIANGLES,ind.length,gl.UNSIGNED_SHORT,0);
-      requestAnimationFrame(draw);
-    }
-    draw();
+      // Zemin
+      const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 50 }, scene);
+      const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
+      groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.35, 0.2);
+      ground.material = groundMat;
+
+      // Mezar taşları (5x4)
+      const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
+      graveMat.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);
+
+      const rows = 4, cols = 5, spacingX = 3, spacingZ = 3;
+      const startX = -((cols - 1) * spacingX) / 2;
+      const startZ = ((rows - 1) * spacingZ) / 2;
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const grave = BABYLON.MeshBuilder.CreateBox(`grave_${r}_${c}`, { width: 0.8, height: 1.2, depth: 0.2 }, scene);
+          grave.position.x = startX + c * spacingX;
+          grave.position.y = 0.6;
+          grave.position.z = startZ - r * spacingZ;
+
+          // Toprak höyüğü
+          const mound = BABYLON.MeshBuilder.CreateCylinder(`mound_${r}_${c}`, { diameterTop: 1.0, diameterBottom: 1.8, height: 0.2, tessellation: 16 }, scene);
+          mound.position.x = grave.position.x;
+          mound.position.y = 0.1;
+          mound.position.z = grave.position.z + 0.5;
+          const moundMat = new BABYLON.StandardMaterial("moundMat", scene);
+          moundMat.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.1);
+          mound.material = moundMat;
+        }
+      }
+
+      return scene;
+    };
+
+    const scene = createScene();
+    engine.runRenderLoop(function () {
+      scene.render();
+    });
+
+    window.addEventListener("resize", function () {
+      engine.resize();
+    });
   </script>
 </body>
 </html>
