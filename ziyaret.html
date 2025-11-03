@@ -79,6 +79,8 @@ scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionM
 
           // Toprak höyüğü
           const mound = BABYLON.MeshBuilder.CreateCylinder(`mound_${r}_${c}`, { diameterTop: 1.0, diameterBottom: 1.8, height: 0.2, tessellation: 16 }, scene);
+mound.scaling.z = 2; // toprak yığınını öne doğru uzat
+
           mound.position.x = grave.position.x;
           mound.position.y = 0.1;
           mound.position.z = grave.position.z + 0.5;
