@@ -29,10 +29,9 @@
     <script type="module">
       import * as THREE from 'https://unpkg.com/three@0.154.0/build/three.module.js';
       import { PointerLockControls } from 'https://unpkg.com/three@0.154.0/examples/jsm/controls/PointerLockControls.js';
-      import { OrbitControls } from 'https://unpkg.com/three@0.154.0/examples/jsm/controls/OrbitControls.js';
 
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x0b1a20);
+      scene.background = new THREE.Color(0x222831);
 
       const camera = new THREE.PerspectiveCamera(
         75,
@@ -40,31 +39,32 @@
         0.1,
         1000
       );
-      camera.position.set(0, 1.7, 10);
-      camera.lookAt(0, 0, 0);
+      camera.position.set(0, 2, 5);
+
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.body.appendChild(renderer.domElement);
 
-      // Işıklar
-      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 2.0);
+      // 🔆 Işıklar
+      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 2);
       hemiLight.position.set(0, 200, 0);
       scene.add(hemiLight);
 
-      const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-      dirLight.position.set(-3, 10, -10);
+      const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+      dirLight.position.set(5, 10, 7);
+      dirLight.castShadow = true;
       scene.add(dirLight);
 
-      // Zemin
-      const groundGeo = new THREE.PlaneGeometry(200, 200);
-      const groundMat = new THREE.MeshPhongMaterial({ color: 0x447744 });
+      // 🌿 Zemin
+      const groundGeo = new THREE.PlaneGeometry(100, 100);
+      const groundMat = new THREE.MeshStandardMaterial({ color: 0x336633 });
       const ground = new THREE.Mesh(groundGeo, groundMat);
       ground.rotation.x = -Math.PI / 2;
       scene.add(ground);
 
-      // Mezar taşları
+      // 🪦 Mezar taşları (20 adet)
       const graveGeo = new THREE.BoxGeometry(0.6, 1, 0.2);
-      const graveMat = new THREE.MeshStandardMaterial({ color: 0x888888 });
+      const graveMat = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
 
       const rows = 4;
       const cols = 5;
@@ -81,10 +81,13 @@
         }
       }
 
-      // Kamera kontrolleri
+      // 👁️ Kamera kontrolü
       const controls = new PointerLockControls(camera, document.body);
+      document.body.addEventListener('click', () => controls.lock());
+
       const move = { forward: false, backward: false, left: false, right: false };
-      const velocity = new THREE.Vector3();
+      const speed = 5;
+      const clock = new THREE.Clock();
 
       document.addEventListener('keydown', (e) => {
         switch (e.code) {
@@ -104,24 +107,12 @@
         }
       });
 
-      document.body.addEventListener('click', () => {
-        if (!/Mobi|Android/i.test(navigator.userAgent)) {
-          controls.lock();
-        }
-      });
+      camera.lookAt(0, 1, 0);
 
-      let orbit = null;
-      if (/Mobi|Android/i.test(navigator.userAgent)) {
-        orbit = new OrbitControls(camera, renderer.domElement);
-        orbit.target.set(0, 1, 0);
-      }
-
-      const clock = new THREE.Clock();
       function animate() {
         requestAnimationFrame(animate);
-
         const delta = clock.getDelta();
-        const speed = 5;
+        const velocity = speed * delta;
 
         if (controls.isLocked) {
           const direction = new THREE.Vector3();
@@ -132,18 +123,15 @@
           const right = new THREE.Vector3();
           right.crossVectors(camera.up, direction).normalize();
 
-          if (move.forward) velocity.add(direction.clone().multiplyScalar(speed * delta));
-          if (move.backward) velocity.add(direction.clone().multiplyScalar(-speed * delta));
-          if (move.left) velocity.add(right.clone().multiplyScalar(speed * delta));
-          if (move.right) velocity.add(right.clone().multiplyScalar(-speed * delta));
-
-          camera.position.add(velocity);
-          velocity.multiplyScalar(0.9);
+          if (move.forward) camera.position.addScaledVector(direction, velocity);
+          if (move.backward) camera.position.addScaledVector(direction, -velocity);
+          if (move.left) camera.position.addScaledVector(right, velocity);
+          if (move.right) camera.position.addScaledVector(right, -velocity);
         }
 
-        if (orbit) orbit.update();
         renderer.render(scene, camera);
       }
+
       animate();
 
       window.addEventListener('resize', () => {
@@ -154,4 +142,5 @@
     </script>
   </body>
 </html>
+
 
