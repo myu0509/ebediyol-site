@@ -54,6 +54,21 @@ skybox.material = skyboxMaterial;
     // ✅ Mezarlar (10×10 = 100)
     const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
     graveMat.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);
+// ✅ Mezar isimleri (örnek)
+const gravesData = [
+  "Ahmet Yılmaz",
+  "Fatma Demir",
+  "Mehmet Aksoy",
+  "Ayşe Kaya",
+  "Hüseyin Arslan",
+  "Zeynep Çelik",
+  "Ali Yıldırım",
+  "Emine Kurt",
+  "Hasan Çetin",
+  "Meryem Uçar"
+];
+
+const rows = 10, cols = 10;
 
     const rows = 10, cols = 10;
     const spacingX = 5, spacingZ = 5;
@@ -87,6 +102,23 @@ skybox.material = skyboxMaterial;
         const moundMat = new BABYLON.StandardMaterial("moundMat", scene);
         moundMat.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.1);
         mound.material = moundMat;
+        // ✅ Mezar ismi plakası
+let idx = r * cols + c;
+let name = gravesData[idx] ?? "Mezar";
+
+const plane = BABYLON.MeshBuilder.CreatePlane(`label_${idx}`, { size: 0.9 }, scene);
+plane.position = new BABYLON.Vector3(grave.position.x, grave.position.y + 0.4, grave.position.z + 0.15);
+plane.rotation.y = Math.PI; // Ön tarafa dönük
+
+const advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane);
+const text = new BABYLON.GUI.TextBlock();
+text.text = name;
+text.color = "white";
+text.fontSize = "32px";
+text.outlineWidth = 6;
+text.outlineColor = "black";
+advancedTexture.addControl(text);
+
       }
     }
 // ✅ ÇAM AĞAÇLARI (Sahne çevresine)
