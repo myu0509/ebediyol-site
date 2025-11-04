@@ -73,6 +73,9 @@
 
     // Kamera
     const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
+
+    camera.attachControl(canvas, true);
+    camera.speed = 0.5;
     let avatar;
 
 BABYLON.SceneLoader.ImportMesh(
@@ -86,9 +89,6 @@ BABYLON.SceneLoader.ImportMesh(
         avatar.position = new BABYLON.Vector3(0, 0, -5);
     }
 );
-
-    camera.attachControl(canvas, true);
-    camera.speed = 0.5;
 // ✅ Mobil hareket değişkenleri
 let moveForward = false;
 let moveBackward = false;
