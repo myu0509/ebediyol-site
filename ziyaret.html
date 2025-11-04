@@ -73,20 +73,6 @@
 
     // Kamera
     const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
-    let avatar;
-
-BABYLON.SceneLoader.ImportMesh(
-    "",
-    "https://models.babylonjs.com/Dude/",
-    "Dude.babylon",
-    scene,
-    function (meshes) {
-        avatar = meshes[0];
-        avatar.scaling = new BABYLON.Vector3(0.012, 0.012, 0.012);
-        avatar.position = new BABYLON.Vector3(0, 0, -5);
-    }
-);
-
     camera.attachControl(canvas, true);
     camera.speed = 0.5;
 // ✅ Mobil hareket değişkenleri
@@ -94,6 +80,18 @@ let moveForward = false;
 let moveBackward = false;
 let moveLeft = false;
 let moveRight = false;
+let avatar = null;
+
+BABYLON.SceneLoader.ImportMeshAsync(
+  "",
+  "https://www.babylonjs.com/Scenes/Dude/",
+  "Dude.babylon",
+  scene
+).then((res) => {
+  avatar = res.meshes[0];
+  avatar.scaling = new BABYLON.Vector3(0.012, 0.012, 0.012);
+  avatar.position = new BABYLON.Vector3(0, 0, -5);
+});
 
 // ✅ Butonlara dokunma olayları
 const btnUp = document.getElementById("btnUp");
