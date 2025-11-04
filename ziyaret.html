@@ -73,8 +73,21 @@
 
     // Kamera
     const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
-    camera.attachControl(canvas, true);
-    camera.speed = 0.5;
+camera.attachControl(canvas, true);
+camera.speed = 0.5;
+
+// ✅ Sade silüet avatar
+let avatar = BABYLON.MeshBuilder.CreateCapsule("avatar", {
+  height: 2.6,
+  radius: 0.45
+}, scene);
+
+avatar.position = new BABYLON.Vector3(0, 1.3, -5);
+
+const avMat = new BABYLON.StandardMaterial("avMat", scene);
+avMat.diffuseColor = new BABYLON.Color3(0.05, 0.05, 0.05);
+avatar.material = avMat;
+
 // ✅ Mobil hareket değişkenleri
 let moveForward = false;
 let moveBackward = false;
@@ -91,6 +104,20 @@ BABYLON.SceneLoader.ImportMeshAsync(
   avatar = res.meshes[0];
   avatar.scaling = new BABYLON.Vector3(0.012, 0.012, 0.012);
   avatar.position = new BABYLON.Vector3(0, 0, -5);
+});
+// ✅ Klavye kontrolü
+window.addEventListener("keydown", (e) => {
+  if (e.key === "w" || e.key === "ArrowUp")    moveForward  = true;
+  if (e.key === "s" || e.key === "ArrowDown")  moveBackward = true;
+  if (e.key === "a" || e.key === "ArrowLeft")  moveLeft     = true;
+  if (e.key === "d" || e.key === "ArrowRight") moveRight    = true;
+});
+
+window.addEventListener("keyup", (e) => {
+  if (e.key === "w" || e.key === "ArrowUp")    moveForward  = false;
+  if (e.key === "s" || e.key === "ArrowDown")  moveBackward = false;
+  if (e.key === "a" || e.key === "ArrowLeft")  moveLeft     = false;
+  if (e.key === "d" || e.key === "ArrowRight") moveRight    = false;
 });
 
 // ✅ Butonlara dokunma olayları
@@ -306,17 +333,14 @@ if (avatar) {
       // ✅ Mobil hareket uygula
 let moveSpeed = 0.11;
 
-if (moveForward) {
-  camera.position.z += moveSpeed * Math.cos(camera.rotation.y);
-  camera.position.x += moveSpeed * Math.sin(camera.rotation.y);
+if (moveForward && avatar) {
+  avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
+  avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
 }
 
-if (moveBackward) {
-if (avatar) {
+if (moveBackward && avatar) {
   avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
   avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
-}
-
 }
 
 if (moveLeft) {
@@ -325,6 +349,9 @@ if (moveLeft) {
 
 if (moveRight) {
   camera.rotation.y += 0.04;
+}
+if (avatar) {
+  avatar.rotation.y = camera.rotation.y;
 }
 
       if (camera.position.x > 25) camera.position.x = 25;
@@ -342,4 +369,3 @@ if (moveRight) {
   </script>
 </body>
 </html>
-
