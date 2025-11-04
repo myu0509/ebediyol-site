@@ -306,17 +306,14 @@ if (avatar) {
       // ✅ Mobil hareket uygula
 let moveSpeed = 0.11;
 
-if (moveForward) {
-  camera.position.z += moveSpeed * Math.cos(camera.rotation.y);
-  camera.position.x += moveSpeed * Math.sin(camera.rotation.y);
+if (moveForward && avatar) {
+  avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
+  avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
 }
 
-if (moveBackward) {
-if (avatar) {
+if (moveBackward && avatar) {
   avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
   avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
-}
-
 }
 
 if (moveLeft) {
@@ -326,6 +323,7 @@ if (moveLeft) {
 if (moveRight) {
   camera.rotation.y += 0.04;
 }
+
 
       if (camera.position.x > 25) camera.position.x = 25;
       if (camera.position.x < -25) camera.position.x = -25;
