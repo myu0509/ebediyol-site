@@ -12,208 +12,186 @@
 <body>
   <canvas id="renderCanvas"></canvas>
 
+  <!-- Babylon.js çekirdek -->
   <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <!-- Babylon GUI (yazı etiketleri için GEREKLİ) -->
+  <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
 
   <script>
+    // --- Temel kurulum ---
     const canvas = document.getElementById("renderCanvas");
-    const engine = new BABYLON.Engine(canvas, true);
+    const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
 
     const scene = new BABYLON.Scene(engine);
     scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
 
-    // ✅ Kamera
+    // Kamera
     const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
     camera.attachControl(canvas, true);
     camera.speed = 0.5;
 
-    // ✅ Işık
+    // Işık
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
     light.intensity = 1.2;
 
-    // ✅ Zemin (50×50)
+    // Zemin (50x50)
     const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 50 }, scene);
     const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
     groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.35, 0.2);
     ground.material = groundMat;
-// ✅ SKYBOX (gökyüzü)
-const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 200 }, scene);
-const skyboxMaterial = new BABYLON.StandardMaterial("skyBoxMat", scene);
-skyboxMaterial.backFaceCulling = false;
-skyboxMaterial.disableLighting = true;
 
-// Skybox görselleri
-skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture(
-  "https://playground.babylonjs.com/textures/skybox",
-  scene
-);
-skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-skybox.material = skyboxMaterial;
+    // Skybox (gökyüzü)
+    (function addSkybox() {
+      const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 200 }, scene);
+      const skyboxMaterial = new BABYLON.StandardMaterial("skyBoxMat", scene);
+      skyboxMaterial.backFaceCulling = false;
+      skyboxMaterial.disableLighting = true;
+      skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("https://playground.babylonjs.com/textures/skybox", scene);
+      skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+      skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+      skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+      skybox.material = skyboxMaterial;
+    })();
 
-    // ✅ Mezar İsimleri
-const gravesData = [
-  "Ahmet Yılmaz", "Fatma Demir", "Mehmet Aksoy", "Ayşe Kaya",
-  "Hüseyin Arslan", "Zeynep Çelik", "Ali Yıldırım", "Emine Kurt",
-  "Hasan Çetin", "Meryem Uçar"
-];
+    // Mezar isimleri (örnek liste - 100 mezar için döner; olmayanlara "Mezar" yazar)
+    const gravesData = [
+      "Ahmet Yılmaz","Fatma Demir","Mehmet Aksoy","Ayşe Kaya","Hüseyin Arslan","Zeynep Çelik","Ali Yıldırım","Emine Kurt","Hasan Çetin","Meryem Uçar",
+      "İsmail Şahin","Hatice Güneş","Mustafa Koç","Elif Öz","Kemal Yalçın","Hacer Bozkurt","Yasin Yavuz","Fadime Kılıç","Bekir Acar","Rabia Polat"
+      // İstersen burayı genişletebilirsin; liste bittiğinde kalan mezarlara "Mezar" yazılır.
+    ];
 
-// ✅ Mezarlar (10×10 = 100)
-const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
-graveMat.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);
+    // Mezarlar (10x10 = 100)
+    const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
+    graveMat.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);
 
-const rows = 10, cols = 10;
-const spacingX = 5, spacingZ = 5;
-const startX = -((cols - 1) * spacingX) / 2;
-const startZ = ((rows - 1) * spacingZ) / 2;
+    const rows = 10, cols = 10;
+    const spacingX = 5, spacingZ = 5;
+    const startX = -((cols - 1) * spacingX) / 2;
+    const startZ = ((rows - 1) * spacingZ) / 2;
 
-for (let r = 0; r < rows; r++) {
-  for (let c = 0; c < cols; c++) {
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
 
-    // ✅ Mezar taşı
-    const grave = BABYLON.MeshBuilder.CreateBox(`grave_${r}_${c}`, {
-      width: 0.8, height: 1.2, depth: 0.2
-    }, scene);
+        // Mezar taşı
+        const grave = BABYLON.MeshBuilder.CreateBox(`grave_${r}_${c}`, {
+          width: 0.8, height: 1.2, depth: 0.2
+        }, scene);
+        grave.position.x = startX + c * spacingX;
+        grave.position.y = 0.6;
+        grave.position.z = startZ - r * spacingZ;
+        grave.material = graveMat;
 
-    grave.position.x = startX + c * spacingX;
-    grave.position.y = 0.6;
-    grave.position.z = startZ - r * spacingZ;
-    grave.material = graveMat;
+        // Toprak höyüğü
+        const mound = BABYLON.MeshBuilder.CreateCylinder(`mound_${r}_${c}`, {
+          diameterTop: 1.0,
+          diameterBottom: 1.8,
+          height: 0.2,
+          tessellation: 16
+        }, scene);
+        mound.scaling.z = 2;
+        mound.position.x = grave.position.x;
+        mound.position.y = 0.1;
+        mound.position.z = grave.position.z + 0.5;
+        const moundMat = new BABYLON.StandardMaterial("moundMat", scene);
+        moundMat.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.1);
+        mound.material = moundMat;
 
-    // ✅ Toprak höyüğü
-    const mound = BABYLON.MeshBuilder.CreateCylinder(`mound_${r}_${c}`, {
-      diameterTop: 1.0,
-      diameterBottom: 1.8,
-      height: 0.2,
-    }, scene);
+        // --- Mezar ismi plakası (GUI) ---
+        const idx = r * cols + c;
+        const name = gravesData[idx] ?? "Mezar";
 
-    mound.scaling.z = 2;
-    mound.position.x = grave.position.x;
-    mound.position.y = 0.1;
-    mound.position.z = grave.position.z + 0.5;
+        // Küçük bir düzlem (mezar taşının ön yüzüne yakın)
+        const labelPlane = BABYLON.MeshBuilder.CreatePlane(`label_${idx}`, { width: 0.9, height: 0.35 }, scene);
+        labelPlane.position = new BABYLON.Vector3(grave.position.x, grave.position.y + 0.35, grave.position.z + 0.16);
+        // Mezar kutusu +Z yönüne bakıyor; yazı öne baksın:
+        // Eğer ters görünürse aşağıdaki satırı kapat veya Math.PI yerine 0 yap.
+        // labelPlane.rotation.y = Math.PI;
 
-    const moundMat = new BABYLON.StandardMaterial("moundMat", scene);
-    moundMat.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.1);
-    mound.material = moundMat;
+        // Bu düzleme bir GUI yüzeyi bağla
+        const ui = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(labelPlane, 512, 256, false);
 
-    // ✅ Mezar ismi plakası
-    let idx = r * cols + c;
-    let name = gravesData[idx] ?? "Mezar";
+        // Arkaplanı yarı saydam koyu panel (okunabilirlik için)
+        const bg = new BABYLON.GUI.Rectangle();
+        bg.thickness = 0;
+        bg.background = "rgba(0,0,0,0.35)";
+        ui.addControl(bg);
 
-    const plane = BABYLON.MeshBuilder.CreatePlane(`label_${idx}`, { size: 0.9 }, scene);
-    plane.position = new BABYLON.Vector3(grave.position.x, grave.position.y + 0.4, grave.position.z + 0.15);
-    plane.rotation.y = Math.PI;
-
-    const advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane);
-    const text = new BABYLON.GUI.TextBlock();
-    text.text = name;
-    text.color = "white";
-    text.fontSize = "32px";
-    text.outlineWidth = 6;
-    text.outlineColor = "black";
-    advancedTexture.addControl(text);
-
-  }
-}
-
-let idx = r * cols + c;
-let name = gravesData[idx] ?? "Mezar";
-
-const plane = BABYLON.MeshBuilder.CreatePlane(`label_${idx}`, { size: 0.9 }, scene);
-plane.position = new BABYLON.Vector3(grave.position.x, grave.position.y + 0.4, grave.position.z + 0.15);
-plane.rotation.y = Math.PI; // Ön tarafa dönük
-
-const advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane);
-const text = new BABYLON.GUI.TextBlock();
-text.text = name;
-text.color = "white";
-text.fontSize = "32px";
-text.outlineWidth = 6;
-text.outlineColor = "black";
-advancedTexture.addControl(text);
-
+        // Yazı
+        const text = new BABYLON.GUI.TextBlock();
+        text.text = name;
+        text.color = "white";
+        text.fontSize = "42px";
+        text.fontWeight = "bold";
+        text.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+        text.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+        // Dış hat (kontrast)
+        text.outlineColor = "black";
+        text.outlineWidth = 6;
+        bg.addControl(text);
       }
     }
-// ✅ ÇAM AĞAÇLARI (Sahne çevresine)
-function createTree(x, z) {
-  // Gövde
-  const trunk = BABYLON.MeshBuilder.CreateCylinder("trunk", {
-    diameterTop: 0.4,
-    diameterBottom: 0.6,
-    height: 2
-  }, scene);
-  trunk.position.set(x, 1, z);
-  const trunkMat = new BABYLON.StandardMaterial("trunkMat", scene);
-  trunkMat.diffuseColor = new BABYLON.Color3(0.3, 0.15, 0.05);
-  trunk.material = trunkMat;
 
-  // Yapraklar
-  const leaves = BABYLON.MeshBuilder.CreateCylinder("leaves", {
-    diameterTop: 0.1,
-    diameterBottom: 2.5,
-    height: 3
-  }, scene);
-  leaves.position.set(x, 3, z);
-  const leavesMat = new BABYLON.StandardMaterial("leavesMat", scene);
-  leavesMat.diffuseColor = new BABYLON.Color3(0.05, 0.25, 0.1);
-  leaves.material = leavesMat;
-}
+    // Çam ağaçları (çevreye)
+    (function addTrees() {
+      function createTree(x, z) {
+        const trunk = BABYLON.MeshBuilder.CreateCylinder("trunk", {
+          diameterTop: 0.4, diameterBottom: 0.6, height: 2
+        }, scene);
+        trunk.position.set(x, 1, z);
+        const trunkMat = new BABYLON.StandardMaterial("trunkMat", scene);
+        trunkMat.diffuseColor = new BABYLON.Color3(0.3, 0.15, 0.05);
+        trunk.material = trunkMat;
 
-// ✅ Dış kenarlara ağaçları diz
-const size = 25; // 50x50 yarıçap
-const step = 5;
+        const leaves = BABYLON.MeshBuilder.CreateCylinder("leaves", {
+          diameterTop: 0.1, diameterBottom: 2.5, height: 3
+        }, scene);
+        leaves.position.set(x, 3, z);
+        const leavesMat = new BABYLON.StandardMaterial("leavesMat", scene);
+        leavesMat.diffuseColor = new BABYLON.Color3(0.05, 0.25, 0.1);
+        leaves.material = leavesMat;
+      }
 
-for (let i = -size; i <= size; i += step) {
-  createTree(i, -size); // üst kenar
-  createTree(i, size);  // alt kenar
-  createTree(-size, i); // sol kenar
-  createTree(size, i);  // sağ kenar
-}
-// ✅ DÜZ TAŞ YOL (Giriş → Merkez)
-const mainRoad = BABYLON.MeshBuilder.CreateGround("mainRoad", { 
-  width: 3,      // genişlik
-  height: 25     // uzunluk
-}, scene);
+      const size = 25; // sınır yarıçapı
+      const step = 5;
+      for (let i = -size; i <= size; i += step) {
+        createTree(i, -size);
+        createTree(i,  size);
+        createTree(-size, i);
+        createTree( size, i);
+      }
+    })();
 
-mainRoad.position.x = 0;
-mainRoad.position.z = -12.5;
-mainRoad.position.y = 0.02;
+    // Yollar (siyah-beyaz/gri, dokusuz – sade)
+    (function addRoads() {
+      // Giriş → merkeze düz yol
+      const mainRoad = BABYLON.MeshBuilder.CreateGround("mainRoad", { width: 3, height: 25 }, scene);
+      mainRoad.position.set(0, 0.02, -22); // girişe yakın başlasın
+      const mainRoadMat = new BABYLON.StandardMaterial("mainRoadMat", scene);
+      mainRoadMat.diffuseColor = new BABYLON.Color3(0.55, 0.55, 0.55);
+      mainRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);
+      mainRoad.material = mainRoadMat;
 
-const mainRoadMat = new BABYLON.StandardMaterial("mainRoadMat", scene);
-mainRoadMat.diffuseColor = new BABYLON.Color3(0.65, 0.65, 0.65);   // Açık gri
-mainRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);          // Parlama yok
-mainRoad.material = mainRoadMat;
+      // Mezarların ortasından yatay yol (ince)
+      const rowRoad = BABYLON.MeshBuilder.CreateGround("rowRoad", { width: 50, height: 1.5 }, scene);
+      rowRoad.position.set(0, 0.02, 0);
+      const rowRoadMat = new BABYLON.StandardMaterial("rowRoadMat", scene);
+      rowRoadMat.diffuseColor = new BABYLON.Color3(0.6, 0.6, 0.6);
+      rowRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);
+      rowRoad.material = rowRoadMat;
+    })();
 
-// ✅ MEZARLAR ARASINDA YATAY YOL
-const rowRoad = BABYLON.MeshBuilder.CreateGround("rowRoad", { 
-  width: 50,   // tüm alan boyunca
-  height: 1.1
-}, scene);
-
-rowRoad.position.x = 0;
-rowRoad.position.z = 0.5;   // mezarların ortası
-rowRoad.position.y = 0.02;
-
-const rowRoadMat = new BABYLON.StandardMaterial("rowRoadMat", scene);
-rowRoadMat.diffuseColor = new BABYLON.Color3(0.65, 0.65, 0.65);
-rowRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);
-rowRoad.material = rowRoadMat;
-
-    // ✅ KAMERA SINIRI (50×50)
+    // Kamera sınırı + yükseklik sabitleme
     scene.onBeforeRenderObservable.add(() => {
-
-      // zemin sınırları
       if (camera.position.x > 25) camera.position.x = 25;
       if (camera.position.x < -25) camera.position.x = -25;
       if (camera.position.z > 25) camera.position.z = 25;
       if (camera.position.z < -25) camera.position.z = -25;
 
-      // yükseklik sınırı
       if (camera.position.y < 1.6) camera.position.y = 1.6;
-      if (camera.position.y > 3)   camera.position.y = 3;
+      if (camera.position.y > 3.0) camera.position.y = 3.0;
     });
 
-    // ✅ Render
+    // Render döngüsü
     engine.runRenderLoop(() => scene.render());
     window.addEventListener("resize", () => engine.resize());
   </script>
