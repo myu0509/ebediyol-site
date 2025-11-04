@@ -148,6 +148,18 @@ if (btnRight) {
 
     // Işık
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+    // ✅ Sade silüet avatar
+var avatar = BABYLON.MeshBuilder.CreateCapsule("avatar", {
+  height: 2.6,
+  radius: 0.45
+}, scene);
+
+avatar.position = new BABYLON.Vector3(0, 1.3, -5);
+
+var avMat = new BABYLON.StandardMaterial("avMat", scene);
+avMat.diffuseColor = new BABYLON.Color3(0.05, 0.05, 0.05);
+avatar.material = avMat;
+
     light.intensity = 1.2;
 
     // Zemin (50x50)
