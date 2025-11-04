@@ -105,7 +105,7 @@
         labelPlane.position = new BABYLON.Vector3(grave.position.x, grave.position.y + 0.35, grave.position.z + 0.16);
         // Mezar kutusu +Z yönüne bakıyor; yazı öne baksın:
         // Eğer ters görünürse aşağıdaki satırı kapat veya Math.PI yerine 0 yap.
-        // labelPlane.rotation.y = Math.PI;
+        // labelPlane.rotation.y = 0;
 
         // Bu düzleme bir GUI yüzeyi bağla
         const ui = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(labelPlane, 512, 256, false);
