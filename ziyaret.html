@@ -8,9 +8,50 @@
     html, body { margin: 0; padding: 0; overflow: hidden; width: 100%; height: 100%; background: #1a1a1a; }
     #renderCanvas { width: 100%; height: 100%; touch-action: none; }
   </style>
+<style>
+#mobileControls {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+}
+
+.middleRow {
+  display: flex;
+  gap: 8px;
+}
+
+.ctrl {
+  width: 55px;
+  height: 55px;
+  font-size: 24px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.35);
+  color: black;
+  font-weight: bold;
+}
+
+.ctrl:active {
+  background: rgba(255,255,255,0.6);
+}
+</style>
+
 </head>
 <body>
   <canvas id="renderCanvas"></canvas>
+<div id="mobileControls">
+  <button class="ctrl" id="btnUp">▲</button>
+  <div class="middleRow">
+    <button class="ctrl" id="btnLeft">◀</button>
+    <button class="ctrl" id="btnRight">▶</button>
+  </div>
+  <button class="ctrl" id="btnDown">▼</button>
+</div>
 
   <!-- Babylon.js çekirdek -->
   <script src="https://cdn.babylonjs.com/babylon.js"></script>
@@ -29,6 +70,37 @@
     const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
     camera.attachControl(canvas, true);
     camera.speed = 0.5;
+// ✅ Mobil hareket değişkenleri
+let moveForward = false;
+let moveBackward = false;
+let moveLeft = false;
+let moveRight = false;
+
+// ✅ Butonlara dokunma olayları
+const btnUp = document.getElementById("btnUp");
+const btnDown = document.getElementById("btnDown");
+const btnLeft = document.getElementById("btnLeft");
+const btnRight = document.getElementById("btnRight");
+
+if (btnUp) {
+  btnUp.addEventListener("touchstart", () => moveForward = true);
+  btnUp.addEventListener("touchend", () => moveForward = false);
+}
+
+if (btnDown) {
+  btnDown.addEventListener("touchstart", () => moveBackward = true);
+  btnDown.addEventListener("touchend", () => moveBackward = false);
+}
+
+if (btnLeft) {
+  btnLeft.addEventListener("touchstart", () => moveLeft = true);
+  btnLeft.addEventListener("touchend", () => moveLeft = false);
+}
+
+if (btnRight) {
+  btnRight.addEventListener("touchstart", () => moveRight = true);
+  btnRight.addEventListener("touchend", () => moveRight = false);
+}
 
     // Işık
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
@@ -207,6 +279,27 @@ bg.addControl(text);
 
     // Kamera sınırı + yükseklik sabitleme
     scene.onBeforeRenderObservable.add(() => {
+      // ✅ Mobil hareket uygula
+let moveSpeed = 0.2;
+
+if (moveForward) {
+  camera.position.z += moveSpeed * Math.cos(camera.rotation.y);
+  camera.position.x += moveSpeed * Math.sin(camera.rotation.y);
+}
+
+if (moveBackward) {
+  camera.position.z -= moveSpeed * Math.cos(camera.rotation.y);
+  camera.position.x -= moveSpeed * Math.sin(camera.rotation.y);
+}
+
+if (moveLeft) {
+  camera.rotation.y -= 0.04;
+}
+
+if (moveRight) {
+  camera.rotation.y += 0.04;
+}
+
       if (camera.position.x > 25) camera.position.x = 25;
       if (camera.position.x < -25) camera.position.x = -25;
       if (camera.position.z > 25) camera.position.z = 25;
