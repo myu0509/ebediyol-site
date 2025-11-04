@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Ebedi Yol - A Blok</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     html, body { margin: 0; padding: 0; overflow: hidden; width: 100%; height: 100%; background: #1a1a1a; }
     #renderCanvas { width: 100%; height: 100%; touch-action: none; }
@@ -11,7 +12,9 @@
 <body>
   <canvas id="renderCanvas"></canvas>
 
+  <!-- Babylon.js -->
   <script src="https://cdn.babylonjs.com/babylon.js"></script>
+
   <script>
     const canvas = document.getElementById("renderCanvas");
     const engine = new BABYLON.Engine(canvas, true);
@@ -19,73 +22,21 @@
     const scene = new BABYLON.Scene(engine);
     scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
 
+    // Kamera
     const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
     camera.attachControl(canvas, true);
     camera.speed = 0.5;
 
+    // Yükseklik kısıtı (uçmasın/zemine batmasın)
+    scene.registerBeforeRender(() => {
+      if (camera.position.y < 1.6) camera.position.y = 1.6;
+      if (camera.position.y > 3.0) camera.position.y = 3.0;
+    });
+
+    // Işık
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
     light.intensity = 1.2;
 
+    // Zemin
     const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 50 }, scene);
-    const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
-    groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.35, 0.2);
-    ground.material = groundMat;
-// 🪧 Tabela (test edilmiş sade sürüm)
-const signMat = new BABYLON.StandardMaterial("signMat", scene);
-signMat.diffuseColor = new BABYLON.Color3(0.45, 0.3, 0.15);
-
-const sign = BABYLON.MeshBuilder.CreateBox("sign", { width: 5, height: 1.6, depth: 0.1 }, scene);
-sign.position.set(0, 2.5, -8);
-sign.material = signMat;
-
-// Yazı kaplaması
-const texture = new BABYLON.DynamicTexture("signText", { width: 1024, height: 512 }, scene, true);
-texture.hasAlpha = true;
-
-// Ortalanmış yazı
-const ctx = texture.getContext();
-ctx.clearRect(0, 0, 1024, 512);
-ctx.textAlign = "center";
-ctx.textBaseline = "middle";
-
-// Üst yazılar
-ctx.font = "bold 64px Arial";
-ctx.fillStyle = "white";
-ctx.fillText("EBEDİYOL KABRİSTANLIĞINA", 512, 200);
-ctx.fillText("HOŞ GELDİNİZ", 512, 280);
-
-// Alt yazı
-ctx.font = "italic 36px Arial";
-ctx.fillStyle = "lightgray";
-ctx.fillText("Sonsuzluk yolundaki anılara saygıyla", 512, 380);
-
-sign.material.diffuseTexture = texture;
-    const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
-    graveMat.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);
-
-    const rows = 4, cols = 5, spacingX = 5, spacingZ = 5;
-    const startX = -((cols - 1) * spacingX) / 2;
-    const startZ = ((rows - 1) * spacingZ) / 2;
-
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        const grave = BABYLON.MeshBuilder.CreateBox(`grave_${r}_${c}`, { width: 0.8, height: 1.2, depth: 0.2 }, scene);
-        grave.position.x = startX + c * spacingX;
-        grave.position.y = 0.6;
-        grave.position.z = startZ - r * spacingZ;
-
-        const mound = BABYLON.MeshBuilder.CreateCylinder(`mound_${r}_${c}`, { diameterTop: 1.0, diameterBottom: 1.8, height: 0.2 }, scene);
-        mound.scaling.z = 2;
-        mound.position.x = grave.position.x;
-        mound.position.y = 0.1;
-        mound.position.z = grave.position.z + 0.5;
-        const moundMat = new BABYLON.StandardMaterial("moundMat", scene);
-        moundMat.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.1);
-        mound.material = moundMat;
-      }
-    }
-
-    engine.runRenderLoop(() => scene.render());
-  </script>
-</body>
-</html>
+    const groundMat = new
