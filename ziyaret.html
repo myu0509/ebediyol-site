@@ -34,10 +34,6 @@
       const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
       camera.attachControl(canvas, true);
       // Kamera yerden fazla yükselmesin veya zeminin altına girmesin
-scene.registerBeforeRender(function () {
-  if (camera.position.y < 1.6) camera.position.y = 1.6;   // yere sabitle
-  if (camera.position.y > 3) camera.position.y = 3;       // fazla yükselmesin
-});
       camera.speed = 0.5;
 
       // Işık
@@ -98,6 +94,21 @@ for (let r = 0; r < rows; r++) {
     };
 
     const scene = createScene();
+    // ✅ Kamera alan sınırı (50x50)
+scene.onBeforeRenderObservable.add(() => {
+
+  if (camera.position.x > 25) camera.position.x = 25;
+  if (camera.position.x < -25) camera.position.x = -25;
+
+  if (camera.position.z > 25) camera.position.z = 25;
+  if (camera.position.z < -25) camera.position.z = -25;
+
+  // Yükseklik sabitle
+  if (camera.position.y < 1.6) camera.position.y = 1.6;
+  if (camera.position.y > 3)   camera.position.y = 3;
+
+});
+
     engine.runRenderLoop(function () {
       scene.render();
     });
