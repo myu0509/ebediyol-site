@@ -35,7 +35,7 @@ const signMat = new BABYLON.StandardMaterial("signMat", scene);
 signMat.diffuseColor = new BABYLON.Color3(0.45, 0.3, 0.15);
 
 const sign = BABYLON.MeshBuilder.CreateBox("sign", { width: 5, height: 1.6, depth: 0.1 }, scene);
-sign.position.set(0, 2.5, 8);
+sign.position.set(0, 2.5, -8);
 sign.material = signMat;
 
 // Yazı kaplaması
