@@ -1,153 +1,105 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Ebedi Yol - A Blok (Babylon.js)</title>
-  <style>
-    html, body { margin: 0; padding: 0; overflow: hidden; width: 100%; height: 100%; background: #1a1a1a; }
-    #renderCanvas { width: 100%; height: 100%; touch-action: none; }
-    #info {
-      position: absolute; top: 10px; left: 10px;
-      color: white; font-family: Arial, sans-serif; font-size: 14px;
-      background: rgba(0,0,0,0.5); padding: 8px 12px; border-radius: 8px;
-      z-index: 10;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <title>Ebedi Yol - A Blok (Babylon.js)</title>
+  <style>
+    html, body { margin: 0; padding: 0; overflow: hidden; width: 100%; height: 100%; background: #1a1a1a; }
+    #renderCanvas { width: 100%; height: 100%; touch-action: none; }
+    #info {
+      position: absolute; top: 10px; left: 10px;
+      color: white; font-family: Arial, sans-serif; font-size: 14px;
+      background: rgba(0,0,0,0.5); padding: 8px 12px; border-radius: 8px;
+      z-index: 10;
+    }
+  </style>
 </head>
 <body>
-  <div id="info">Fareyle dön | W,A,S,D ile yürü | Çift tıkla: kilitle</div>
-  <canvas id="renderCanvas"></canvas>
+  <div id="info">Fareyle dön | W,A,S,D ile yürü | Çift tıkla: kilitle</div>
+  <canvas id="renderCanvas"></canvas>
 
-  <!-- ✅ Babylon.js CDN -->
-  <script src="https://cdn.babylonjs.com/babylon.js"></script>
-  <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+  <!-- ✅ Babylon.js CDN -->
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
 
-  <script>
-    const canvas = document.getElementById("renderCanvas");
-    const engine = new BABYLON.Engine(canvas, true);
+  <script>
+    const canvas = document.getElementById("renderCanvas");
+    const engine = new BABYLON.Engine(canvas, true);
 
-    const createScene = function () {
-      const scene = new BABYLON.Scene(engine);
-      scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
+    const createScene = function () {
+      const scene = new BABYLON.Scene(engine);
+      scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
 
-      // Kamera
-      const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
-      camera.attachControl(canvas, true);
-      // Kamera yerden fazla yükselmesin veya zeminin altına girmesin
+      // Kamera
+      const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
+      camera.attachControl(canvas, true);
+      // Kamera yerden fazla yükselmesin veya zeminin altına girmesin
 scene.registerBeforeRender(function () {
-  if (camera.position.y < 1.6) camera.position.y = 1.6;   // yere sabitle
-  if (camera.position.y > 3) camera.position.y = 3;       // fazla yükselmesin
+  if (camera.position.y < 1.6) camera.position.y = 1.6;   // yere sabitle
+  if (camera.position.y > 3) camera.position.y = 3;       // fazla yükselmesin
 });
 
-      // WASD tuşlarını da aktif et
+      // WASD tuşlarını da aktif et
 scene.actionManager = new BABYLON.ActionManager(scene);
 scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyDownTrigger, function (evt) {
-    switch (evt.sourceEvent.key.toLowerCase()) {
-        case "w": camera.position.z += 0.3; break;
-        case "s": camera.position.z -= 0.3; break;
-        case "a": camera.position.x -= 0.3; break;
-        case "d": camera.position.x += 0.3; break;
-    }
+    switch (evt.sourceEvent.key.toLowerCase()) {
+        case "w": camera.position.z += 0.3; break;
+        case "s": camera.position.z -= 0.3; break;
+        case "a": camera.position.x -= 0.3; break;
+        case "d": camera.position.x += 0.3; break;
+    }
 }));
 
-      camera.speed = 0.5;
+      camera.speed = 0.5;
 
-      // Işık
-      const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-      light.intensity = 1.2;
+      // Işık
+      const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+      light.intensity = 1.2;
 
-      // Zemin
-      const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 50 }, scene);
-      const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
-      groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.35, 0.2);
-      ground.material = groundMat;
-// 🪧 Tahta tabela
-const woodTexture = new BABYLON.StandardMaterial("woodMat", scene);
-woodTexture.diffuseTexture = new BABYLON.Texture("https://i.imgur.com/wbq7j3v.jpg", scene); // ahşap doku
-woodTexture.specularColor = new BABYLON.Color3(0, 0, 0);
+      // Zemin
+      const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 50 }, scene);
+      const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
+      groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.35, 0.2);
+      ground.material = groundMat;
 
-// Direkler
-const leftPost = BABYLON.MeshBuilder.CreateCylinder("leftPost", { height: 3, diameter: 0.15 }, scene);
-leftPost.position.set(-2, 1.5, 8);
-leftPost.material = woodTexture;
+      // Mezar taşları (5x4)
+      const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
+      graveMat.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);
+      const rows = 4, cols = 5, spacingX = 5, spacingZ = 5;
+      const startX = -((cols - 1) * spacingX) / 2;
+      const startZ = ((rows - 1) * spacingZ) / 2;
 
-const rightPost = leftPost.clone("rightPost");
-rightPost.position.x = 2;
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const grave = BABYLON.MeshBuilder.CreateBox(`grave_${r}_${c}`, { width: 0.8, height: 1.2, depth: 0.2 }, scene);
+          grave.position.x = startX + c * spacingX;
+          grave.position.y = 0.6;
+          grave.position.z = startZ - r * spacingZ;
 
-// Tabela tahtası
-const board = BABYLON.MeshBuilder.CreateBox("board", { width: 5, height: 1.6, depth: 0.15 }, scene);
-board.position.set(0, 2.5, 8);
-board.material = woodTexture;
-
-// Yazılar (DynamicTexture)
-const texture = new BABYLON.DynamicTexture("textTexture", { width: 1024, height: 512 }, scene, true);
-texture.hasAlpha = true;
-
-// Arka plan saydam olacak, yazılar ortalanacak
-const ctx = texture.getContext();
-ctx.textAlign = "center";
-ctx.textBaseline = "middle";
-ctx.font = "bold 60px Arial";
-ctx.fillStyle = "white";
-ctx.fillText("EBEDİYOL KABRİSTANLIĞINA", 512, 200);
-ctx.fillText("HOŞ GELDİNİZ", 512, 280);
-ctx.font = "italic 38px Arial";
-ctx.fillStyle = "lightgray";
-ctx.fillText("Sonsuzluk yolundaki anılara saygıyla", 512, 380);
-
-const textMat = new BABYLON.StandardMaterial("textMat", scene);
-textMat.diffuseTexture = texture;
-textMat.diffuseTexture.hasAlpha = true;
-
-// İki materyali birleştir
-const merge = BABYLON.Mesh.MergeMeshes([board.clone("wood"), board.clone("text")], true, false, null, false, true);
-board.material = woodTexture;
-board.material.diffuseTexture = texture;
-      const multiMat = new BABYLON.MultiMaterial("multiMat", scene);
-multiMat.subMaterials.push(board.material); // ahşap doku
-const textMat = new BABYLON.StandardMaterial("textMat", scene);
-textMat.diffuseTexture = texture;
-textMat.diffuseTexture.hasAlpha = true; // arka planı saydam yap
-multiMat.subMaterials.push(textMat);
-board.material = textMat;
-      // Mezar taşları (5x4)
-      const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
-      graveMat.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);
-      const rows = 4, cols = 5, spacingX = 5, spacingZ = 5;
-      const startX = -((cols - 1) * spacingX) / 2;
-      const startZ = ((rows - 1) * spacingZ) / 2;
-
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const grave = BABYLON.MeshBuilder.CreateBox(`grave_${r}_${c}`, { width: 0.8, height: 1.2, depth: 0.2 }, scene);
-          grave.position.x = startX + c * spacingX;
-          grave.position.y = 0.6;
-          grave.position.z = startZ - r * spacingZ;
-
-          // Toprak höyüğü
-          const mound = BABYLON.MeshBuilder.CreateCylinder(`mound_${r}_${c}`, { diameterTop: 1.0, diameterBottom: 1.8, height: 0.2, tessellation: 16 }, scene);
+          // Toprak höyüğü
+          const mound = BABYLON.MeshBuilder.CreateCylinder(`mound_${r}_${c}`, { diameterTop: 1.0, diameterBottom: 1.8, height: 0.2, tessellation: 16 }, scene);
 mound.scaling.z = 2; // toprak yığınını öne doğru uzat
 
-          mound.position.x = grave.position.x;
-          mound.position.y = 0.1;
-          mound.position.z = grave.position.z + 0.5;
-          const moundMat = new BABYLON.StandardMaterial("moundMat", scene);
-          moundMat.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.1);
-          mound.material = moundMat;
-        }
-      }
+          mound.position.x = grave.position.x;
+          mound.position.y = 0.1;
+          mound.position.z = grave.position.z + 0.5;
+          const moundMat = new BABYLON.StandardMaterial("moundMat", scene);
+          moundMat.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.1);
+          mound.material = moundMat;
+        }
+      }
 
-      return scene;
-    };
+      return scene;
+    };
 
-    const scene = createScene();
-    engine.runRenderLoop(function () {
-      scene.render();
-    });
+    const scene = createScene();
+    engine.runRenderLoop(function () {
+      scene.render();
+    });
 
-    window.addEventListener("resize", function () {
-      engine.resize();
-    });
-  </script>
+    window.addEventListener("resize", function () {
+      engine.resize();
+    });
+  </script>
 </body>
 </html>
