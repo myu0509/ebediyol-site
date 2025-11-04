@@ -133,7 +133,7 @@ if (person) {
 
 const labelPlane = BABYLON.MeshBuilder.CreatePlane(`label_${idx}`, { width: 0.9, height: 0.45 }, scene);
 labelPlane.position = new BABYLON.Vector3(grave.position.x, grave.position.y + 0.45, grave.position.z + 0.16);
-labelPlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
+labelPlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_NONE;
 
 // GUI
 const ui = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(labelPlane, 512, 256, false);
