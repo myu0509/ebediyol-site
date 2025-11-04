@@ -136,9 +136,11 @@ mainRoad.position.y = 0.02;
 
 const mainRoadMat = new BABYLON.StandardMaterial("mainRoadMat", scene);
 mainRoadMat.diffuseTexture = new BABYLON.Texture(
-  "https://raw.githubusercontent.com/paulhax/3d-textures/main/cobblestone_gray.jpg",
+  "https://assets.babylonjs.com/environments/stoneground.jpg",
   scene
 );
+mainRoadMat.diffuseTexture.uScale = 4;
+mainRoadMat.diffuseTexture.vScale = 1;
 
 mainRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);
 mainRoad.material = mainRoadMat;
@@ -154,9 +156,11 @@ rowRoad.position.y = 0.02;
 
 const rowRoadMat = new BABYLON.StandardMaterial("rowRoadMat", scene);
 rowRoadMat.diffuseTexture = new BABYLON.Texture(
-  "https://raw.githubusercontent.com/paulhax/3d-textures/main/cobblestone_gray.jpg",
+  "https://assets.babylonjs.com/environments/stoneground.jpg",
   scene
 );
+rowRoadMat.diffuseTexture.uScale = 8;
+rowRoadMat.diffuseTexture.vScale = 1;
 
 rowRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);
 rowRoad.material = rowRoadMat;
