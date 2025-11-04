@@ -78,6 +78,8 @@ const board = BABYLON.MeshBuilder.CreateBox("board", { width: 4.5, height: 1.2, 
 board.position.set(0, 2.4, 8);
 board.material = new BABYLON.StandardMaterial("boardMat", scene);
 board.material.diffuseColor = new BABYLON.Color3(0.6, 0.4, 0.2);
+      board.material.specularColor = new BABYLON.Color3(0, 0, 0); // parlama olmasın
+board.material.emissiveColor = new BABYLON.Color3(0.3, 0.2, 0.1); // sıcak ahşap tonu
 // Yazılar (DynamicTexture ile)
 const texture = new BABYLON.DynamicTexture("textTexture", { width: 1024, height: 512 }, scene, true);
 texture.hasAlpha = true;
@@ -85,7 +87,13 @@ texture.drawText("EBEDİYOL KABRİSTANLIĞINA", 40, 220, "bold 60px Arial", "whi
 texture.drawText("HOŞ GELDİNİZ", 240, 320, "bold 60px Arial", "white", "transparent", true);
 texture.drawText("Sonsuzluk yolundaki anılara saygıyla", 100, 420, "italic 38px Arial", "lightgray", "transparent", true);
 board.material.diffuseTexture = texture;
-
+      const multiMat = new BABYLON.MultiMaterial("multiMat", scene);
+multiMat.subMaterials.push(board.material); // ahşap doku
+const textMat = new BABYLON.StandardMaterial("textMat", scene);
+textMat.diffuseTexture = texture;
+textMat.diffuseTexture.hasAlpha = true; // arka planı saydam yap
+multiMat.subMaterials.push(textMat);
+board.material = textMat;
       // Mezar taşları (5x4)
       const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
       graveMat.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);
