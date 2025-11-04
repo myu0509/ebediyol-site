@@ -88,6 +88,14 @@ let moveLeft = false;
 let moveRight = false;
 let avatar = null;
   "",
+  "https://www.babylonjs.com/Scenes/Dude/",
+  "Dude.babylon",
+  scene
+).then((res) => {
+  avatar = res.meshes[0];
+  avatar.scaling = new BABYLON.Vector3(0.012, 0.012, 0.012);
+  avatar.position = new BABYLON.Vector3(0, 0, -5);
+});
 // ✅ Klavye kontrolü
 window.addEventListener("keydown", (e) => {
   if (e.key === "w" || e.key === "ArrowUp")    moveForward  = true;
