@@ -89,6 +89,41 @@ skybox.material = skyboxMaterial;
         mound.material = moundMat;
       }
     }
+// ✅ ÇAM AĞAÇLARI (Sahne çevresine)
+function createTree(x, z) {
+  // Gövde
+  const trunk = BABYLON.MeshBuilder.CreateCylinder("trunk", {
+    diameterTop: 0.4,
+    diameterBottom: 0.6,
+    height: 2
+  }, scene);
+  trunk.position.set(x, 1, z);
+  const trunkMat = new BABYLON.StandardMaterial("trunkMat", scene);
+  trunkMat.diffuseColor = new BABYLON.Color3(0.3, 0.15, 0.05);
+  trunk.material = trunkMat;
+
+  // Yapraklar
+  const leaves = BABYLON.MeshBuilder.CreateCylinder("leaves", {
+    diameterTop: 0.1,
+    diameterBottom: 2.5,
+    height: 3
+  }, scene);
+  leaves.position.set(x, 3, z);
+  const leavesMat = new BABYLON.StandardMaterial("leavesMat", scene);
+  leavesMat.diffuseColor = new BABYLON.Color3(0.05, 0.25, 0.1);
+  leaves.material = leavesMat;
+}
+
+// ✅ Dış kenarlara ağaçları diz
+const size = 25; // 50x50 yarıçap
+const step = 5;
+
+for (let i = -size; i <= size; i += step) {
+  createTree(i, -size); // üst kenar
+  createTree(i, size);  // alt kenar
+  createTree(-size, i); // sol kenar
+  createTree(size, i);  // sağ kenar
+}
 
     // ✅ KAMERA SINIRI (50×50)
     scene.onBeforeRenderObservable.add(() => {
