@@ -81,7 +81,6 @@ function randomDeathYear(birth) {
 }
 
 // ✅ 100 kişilik mezar listesi üret
-const gravesData = [];
 for (let i = 0; i < 100; i++) {
   const birth = randomBirthYear();
   const death = randomDeathYear(birth);
@@ -151,43 +150,7 @@ text.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
 text.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 text.outlineColor = "black";
 text.outlineWidth = 6;
-
 bg.addControl(text);
-
-        // --- Mezar ismi plakası (GUI) ---
-        const idx = r * cols + c;
-        const name = gravesData[idx] ?? "Mezar";
-
-        // Küçük bir düzlem (mezar taşının ön yüzüne yakın)
-        const labelPlane = BABYLON.MeshBuilder.CreatePlane(`label_${idx}`, { width: 0.9, height: 0.35 }, scene);
-        labelPlane.position = new BABYLON.Vector3(grave.position.x, grave.position.y + 0.35, grave.position.z + 0.16);
-        // Mezar kutusu +Z yönüne bakıyor; yazı öne baksın:
-        // Eğer ters görünürse aşağıdaki satırı kapat veya Math.PI yerine 0 yap.
-        // ✅ Yüzü kameraya doğru çevir
-labelPlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
-
-
-        // Bu düzleme bir GUI yüzeyi bağla
-        const ui = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(labelPlane, 512, 256, false);
-
-        // Arkaplanı yarı saydam koyu panel (okunabilirlik için)
-        const bg = new BABYLON.GUI.Rectangle();
-        bg.thickness = 0;
-        bg.background = "rgba(0,0,0,0.35)";
-        ui.addControl(bg);
-
-        // Yazı
-        const text = new BABYLON.GUI.TextBlock();
-        text.text = name;
-        text.color = "white";
-        text.fontSize = "42px";
-        text.fontWeight = "bold";
-        text.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-        text.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
-        // Dış hat (kontrast)
-        text.outlineColor = "black";
-        text.outlineWidth = 6;
-        bg.addControl(text);
       }
     }
 
