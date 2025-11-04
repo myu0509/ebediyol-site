@@ -50,22 +50,21 @@
       const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
       groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.35, 0.2);
       ground.material = groundMat;
-      // 🪧 Tahta tabela (sade ve garantili sürüm)
-const woodMat = new BABYLON.StandardMaterial("woodMat", scene);
-woodMat.diffuseColor = new BABYLON.Color3(0.55, 0.35, 0.15);
+      // 🪧 Basit tahta tabela (garantili sürüm)
+const signMat = new BABYLON.StandardMaterial("signMat", scene);
+signMat.diffuseColor = new BABYLON.Color3(0.55, 0.35, 0.15);
 
-// Direkler
-const leftPost = BABYLON.MeshBuilder.CreateCylinder("leftPost", { height: 3, diameter: 0.15 }, scene);
-leftPost.position.set(-2, 1.5, 8);
-leftPost.material = woodMat;
+const sign = BABYLON.MeshBuilder.CreateBox("sign", { width: 5, height: 1.5, depth: 0.1 }, scene);
+sign.position.set(0, 2, 8);
+sign.material = signMat;
 
-const rightPost = leftPost.clone("rightPost");
-rightPost.position.x = 2;
+// Yazı (tek kaplama halinde)
+const text = new BABYLON.DynamicTexture("signText", { width: 1024, height: 512 }, scene, true);
+text.drawText("EBEDİYOL KABRİSTANLIĞINA", 80, 220, "bold 60px Arial", "white", "transparent");
+text.drawText("HOŞ GELDİNİZ", 260, 320, "bold 60px Arial", "white", "transparent");
+text.drawText("Sonsuzluk yolundaki anılara saygıyla", 120, 420, "italic 38px Arial", "lightgray", "transparent");
 
-// Tahta pano
-const board = BABYLON.MeshBuilder.CreateBox("board", { width: 5, height: 1.6, depth: 0.1 }, scene);
-board.position.set(0, 2.5, 8);
-board.material = woodMat;
+sign.material.diffuseTexture = text;
 
 // Yazı kaplaması (DynamicTexture)
 const texture = new BABYLON.DynamicTexture("textTexture", { width: 1024, height: 512 }, scene, true);
