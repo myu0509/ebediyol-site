@@ -51,58 +51,71 @@ skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
 skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
 skybox.material = skyboxMaterial;
 
-    // ✅ Mezarlar (10×10 = 100)
-    const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
-    graveMat.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);
-// ✅ Mezar isimleri (örnek)
+    // ✅ Mezar İsimleri
 const gravesData = [
-  "Ahmet Yılmaz",
-  "Fatma Demir",
-  "Mehmet Aksoy",
-  "Ayşe Kaya",
-  "Hüseyin Arslan",
-  "Zeynep Çelik",
-  "Ali Yıldırım",
-  "Emine Kurt",
-  "Hasan Çetin",
-  "Meryem Uçar"
+  "Ahmet Yılmaz", "Fatma Demir", "Mehmet Aksoy", "Ayşe Kaya",
+  "Hüseyin Arslan", "Zeynep Çelik", "Ali Yıldırım", "Emine Kurt",
+  "Hasan Çetin", "Meryem Uçar"
 ];
 
+// ✅ Mezarlar (10×10 = 100)
+const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
+graveMat.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);
+
 const rows = 10, cols = 10;
+const spacingX = 5, spacingZ = 5;
+const startX = -((cols - 1) * spacingX) / 2;
+const startZ = ((rows - 1) * spacingZ) / 2;
 
-    const rows = 10, cols = 10;
-    const spacingX = 5, spacingZ = 5;
-    const startX = -((cols - 1) * spacingX) / 2;
-    const startZ = ((rows - 1) * spacingZ) / 2;
+for (let r = 0; r < rows; r++) {
+  for (let c = 0; c < cols; c++) {
 
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
+    // ✅ Mezar taşı
+    const grave = BABYLON.MeshBuilder.CreateBox(`grave_${r}_${c}`, {
+      width: 0.8, height: 1.2, depth: 0.2
+    }, scene);
 
-        const grave = BABYLON.MeshBuilder.CreateBox(`grave_${r}_${c}`, {
-          width: 0.8, height: 1.2, depth: 0.2
-        }, scene);
+    grave.position.x = startX + c * spacingX;
+    grave.position.y = 0.6;
+    grave.position.z = startZ - r * spacingZ;
+    grave.material = graveMat;
 
-        grave.position.x = startX + c * spacingX;
-        grave.position.y = 0.6;
-        grave.position.z = startZ - r * spacingZ;
-        grave.material = graveMat;
+    // ✅ Toprak höyüğü
+    const mound = BABYLON.MeshBuilder.CreateCylinder(`mound_${r}_${c}`, {
+      diameterTop: 1.0,
+      diameterBottom: 1.8,
+      height: 0.2,
+    }, scene);
 
-        const mound = BABYLON.MeshBuilder.CreateCylinder(`mound_${r}_${c}`, {
-          diameterTop: 1.0,
-          diameterBottom: 1.8,
-          height: 0.2,
-          tessellation: 16
-        }, scene);
+    mound.scaling.z = 2;
+    mound.position.x = grave.position.x;
+    mound.position.y = 0.1;
+    mound.position.z = grave.position.z + 0.5;
 
-        mound.scaling.z = 2;
-        mound.position.x = grave.position.x;
-        mound.position.y = 0.1;
-        mound.position.z = grave.position.z + 0.5;
+    const moundMat = new BABYLON.StandardMaterial("moundMat", scene);
+    moundMat.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.1);
+    mound.material = moundMat;
 
-        const moundMat = new BABYLON.StandardMaterial("moundMat", scene);
-        moundMat.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.1);
-        mound.material = moundMat;
-        // ✅ Mezar ismi plakası
+    // ✅ Mezar ismi plakası
+    let idx = r * cols + c;
+    let name = gravesData[idx] ?? "Mezar";
+
+    const plane = BABYLON.MeshBuilder.CreatePlane(`label_${idx}`, { size: 0.9 }, scene);
+    plane.position = new BABYLON.Vector3(grave.position.x, grave.position.y + 0.4, grave.position.z + 0.15);
+    plane.rotation.y = Math.PI;
+
+    const advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane);
+    const text = new BABYLON.GUI.TextBlock();
+    text.text = name;
+    text.color = "white";
+    text.fontSize = "32px";
+    text.outlineWidth = 6;
+    text.outlineColor = "black";
+    advancedTexture.addControl(text);
+
+  }
+}
+
 let idx = r * cols + c;
 let name = gravesData[idx] ?? "Mezar";
 
