@@ -2,41 +2,92 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <title>Ebedi Yol - A Blok</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ebedi Yol - A Blok (Babylon.js)</title>
   <style>
     html, body { margin: 0; padding: 0; overflow: hidden; width: 100%; height: 100%; background: #1a1a1a; }
     #renderCanvas { width: 100%; height: 100%; touch-action: none; }
+    #info {
+      position: absolute; top: 10px; left: 10px;
+      color: white; font-family: Arial, sans-serif; font-size: 14px;
+      background: rgba(0,0,0,0.5); padding: 8px 12px; border-radius: 8px;
+      z-index: 10;
+    }
   </style>
 </head>
 <body>
+  <div id="info">Fareyle dön | W,A,S,D ile yürü | Çift tıkla: kilitle</div>
   <canvas id="renderCanvas"></canvas>
 
-  <!-- Babylon.js -->
+  <!-- ✅ Babylon.js CDN -->
   <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
 
   <script>
     const canvas = document.getElementById("renderCanvas");
     const engine = new BABYLON.Engine(canvas, true);
 
-    const scene = new BABYLON.Scene(engine);
-    scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
+    const createScene = function () {
+      const scene = new BABYLON.Scene(engine);
+      scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
 
-    // Kamera
-    const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
-    camera.attachControl(canvas, true);
-    camera.speed = 0.5;
+      // Kamera
+      const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
+      camera.attachControl(canvas, true);
+      // Kamera yerden fazla yükselmesin veya zeminin altına girmesin
+scene.registerBeforeRender(function () {
+  if (camera.position.y < 1.6) camera.position.y = 1.6;   // yere sabitle
+  if (camera.position.y > 3) camera.position.y = 3;       // fazla yükselmesin
+});
+      camera.speed = 0.5;
 
-    // Yükseklik kısıtı (uçmasın/zemine batmasın)
-    scene.registerBeforeRender(() => {
-      if (camera.position.y < 1.6) camera.position.y = 1.6;
-      if (camera.position.y > 3.0) camera.position.y = 3.0;
+      // Işık
+      const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+      light.intensity = 1.2;
+
+      // Zemin
+      const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 50 }, scene);
+      const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
+      groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.35, 0.2);
+      ground.material = groundMat;
+
+      // Mezar taşları (5x4)
+      const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
+      graveMat.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);
+
+      const rows = 4, cols = 5, spacingX = 5, spacingZ = 6;
+      const startX = -((cols - 1) * spacingX) / 2;
+      const startZ = ((rows - 1) * spacingZ) / 2;
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const grave = BABYLON.MeshBuilder.CreateBox(`grave_${r}_${c}`, { width: 0.8, height: 1.2, depth: 0.2 }, scene);
+          grave.position.x = startX + c * spacingX;
+          grave.position.y = 0.6;
+          grave.position.z = startZ - r * spacingZ;
+
+          // Toprak höyüğü
+          const mound = BABYLON.MeshBuilder.CreateCylinder(`mound_${r}_${c}`, { diameterTop: 1.0, diameterBottom: 1.8, height: 0.2, tessellation: 16 }, scene);
+mound.scaling.z = 2; // toprak yığınını öne doğru uzat
+          mound.position.x = grave.position.x;
+          mound.position.y = 0.1;
+          mound.position.z = grave.position.z + 0.5;
+          const moundMat = new BABYLON.StandardMaterial("moundMat", scene);
+          moundMat.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.1);
+          mound.material = moundMat;
+        }
+      }
+
+      return scene;
+    };
+
+    const scene = createScene();
+    engine.runRenderLoop(function () {
+      scene.render();
     });
 
-    // Işık
-    const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-    light.intensity = 1.2;
-
-    // Zemin
-    const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 50 }, scene);
-    const groundMat = new
+    window.addEventListener("resize", function () {
+      engine.resize();
+    });
+  </script>
+</body>
+</html>
