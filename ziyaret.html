@@ -73,6 +73,20 @@
 
     // Kamera
     const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
+    let avatar;
+
+BABYLON.SceneLoader.ImportMesh(
+    "",
+    "https://models.babylonjs.com/Dude/",
+    "Dude.babylon",
+    scene,
+    function (meshes) {
+        avatar = meshes[0];
+        avatar.scaling = new BABYLON.Vector3(0.012, 0.012, 0.012);
+        avatar.position = new BABYLON.Vector3(0, 0, -5);
+    }
+);
+
     camera.attachControl(canvas, true);
     camera.speed = 0.5;
 // ✅ Mobil hareket değişkenleri
