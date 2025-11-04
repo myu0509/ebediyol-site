@@ -30,7 +30,36 @@
     const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
     groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.35, 0.2);
     ground.material = groundMat;
+// 🪧 Tabela (test edilmiş sade sürüm)
+const signMat = new BABYLON.StandardMaterial("signMat", scene);
+signMat.diffuseColor = new BABYLON.Color3(0.45, 0.3, 0.15);
 
+const sign = BABYLON.MeshBuilder.CreateBox("sign", { width: 5, height: 1.6, depth: 0.1 }, scene);
+sign.position.set(0, 2.5, 8);
+sign.material = signMat;
+
+// Yazı kaplaması
+const texture = new BABYLON.DynamicTexture("signText", { width: 1024, height: 512 }, scene, true);
+texture.hasAlpha = true;
+
+// Ortalanmış yazı
+const ctx = texture.getContext();
+ctx.clearRect(0, 0, 1024, 512);
+ctx.textAlign = "center";
+ctx.textBaseline = "middle";
+
+// Üst yazılar
+ctx.font = "bold 64px Arial";
+ctx.fillStyle = "white";
+ctx.fillText("EBEDİYOL KABRİSTANLIĞINA", 512, 200);
+ctx.fillText("HOŞ GELDİNİZ", 512, 280);
+
+// Alt yazı
+ctx.font = "italic 36px Arial";
+ctx.fillStyle = "lightgray";
+ctx.fillText("Sonsuzluk yolundaki anılara saygıyla", 512, 380);
+
+sign.material.diffuseTexture = texture;
     const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
     graveMat.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);
 
