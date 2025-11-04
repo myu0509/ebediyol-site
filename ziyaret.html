@@ -135,7 +135,11 @@ mainRoad.position.z = -12.5;
 mainRoad.position.y = 0.02;
 
 const mainRoadMat = new BABYLON.StandardMaterial("mainRoadMat", scene);
-mainRoadMat.diffuseTexture = new BABYLON.Texture("https://www.babylonjs.com/assets/stone.jpg", scene);
+mainRoadMat.diffuseTexture = new BABYLON.Texture(
+  "https://assets.babylonjs.com/environments/cobblestone.png",
+  scene
+);
+
 mainRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);
 mainRoad.material = mainRoadMat;
 // ✅ MEZARLAR ARASINDA YATAY YOL
@@ -149,7 +153,11 @@ rowRoad.position.z = 0;   // mezarların ortası
 rowRoad.position.y = 0.02;
 
 const rowRoadMat = new BABYLON.StandardMaterial("rowRoadMat", scene);
-rowRoadMat.diffuseTexture = new BABYLON.Texture("https://www.babylonjs.com/assets/stone.jpg", scene);
+rowRoadMat.diffuseTexture = new BABYLON.Texture(
+  "https://assets.babylonjs.com/environments/cobblestone.png",
+  scene
+);
+
 rowRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);
 rowRoad.material = rowRoadMat;
 
