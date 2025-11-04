@@ -63,6 +63,34 @@
     // Mezarlar (10x10 = 100)
     const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
     graveMat.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);
+// ✅ Rastgele kişi üretici
+function randomName() {
+  const firstNames = ["Ahmet","Mehmet","Ayşe","Fatma","Mustafa","Hüseyin","Zeynep","Ali","Emine","Hatice","Yunus","Cem","Hasan","Halil","Murat","Seda","Gül","Rabia","Esra","Kemal"];
+  const lastNames  = ["Yılmaz","Demir","Çelik","Arslan","Toprak","Yavuz","Kaya","Yıldırım","Çetin","Polat","Koç","Acar","Uçar","Kurt","Bozkurt","Turan","Tekin","Öztürk","Kaplan","Kara"];
+  const fn = firstNames[Math.floor(Math.random()*firstNames.length)];
+  const ln = lastNames[Math.floor(Math.random()*lastNames.length)];
+  return fn + " " + ln;
+}
+
+function randomBirthYear() {
+  return Math.floor(Math.random() * 41) + 1930; // 1930–1970
+}
+
+function randomDeathYear(birth) {
+  return birth + Math.floor(Math.random() * 41) + 30; // 30–70 yıl sonra
+}
+
+// ✅ 100 kişilik mezar listesi üret
+const gravesData = [];
+for (let i = 0; i < 100; i++) {
+  const birth = randomBirthYear();
+  const death = randomDeathYear(birth);
+  gravesData.push({
+    name: randomName(),
+    birth,
+    death
+  });
+}
 
     const rows = 10, cols = 10;
     const spacingX = 5, spacingZ = 5;
@@ -95,6 +123,36 @@
         const moundMat = new BABYLON.StandardMaterial("moundMat", scene);
         moundMat.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.1);
         mound.material = moundMat;
+// ✅ Mezar yazısı
+let idx = r * cols + c;
+let person = gravesData[idx] ?? null;
+
+let labelText = "Mezar";
+if (person) {
+  labelText = `${person.name}\n${person.birth} - ${person.death}`;
+}
+
+const labelPlane = BABYLON.MeshBuilder.CreatePlane(`label_${idx}`, { width: 0.9, height: 0.45 }, scene);
+labelPlane.position = new BABYLON.Vector3(grave.position.x, grave.position.y + 0.45, grave.position.z + 0.16);
+labelPlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
+
+// GUI
+const ui = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(labelPlane, 512, 256, false);
+const bg = new BABYLON.GUI.Rectangle();
+bg.thickness = 0;
+bg.background = "rgba(0,0,0,0.35)";
+ui.addControl(bg);
+
+const text = new BABYLON.GUI.TextBlock();
+text.text = labelText;
+text.color = "white";
+text.fontSize = "40px";
+text.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+text.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+text.outlineColor = "black";
+text.outlineWidth = 6;
+
+bg.addControl(text);
 
         // --- Mezar ismi plakası (GUI) ---
         const idx = r * cols + c;
