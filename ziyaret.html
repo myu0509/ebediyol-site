@@ -312,8 +312,11 @@ if (moveForward) {
 }
 
 if (moveBackward) {
-  camera.position.z -= moveSpeed * Math.cos(camera.rotation.y);
-  camera.position.x -= moveSpeed * Math.sin(camera.rotation.y);
+ if (avatar) {
+  avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
+  avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
+}
+
 }
 
 if (moveLeft) {
