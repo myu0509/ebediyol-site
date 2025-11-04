@@ -280,7 +280,7 @@ bg.addControl(text);
     // Kamera sınırı + yükseklik sabitleme
     scene.onBeforeRenderObservable.add(() => {
       // ✅ Mobil hareket uygula
-let moveSpeed = 0.2;
+let moveSpeed = 0.15;
 
 if (moveForward) {
   camera.position.z += moveSpeed * Math.cos(camera.rotation.y);
