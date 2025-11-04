@@ -337,7 +337,9 @@ if (moveLeft) {
 if (moveRight) {
   camera.rotation.y += 0.04;
 }
-
+if (avatar) {
+  avatar.rotation.y = camera.rotation.y;
+}
 
       if (camera.position.x > 25) camera.position.x = 25;
       if (camera.position.x < -25) camera.position.x = -25;
