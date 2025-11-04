@@ -61,31 +61,47 @@ scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionM
       const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
       groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.35, 0.2);
       ground.material = groundMat;
-      // 🪧 Tahta tabela
-const tableMat = new BABYLON.StandardMaterial("tableMat", scene);
-tableMat.diffuseColor = new BABYLON.Color3(0.43, 0.27, 0.11); // koyu kahverengi
+// 🪧 Tahta tabela
+const woodTexture = new BABYLON.StandardMaterial("woodMat", scene);
+woodTexture.diffuseTexture = new BABYLON.Texture("https://i.imgur.com/wbq7j3v.jpg", scene); // ahşap doku
+woodTexture.specularColor = new BABYLON.Color3(0, 0, 0);
 
 // Direkler
 const leftPost = BABYLON.MeshBuilder.CreateCylinder("leftPost", { height: 3, diameter: 0.15 }, scene);
 leftPost.position.set(-2, 1.5, 8);
-leftPost.material = tableMat;
+leftPost.material = woodTexture;
 
 const rightPost = leftPost.clone("rightPost");
 rightPost.position.x = 2;
 
 // Tabela tahtası
-const board = BABYLON.MeshBuilder.CreateBox("board", { width: 4.5, height: 1.2, depth: 0.1 }, scene);
-board.position.set(0, 2.4, 8);
-board.material = new BABYLON.StandardMaterial("boardMat", scene);
-board.material.diffuseColor = new BABYLON.Color3(0.6, 0.4, 0.2);
-      board.material.specularColor = new BABYLON.Color3(0, 0, 0); // parlama olmasın
-board.material.emissiveColor = new BABYLON.Color3(0.3, 0.2, 0.1); // sıcak ahşap tonu
-// Yazılar (DynamicTexture ile)
+const board = BABYLON.MeshBuilder.CreateBox("board", { width: 5, height: 1.6, depth: 0.15 }, scene);
+board.position.set(0, 2.5, 8);
+board.material = woodTexture;
+
+// Yazılar (DynamicTexture)
 const texture = new BABYLON.DynamicTexture("textTexture", { width: 1024, height: 512 }, scene, true);
 texture.hasAlpha = true;
-texture.drawText("EBEDİYOL KABRİSTANLIĞINA", 40, 220, "bold 60px Arial", "white", "transparent", true);
-texture.drawText("HOŞ GELDİNİZ", 240, 320, "bold 60px Arial", "white", "transparent", true);
-texture.drawText("Sonsuzluk yolundaki anılara saygıyla", 100, 420, "italic 38px Arial", "lightgray", "transparent", true);
+
+// Arka plan saydam olacak, yazılar ortalanacak
+const ctx = texture.getContext();
+ctx.textAlign = "center";
+ctx.textBaseline = "middle";
+ctx.font = "bold 60px Arial";
+ctx.fillStyle = "white";
+ctx.fillText("EBEDİYOL KABRİSTANLIĞINA", 512, 200);
+ctx.fillText("HOŞ GELDİNİZ", 512, 280);
+ctx.font = "italic 38px Arial";
+ctx.fillStyle = "lightgray";
+ctx.fillText("Sonsuzluk yolundaki anılara saygıyla", 512, 380);
+
+const textMat = new BABYLON.StandardMaterial("textMat", scene);
+textMat.diffuseTexture = texture;
+textMat.diffuseTexture.hasAlpha = true;
+
+// İki materyali birleştir
+const merge = BABYLON.Mesh.MergeMeshes([board.clone("wood"), board.clone("text")], true, false, null, false, true);
+board.material = woodTexture;
 board.material.diffuseTexture = texture;
       const multiMat = new BABYLON.MultiMaterial("multiMat", scene);
 multiMat.subMaterials.push(board.material); // ahşap doku
