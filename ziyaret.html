@@ -135,15 +135,10 @@ mainRoad.position.z = -12.5;
 mainRoad.position.y = 0.02;
 
 const mainRoadMat = new BABYLON.StandardMaterial("mainRoadMat", scene);
-mainRoadMat.diffuseTexture = new BABYLON.Texture(
-  "https://assets.babylonjs.com/environments/stoneground.jpg",
-  scene
-);
-mainRoadMat.diffuseTexture.uScale = 4;
-mainRoadMat.diffuseTexture.vScale = 1;
-
-mainRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);
+mainRoadMat.diffuseColor = new BABYLON.Color3(0.65, 0.65, 0.65);   // Açık gri
+mainRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);          // Parlama yok
 mainRoad.material = mainRoadMat;
+
 // ✅ MEZARLAR ARASINDA YATAY YOL
 const rowRoad = BABYLON.MeshBuilder.CreateGround("rowRoad", { 
   width: 50,   // tüm alan boyunca
@@ -155,13 +150,7 @@ rowRoad.position.z = 0;   // mezarların ortası
 rowRoad.position.y = 0.02;
 
 const rowRoadMat = new BABYLON.StandardMaterial("rowRoadMat", scene);
-rowRoadMat.diffuseTexture = new BABYLON.Texture(
-  "https://assets.babylonjs.com/environments/stoneground.jpg",
-  scene
-);
-rowRoadMat.diffuseTexture.uScale = 8;
-rowRoadMat.diffuseTexture.vScale = 1;
-
+rowRoadMat.diffuseColor = new BABYLON.Color3(0.65, 0.65, 0.65);
 rowRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);
 rowRoad.material = rowRoadMat;
 
