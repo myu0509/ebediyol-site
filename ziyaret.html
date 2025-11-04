@@ -35,6 +35,21 @@
     const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
     groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.35, 0.2);
     ground.material = groundMat;
+// ✅ SKYBOX (gökyüzü)
+const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 200 }, scene);
+const skyboxMaterial = new BABYLON.StandardMaterial("skyBoxMat", scene);
+skyboxMaterial.backFaceCulling = false;
+skyboxMaterial.disableLighting = true;
+
+// Skybox görselleri
+skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture(
+  "https://playground.babylonjs.com/textures/skybox",
+  scene
+);
+skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+skybox.material = skyboxMaterial;
 
     // ✅ Mezarlar (10×10 = 100)
     const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
