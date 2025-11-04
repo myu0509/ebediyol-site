@@ -56,7 +56,7 @@
     // Mezar isimleri (örnek liste - 100 mezar için döner; olmayanlara "Mezar" yazar)
     const gravesData = [
       "Ahmet Yılmaz","Fatma Demir","Mehmet Aksoy","Ayşe Kaya","Hüseyin Arslan","Zeynep Çelik","Ali Yıldırım","Emine Kurt","Hasan Çetin","Meryem Uçar",
-      "İsmail Şahin","Hatice Güneş","Mustafa Koç","Elif Öz","Kemal Yalçın","Hacer Bozkurt","İsmail Kuzucu","Fadime Kılıç","Bekir Acar","Rabia Polat"
+      "İsmail Şahin","Hatice Güneş","Mustafa Koç","Elif Öz","Kemal Yalçın","Hacer Bozkurt","Ismail Kuzucu","Fadime Kılıç","Bekir Acar","Rabia Polat"
       // İstersen burayı genişletebilirsin; liste bittiğinde kalan mezarlara "Mezar" yazılır.
     ];
 
@@ -66,7 +66,7 @@
 // ✅ Rastgele kişi üretici
 function randomName() {
   const firstNames = ["Ahmet","Mehmet","Ayşe","Fatma","Mustafa","Hüseyin","Zeynep","Ali","Emine","Hatice","Yunus","Cem","Hasan","Halil","Murat","Seda","Gül","Rabia","Esra","Kemal"];
-  const lastNames  = ["Yılmaz","Demir","Çelik","Arslan","Toprak","Yavuz","Kaya","Yıldırım","Çetin","Polat","Koç","Acar","Uçar","Kurt","Bozkurt","Turan","Tekin","Öztürk","Kaplan","Kara"];
+  const lastNames  = ["Yılmaz","Demir","Çelik","Arslan","Toprak","Yavuz","Kaya","Yıldırım","Çetin","Polat","Koç","Acar","Uçar","Kurt","Kuzucu","Turan","Tekin","Öztürk","Kaplan","Kara"];
   const fn = firstNames[Math.floor(Math.random()*firstNames.length)];
   const ln = lastNames[Math.floor(Math.random()*lastNames.length)];
   return fn + " " + ln;
