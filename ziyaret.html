@@ -296,6 +296,13 @@ bg.addControl(text);
 
     // Kamera sınırı + yükseklik sabitleme
     scene.onBeforeRenderObservable.add(() => {
+      // Kamera avatarı takip etsin
+if (avatar) {
+  camera.position.x = avatar.position.x - 4 * Math.sin(camera.rotation.y);
+  camera.position.z = avatar.position.z - 4 * Math.cos(camera.rotation.y);
+  camera.position.y = avatar.position.y + 1.8;
+}
+
       // ✅ Mobil hareket uygula
 let moveSpeed = 0.11;
 
