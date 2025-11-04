@@ -312,7 +312,7 @@ if (moveForward) {
 }
 
 if (moveBackward) {
- if (avatar) {
+if (avatar) {
   avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
   avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
 }
