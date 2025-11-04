@@ -62,166 +62,309 @@
   <script src="https://cdn.babylonjs.com/babylon.js"></script>
   <!-- Babylon GUI (yazı etiketleri için GEREKLİ) -->
   <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
-<script>
-  // === Temel kurulum ===
-  const canvas = document.getElementById("renderCanvas");
-  const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
 
-  const scene = new BABYLON.Scene(engine);
-  scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
+  <script>
+    // --- Temel kurulum ---
+    const canvas = document.getElementById("renderCanvas");
+    const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
 
-  // Kamera
-  const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
-  camera.attachControl(canvas, true);
-  camera.speed = 0.5;
+    const scene = new BABYLON.Scene(engine);
+    scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
 
-  // Avatar değişkeni
-  let avatar = null;
+    // Kamera
+    const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
+camera.attachControl(canvas, true);
+camera.speed = 0.5;
 
-  // ✅ Sade silüet avatar
-  avatar = BABYLON.MeshBuilder.CreateCapsule("avatar", {
-    height: 2.6,
-    radius: 0.45
-  }, scene);
+// ✅ Sade silüet avatar
+avMat.diffuseColor = new BABYLON.Color3(0.05, 0.05, 0.05);
+avatar.material = avMat;
 
-  avatar.position = new BABYLON.Vector3(0, 1.3, -5);
+// ✅ Mobil hareket değişkenleri
+let moveForward = false;
+let moveBackward = false;
+let moveLeft = false;
+let moveRight = false;
+let avatar = null;
+  "",
+// ✅ Klavye kontrolü
+window.addEventListener("keydown", (e) => {
+  if (e.key === "w" || e.key === "ArrowUp")    moveForward  = true;
+  if (e.key === "s" || e.key === "ArrowDown")  moveBackward = true;
+  if (e.key === "a" || e.key === "ArrowLeft")  moveLeft     = true;
+  if (e.key === "d" || e.key === "ArrowRight") moveRight    = true;
+});
 
-  var avMat = new BABYLON.StandardMaterial("avMat", scene);
-  avMat.diffuseColor = new BABYLON.Color3(0.05, 0.05, 0.05);
-  avatar.material = avMat;
+window.addEventListener("keyup", (e) => {
+  if (e.key === "w" || e.key === "ArrowUp")    moveForward  = false;
+  if (e.key === "s" || e.key === "ArrowDown")  moveBackward = false;
+  if (e.key === "a" || e.key === "ArrowLeft")  moveLeft     = false;
+  if (e.key === "d" || e.key === "ArrowRight") moveRight    = false;
+});
 
+// ✅ Butonlara dokunma olayları
+const btnUp = document.getElementById("btnUp");
+const btnDown = document.getElementById("btnDown");
+const btnLeft = document.getElementById("btnLeft");
+const btnRight = document.getElementById("btnRight");
 
-  // Kontroller
-  let moveForward = false;
-  let moveBackward = false;
-  let moveLeft = false;
-  let moveRight = false;
+if (btnUp) {
+  btnUp.addEventListener("touchstart", () => moveForward = true);
+  btnUp.addEventListener("touchend", () => moveForward = false);
+}
 
-  // Klavye kontrolü
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "w" || e.key === "ArrowUp") moveForward = true;
-    if (e.key === "s" || e.key === "ArrowDown") moveBackward = true;
-    if (e.key === "a" || e.key === "ArrowLeft") moveLeft = true;
-    if (e.key === "d" || e.key === "ArrowRight") moveRight = true;
+if (btnDown) {
+  btnDown.addEventListener("touchstart", () => moveBackward = true);
+  btnDown.addEventListener("touchend", () => moveBackward = false);
+}
+
+if (btnLeft) {
+  btnLeft.addEventListener("touchstart", () => moveLeft = true);
+  btnLeft.addEventListener("touchend", () => moveLeft = false);
+}
+
+if (btnRight) {
+  btnRight.addEventListener("touchstart", () => moveRight = true);
+  btnRight.addEventListener("touchend", () => moveRight = false);
+}
+
+    // Işık
+    const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+    light.intensity = 1.2;
+ // ✅ Sade silüet avatar
+avatar = BABYLON.MeshBuilder.CreateCapsule("avatar", {
+  height: 2.6,
+  radius: 0.45
+}, scene);
+
+avatar.position = new BABYLON.Vector3(0, 1.3, -5);
+
+const avMat = new BABYLON.StandardMaterial("avMat", scene);
+avMat.diffuseColor = new BABYLON.Color3(0.05, 0.05, 0.05);
+avatar.material = avMat;
+avatar.position = new BABYLON.Vector3(0, 1.3, -5);
+
+var avMat = new BABYLON.StandardMaterial("avMat", scene);
+avMat.diffuseColor = new BABYLON.Color3(0.05, 0.05, 0.05);
+avatar.material = avMat;
+
+    // Zemin (50x50)
+    const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 50 }, scene);
+    const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
+    groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.35, 0.2);
+    ground.material = groundMat;
+
+    // Skybox (gökyüzü)
+    (function addSkybox() {
+      const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 200 }, scene);
+      const skyboxMaterial = new BABYLON.StandardMaterial("skyBoxMat", scene);
+      skyboxMaterial.backFaceCulling = false;
+      skyboxMaterial.disableLighting = true;
+      skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("https://playground.babylonjs.com/textures/skybox", scene);
+      skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+      skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+      skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+      skybox.material = skyboxMaterial;
+    })();
+
+    // Mezar isimleri (örnek liste - 100 mezar için döner; olmayanlara "Mezar" yazar)
+    const gravesData = [
+      "Ahmet Yılmaz","Fatma Demir","Mehmet Aksoy","Ayşe Kaya","Hüseyin Arslan","Zeynep Çelik","Ali Yıldırım","Emine Kurt","Hasan Çetin","Meryem Uçar",
+      "İsmail Şahin","Hatice Güneş","Mustafa Koç","Elif Öz","Kemal Yalçın","Hacer Bozkurt","Ismail Kuzucu","Fadime Kılıç","Bekir Acar","Rabia Polat"
+      // İstersen burayı genişletebilirsin; liste bittiğinde kalan mezarlara "Mezar" yazılır.
+    ];
+
+    // Mezarlar (10x10 = 100)
+    const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
+    graveMat.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);
+// ✅ Rastgele kişi üretici
+function randomName() {
+  const firstNames = ["Ahmet","Mehmet","Ayşe","Fatma","Mustafa","Hüseyin","Zeynep","Ali","Emine","Hatice","Yunus","Cem","Hasan","Halil","Murat","Seda","Gül","Rabia","Esra","Kemal"];
+  const lastNames  = ["Yılmaz","Demir","Çelik","Arslan","Toprak","Yavuz","Kaya","Yıldırım","Çetin","Polat","Koç","Acar","Uçar","Kurt","Kuzucu","Turan","Tekin","Öztürk","Kaplan","Kara"];
+  const fn = firstNames[Math.floor(Math.random()*firstNames.length)];
+  const ln = lastNames[Math.floor(Math.random()*lastNames.length)];
+  return fn + " " + ln;
+}
+
+function randomBirthYear() {
+  return Math.floor(Math.random() * 41) + 1930; // 1930–1970
+}
+
+function randomDeathYear(birth) {
+  return birth + Math.floor(Math.random() * 41) + 30; // 30–70 yıl sonra
+}
+
+// ✅ 100 kişilik mezar listesi üret
+for (let i = 0; i < 100; i++) {
+  const birth = randomBirthYear();
+  const death = randomDeathYear(birth);
+  gravesData.push({
+    name: randomName(),
+    birth,
+    death
   });
+}
 
-  window.addEventListener("keyup", (e) => {
-    if (e.key === "w" || e.key === "ArrowUp") moveForward = false;
-    if (e.key === "s" || e.key === "ArrowDown") moveBackward = false;
-    if (e.key === "a" || e.key === "ArrowLeft") moveLeft = false;
-    if (e.key === "d" || e.key === "ArrowRight") moveRight = false;
-  });
+    const rows = 10, cols = 10;
+    const spacingX = 5, spacingZ = 5;
+    const startX = -((cols - 1) * spacingX) / 2;
+    const startZ = ((rows - 1) * spacingZ) / 2;
 
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
 
-  // Mobil butonlar
-  const btnUp = document.getElementById("btnUp");
-  const btnDown = document.getElementById("btnDown");
-  const btnLeft = document.getElementById("btnLeft");
-  const btnRight = document.getElementById("btnRight");
+        // Mezar taşı
+        const grave = BABYLON.MeshBuilder.CreateBox(`grave_${r}_${c}`, {
+          width: 0.8, height: 1.2, depth: 0.2
+        }, scene);
+        grave.position.x = startX + c * spacingX;
+        grave.position.y = 0.6;
+        grave.position.z = startZ - r * spacingZ;
+        grave.material = graveMat;
 
-  if (btnUp) {
-    btnUp.addEventListener("touchstart", () => moveForward = true);
-    btnUp.addEventListener("touchend", () => moveForward = false);
-  }
+        // Toprak höyüğü
+        const mound = BABYLON.MeshBuilder.CreateCylinder(`mound_${r}_${c}`, {
+          diameterTop: 1.0,
+          diameterBottom: 1.8,
+          height: 0.2,
+          tessellation: 16
+        }, scene);
+        mound.scaling.z = 2;
+        mound.position.x = grave.position.x;
+        mound.position.y = 0.1;
+        mound.position.z = grave.position.z + 0.5;
+        const moundMat = new BABYLON.StandardMaterial("moundMat", scene);
+        moundMat.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.1);
+        mound.material = moundMat;
+// ✅ Mezar yazısı
+let idx = r * cols + c;
+let person = gravesData[idx] ?? null;
 
-  if (btnDown) {
-    btnDown.addEventListener("touchstart", () => moveBackward = true);
-    btnDown.addEventListener("touchend", () => moveBackward = false);
-  }
+let labelText = "Mezar";
+if (person) {
+  labelText = `${person.name}\n${person.birth} - ${person.death}`;
+}
 
-  if (btnLeft) {
-    btnLeft.addEventListener("touchstart", () => moveLeft = true);
-    btnLeft.addEventListener("touchend", () => moveLeft = false);
-  }
+const labelPlane = BABYLON.MeshBuilder.CreatePlane(`label_${idx}`, { width: 0.9, height: 0.45 }, scene);
+labelPlane.position = new BABYLON.Vector3(grave.position.x, grave.position.y + 0.45, grave.position.z + 0.16);
+labelPlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_NONE;
+labelPlane.rotationQuaternion = null;
+labelPlane.rotation = new BABYLON.Vector3(0, Math.PI, 0);
 
-  if (btnRight) {
-    btnRight.addEventListener("touchstart", () => moveRight = true);
-    btnRight.addEventListener("touchend", () => moveRight = false);
-  }
+// GUI
+const ui = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(labelPlane, 512, 256, false);
+const bg = new BABYLON.GUI.Rectangle();
+bg.thickness = 0;
+bg.background = "rgba(0,0,0,0.35)";
+ui.addControl(bg);
 
-
-  // Işık
-  const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-  light.intensity = 1.2;
-
-
-  // Zemin
-  const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 50 }, scene);
-  const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
-  groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.35, 0.2);
-  ground.material = groundMat;
-
-
-  // Skybox
-  (function addSkybox() {
-    const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 200 }, scene);
-    const skyboxMaterial = new BABYLON.StandardMaterial("skyBoxMat", scene);
-    skyboxMaterial.backFaceCulling = false;
-    skyboxMaterial.disableLighting = true;
-    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("https://playground.babylonjs.com/textures/skybox", scene);
-    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-    skybox.material = skyboxMaterial;
-  })();
-
-
-  // — Buradan sonrası: Mezarların, yolların ve ağaçların olduğu bölüm — 
-  // ⬆ Bu kısımlara hiç dokunmuyoruz, olduğu gibi bırak.
-
-  // --- (Senin mevcut kodun aynen devam eder) ----
-
-
-  // === KAMERA – AVATAR TAKİP + HAREKET ===
-  scene.onBeforeRenderObservable.add(() => {
-
-    // Kamera avatarı takip etsin
-    if (avatar) {
-      camera.position.x = avatar.position.x - 4 * Math.sin(camera.rotation.y);
-      camera.position.z = avatar.position.z - 4 * Math.cos(camera.rotation.y);
-      camera.position.y = avatar.position.y + 1.8;
+const text = new BABYLON.GUI.TextBlock();
+text.text = labelText;
+text.color = "white";
+text.fontSize = "40px";
+text.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+text.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+text.outlineColor = "black";
+text.outlineWidth = 6;
+bg.addControl(text);
+      }
     }
 
-    // Hareket
-    let moveSpeed = 0.11;
+    // Çam ağaçları (çevreye)
+    (function addTrees() {
+      function createTree(x, z) {
+        const trunk = BABYLON.MeshBuilder.CreateCylinder("trunk", {
+          diameterTop: 0.4, diameterBottom: 0.6, height: 2
+        }, scene);
+        trunk.position.set(x, 1, z);
+        const trunkMat = new BABYLON.StandardMaterial("trunkMat", scene);
+        trunkMat.diffuseColor = new BABYLON.Color3(0.3, 0.15, 0.05);
+        trunk.material = trunkMat;
 
-    if (moveForward && avatar) {
-      avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
-      avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
-    }
+        const leaves = BABYLON.MeshBuilder.CreateCylinder("leaves", {
+          diameterTop: 0.1, diameterBottom: 2.5, height: 3
+        }, scene);
+        leaves.position.set(x, 3, z);
+        const leavesMat = new BABYLON.StandardMaterial("leavesMat", scene);
+        leavesMat.diffuseColor = new BABYLON.Color3(0.05, 0.25, 0.1);
+        leaves.material = leavesMat;
+      }
 
-    if (moveBackward && avatar) {
-      avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
-      avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
-    }
+      const size = 25; // sınır yarıçapı
+      const step = 5;
+      for (let i = -size; i <= size; i += step) {
+        createTree(i, -size);
+        createTree(i,  size);
+        createTree(-size, i);
+        createTree( size, i);
+      }
+    })();
 
-    if (moveLeft) {
-      camera.rotation.y -= 0.04;
-    }
+    // Yollar (siyah-beyaz/gri, dokusuz – sade)
+    (function addRoads() {
+      // Giriş → merkeze düz yol
+      const mainRoad = BABYLON.MeshBuilder.CreateGround("mainRoad", { width: 3, height: 25 }, scene);
+      mainRoad.position.set(0, 0.02, -22); // girişe yakın başlasın
+      const mainRoadMat = new BABYLON.StandardMaterial("mainRoadMat", scene);
+      mainRoadMat.diffuseColor = new BABYLON.Color3(0.55, 0.55, 0.55);
+      mainRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);
+      mainRoad.material = mainRoadMat;
 
-    if (moveRight) {
-      camera.rotation.y += 0.04;
-    }
+      // Mezarların ortasından yatay yol (ince)
+      const rowRoad = BABYLON.MeshBuilder.CreateGround("rowRoad", { width: 50, height: 1.5 }, scene);
+      rowRoad.position.set(0, 0.02, 0);
+      const rowRoadMat = new BABYLON.StandardMaterial("rowRoadMat", scene);
+      rowRoadMat.diffuseColor = new BABYLON.Color3(0.6, 0.6, 0.6);
+      rowRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);
+      rowRoad.material = rowRoadMat;
+    })();
 
-    // Avatar yönü kameraya uysun
-    if (avatar) {
-      avatar.rotation.y = camera.rotation.y;
-    }
+    // Kamera sınırı + yükseklik sabitleme
+    scene.onBeforeRenderObservable.add(() => {
+      // Kamera avatarı takip etsin
+if (avatar) {
+  camera.position.x = avatar.position.x - 4 * Math.sin(camera.rotation.y);
+  camera.position.z = avatar.position.z - 4 * Math.cos(camera.rotation.y);
+  camera.position.y = avatar.position.y + 1.8;
+}
 
-    // Kamera sınırları
-    if (camera.position.x > 25) camera.position.x = 25;
-    if (camera.position.x < -25) camera.position.x = -25;
-    if (camera.position.z > 25) camera.position.z = 25;
-    if (camera.position.z < -25) camera.position.z = -25;
+      // ✅ Mobil hareket uygula
+let moveSpeed = 0.11;
 
-    if (camera.position.y < 1.6) camera.position.y = 1.6;
-    if (camera.position.y > 3.0) camera.position.y = 3.0;
-  });
+if (moveForward && avatar) {
+  avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
+  avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
+}
 
+if (moveBackward && avatar) {
+  avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
+  avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
+}
 
-  // Render döngüsü
-  engine.runRenderLoop(() => scene.render());
-  window.addEventListener("resize", () => engine.resize());
-</script>
+if (moveLeft) {
+  camera.rotation.y -= 0.04;
+}
+
+if (moveRight) {
+  camera.rotation.y += 0.04;
+}
+if (avatar) {
+  avatar.rotation.y = camera.rotation.y;
+}
+
+      if (camera.position.x > 25) camera.position.x = 25;
+      if (camera.position.x < -25) camera.position.x = -25;
+      if (camera.position.z > 25) camera.position.z = 25;
+      if (camera.position.z < -25) camera.position.z = -25;
+
+      if (camera.position.y < 1.6) camera.position.y = 1.6;
+      if (camera.position.y > 3.0) camera.position.y = 3.0;
+    });
+
+    // Render döngüsü
+    engine.runRenderLoop(() => scene.render());
+    window.addEventListener("resize", () => engine.resize());
+  </script>
 </body>
 </html>
+
