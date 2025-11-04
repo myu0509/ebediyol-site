@@ -124,6 +124,34 @@ for (let i = -size; i <= size; i += step) {
   createTree(-size, i); // sol kenar
   createTree(size, i);  // sağ kenar
 }
+// ✅ DÜZ TAŞ YOL (Giriş → Merkez)
+const mainRoad = BABYLON.MeshBuilder.CreateGround("mainRoad", { 
+  width: 3,      // genişlik
+  height: 25     // uzunluk
+}, scene);
+
+mainRoad.position.x = 0;
+mainRoad.position.z = -12.5;
+mainRoad.position.y = 0.02;
+
+const mainRoadMat = new BABYLON.StandardMaterial("mainRoadMat", scene);
+mainRoadMat.diffuseTexture = new BABYLON.Texture("https://www.babylonjs.com/assets/stone.jpg", scene);
+mainRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);
+mainRoad.material = mainRoadMat;
+// ✅ MEZARLAR ARASINDA YATAY YOL
+const rowRoad = BABYLON.MeshBuilder.CreateGround("rowRoad", { 
+  width: 50,   // tüm alan boyunca
+  height: 3
+}, scene);
+
+rowRoad.position.x = 0;
+rowRoad.position.z = 0;   // mezarların ortası
+rowRoad.position.y = 0.02;
+
+const rowRoadMat = new BABYLON.StandardMaterial("rowRoadMat", scene);
+rowRoadMat.diffuseTexture = new BABYLON.Texture("https://www.babylonjs.com/assets/stone.jpg", scene);
+rowRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);
+rowRoad.material = rowRoadMat;
 
     // ✅ KAMERA SINIRI (50×50)
     scene.onBeforeRenderObservable.add(() => {
