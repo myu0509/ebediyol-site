@@ -71,18 +71,40 @@
     const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
 
     const scene = new BABYLON.Scene(engine);
-    // ✅ Ses referansları
-const birds = document.getElementById("birds");
-const steps = document.getElementById("steps");
+ /***************  ✅ SESLER  ****************/
 
-// ✅ İlk tıklamada kuş sesini başlat
-window.addEventListener("pointerdown", () => {
+// ✅ Kuş sesi
+const birdsSound = new BABYLON.Sound(
+  "birds",
+  "https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/birds.mp3?raw=1",
+  scene,
+  null,
+  { loop: true, autoplay: false, volume: 0.35 }
+);
+
+// ✅ Adım sesi
+const stepSound = new BABYLON.Sound(
+  "stepSound",
+  "https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/steps.mp3?raw=1",
+  scene,
+  null,
+  { loop: false, autoplay: false, volume: 0.8 }
+);
+
+// ✅ İlk tıklamada kuş sesini başlat (autoplay engelini aşma)
+const __unlockOnce = () => {
   try {
-    birds.volume = 0.35;
-    birds.play().catch(()=>{});
+    engine.getAudioContext()?.resume?.();
+    engine.audioEngine?.unlock?.();
   } catch(e){}
-}, { once:true });
-    scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
+  
+  if (!birdsSound.isPlaying) birdsSound.play();
+  window.removeEventListener("pointerdown", __unlockOnce);
+};
+
+window.addEventListener("pointerdown", __unlockOnce, { once: true });
+
+/************************************************/
 
     // Kamera
     const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
@@ -357,52 +379,83 @@ bg.addControl(text);
 
     // Kamera sınırı + yükseklik sabitleme
     scene.onBeforeRenderObservable.add(() => {
-      // Kamera avatarı takip etsin
-if (avatar) {
-  camera.position.x = avatar.position.x - 4 * Math.sin(camera.rotation.y);
-  camera.position.z = avatar.position.z - 4 * Math.cos(camera.rotation.y);
-  camera.position.y = avatar.position.y + 1.8;
-}
+      scene.onBeforeRenderObservable.add(() => {
 
-// ✅ MESAFE TEMELLİ ADIM SESİ (durunca anında susar)
-if (avatar && stepSound) {
-  if (window.__lastX === undefined) {
-    window.__lastX = avatar.position.x;
-    window.__lastZ = avatar.position.z;
-    window.__stepAccum = 0;
+  /* --- Kamera avatarı takip etsin --- */
+  if (avatar) {
+    camera.position.x = avatar.position.x - 4 * Math.sin(camera.rotation.y);
+    camera.position.z = avatar.position.z - 4 * Math.cos(camera.rotation.y);
+    camera.position.y = avatar.position.y + 1.8;
   }
 
-  const dx = avatar.position.x - window.__lastX;
-  const dz = avatar.position.z - window.__lastZ;
-  const dist = Math.hypot(dx, dz);
+  /* --- ADIM SESİ --- */
+  if (avatar && stepSound) {
 
-  const isMoving = (moveForward || moveBackward);
-
-  if (isMoving) {
-    window.__stepAccum += dist;
-
-    const STEP_STRIDE = 0.8;
-
-    if (window.__stepAccum >= STEP_STRIDE) {
-      try {
-        stepSound.currentTime = 0;
-        stepSound.setVolume(0.8);
-        stepSound.play();
-      } catch(e){}
+    if (window.__lastX === undefined) {
+      window.__lastX = avatar.position.x;
+      window.__lastZ = avatar.position.z;
       window.__stepAccum = 0;
     }
-  } else {
-    stepSound.stop();
-    window.__stepAccum = 0;
+
+    const dx = avatar.position.x - window.__lastX;
+    const dz = avatar.position.z - window.__lastZ;
+    const dist = Math.hypot(dx, dz);
+
+    const isMoving = (moveForward || moveBackward);
+
+    if (isMoving) {
+
+      window.__stepAccum += dist;
+
+      const STEP_STRIDE = 0.9;   // adım sıklığı
+
+      if (window.__stepAccum >= STEP_STRIDE) {
+        try {
+          stepSound.stop();
+          stepSound.play();
+        } catch(e){}
+        window.__stepAccum = 0;
+      }
+
+    } else {
+      stepSound.stop();
+      window.__stepAccum = 0;
+    }
+
+    window.__lastX = avatar.position.x;
+    window.__lastZ = avatar.position.z;
   }
 
-  window.__lastX = avatar.position.x;
-  window.__lastZ = avatar.position.z;
-}
+  /* --- Mobil hareket uygula --- */
+  let moveSpeed = 0.11;
 
-  window.__lastX = avatar.position.x;
-  window.__lastZ = avatar.position.z;
-}
+  if (moveForward && avatar) {
+    avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
+    avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
+  }
+
+  if (moveBackward && avatar) {
+    avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
+    avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
+  }
+
+  if (moveLeft) camera.rotation.y -= 0.04;
+  if (moveRight) camera.rotation.y += 0.04;
+
+  if (avatar) {
+    avatar.rotation.y = camera.rotation.y;
+  }
+
+  /* --- Kamera sınırı + yükseklik sabitleme --- */
+  if (camera.position.x > 25) camera.position.x = 25;
+  if (camera.position.x < -25) camera.position.x = -25;
+  if (camera.position.z > 25) camera.position.z = 25;
+  if (camera.position.z < -25) camera.position.z = -25;
+
+  if (camera.position.y < 1.6) camera.position.y = 1.6;
+  if (camera.position.y > 3.0) camera.position.y = 3.0;
+
+});
 
       // ✅ Mobil hareket uygula
 let moveSpeed = 0.11;
