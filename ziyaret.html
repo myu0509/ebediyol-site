@@ -87,6 +87,26 @@ const stepSound = new BABYLON.Sound(
 );
 
     scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
+//---------------------------------------
+// 🔓 İlk etkileşimde kuş sesini başlat
+//---------------------------------------
+let soundsUnlocked = false;
+
+const unlockSounds = () => {
+  try {
+    engine.getAudioContext()?.resume();
+    engine.audioEngine?.unlock();
+  } catch (e) {}
+
+  if (!birdsSound.isPlaying) {
+    birdsSound.play();
+  }
+
+  soundsUnlocked = true;
+  window.removeEventListener("pointerdown", unlockSounds);
+};
+
+window.addEventListener("pointerdown", unlockSounds, { once: true });
 
     // Kamera
     const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
@@ -383,14 +403,18 @@ if (moveForward && avatar) {
   avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
   avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
 
-  stepSound.play();
+  if (!stepSound.isPlaying) stepSound.play();
 }
 
 if (moveBackward && avatar) {
   avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
   avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
 
-  stepSound.play();
+  if (!stepSound.isPlaying) stepSound.play();
+}
+
+if (!moveForward && !moveBackward) {
+  if (stepSound.isPlaying) stepSound.stop();
 }
 
 if (moveLeft) {
