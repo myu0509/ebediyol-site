@@ -398,11 +398,11 @@ if (moveLeft) {
 if (moveRight) {
   camera.rotation.y += 0.04;
 }
-if (!moveForward && !moveBackward && stepSound?.isPlaying) stepSound.stop();
 
 if (avatar) {
   avatar.rotation.y = camera.rotation.y;
 }
+      if (!moveForward && !moveBackward && stepSound?.isPlaying) stepSound.stop();
 // Avatar sınır kontrolü
 if (avatar) {
   if (avatar.position.x > 25) avatar.position.x = 25;
