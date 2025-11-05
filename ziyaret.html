@@ -288,6 +288,40 @@ bg.addControl(text);
         createTree( size, i);
       }
     })();
+// === ÇİTLER ===
+(function addFences() {
+
+  const fenceMat = new BABYLON.StandardMaterial("fenceMat", scene);
+  fenceMat.diffuseColor = new BABYLON.Color3(0.6, 0.45, 0.25);
+
+  // Tek bir çit parçası
+  function makeFence(x, z, rotY = 0) {
+    const pole = BABYLON.MeshBuilder.CreateBox("fPole", { width: 0.1, height: 1.2, depth: 0.1 }, scene);
+    pole.position.set(x, 0.6, z);
+    pole.material = fenceMat;
+
+    const bar = BABYLON.MeshBuilder.CreateBox("fBar", { width: 1.5, height: 0.15, depth: 0.1 }, scene);
+    bar.position.set(x, 0.9, z);
+    bar.rotation.y = rotY;
+    bar.material = fenceMat;
+  }
+
+  // --- SOL KENAR (X = -25, Z -25 → +25)
+  for (let z = -25; z <= 25; z += 2) {
+    makeFence(-25, z);
+  }
+
+  // --- SAĞ KENAR (X = +25, Z -25 → +25)
+  for (let z = -25; z <= 25; z += 2) {
+    makeFence(25, z);
+  }
+
+  // --- ÜST KENAR (Z = +25, X -25 → +25)
+  for (let x = -25; x <= 25; x += 2) {
+    makeFence(x, 25);
+  }
+
+})();
 
     // Yollar (siyah-beyaz/gri, dokusuz – sade)
     (function addRoads() {
