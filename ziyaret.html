@@ -156,6 +156,13 @@ if (btnRight) {
       skybox.material = skyboxMaterial;
     })();
 
+    // Mezar isimleri (örnek liste - 100 mezar için döner; olmayanlara "Mezar" yazar)
+    const gravesData = [
+      "Ahmet Yılmaz","Fatma Demir","Mehmet Aksoy","Ayşe Kaya","Hüseyin Arslan","Zeynep Çelik","Ali Yıldırım","Emine Kurt","Hasan Çetin","Meryem Uçar",
+      "İsmail Şahin","Hatice Güneş","Mustafa Koç","Elif Öz","Kemal Yalçın","Hacer Bozkurt","Ismail Kuzucu","Fadime Kılıç","Bekir Acar","Rabia Polat"
+      // İstersen burayı genişletebilirsin; liste bittiğinde kalan mezarlara "Mezar" yazılır.
+    ];
+
     // Mezarlar (10x10 = 100)
     const graveMat = new BABYLON.StandardMaterial("graveMat", scene);
     graveMat.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);
