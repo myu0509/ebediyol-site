@@ -397,6 +397,23 @@ if (moveBackward && avatar) {
   avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
   avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
 }
+// ✅ Adım sesi — hareket halindeyken çalsın
+if (typeof window.__stepCd === "undefined") window.__stepCd = 0;
+const dt = engine.getDeltaTime();
+window.__stepCd = Math.max(0, window.__stepCd - dt);
+
+const isMoving = (moveForward || moveBackward) && avatar;
+
+if (isMoving) {
+  if (steps && window.__stepCd === 0) {
+    steps.currentTime = 0;
+    steps.volume = 0.8;
+    steps.play().catch(()=>{});
+    window.__stepCd = 350; // adım aralığı (ms) — istersen 250 yap
+  }
+} else {
+  if (steps) steps.pause();
+}
 
 if (moveLeft) {
   camera.rotation.y -= 0.04;
