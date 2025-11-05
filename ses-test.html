@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval';">
   <title>Ses Test</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -30,8 +31,12 @@
   <script>
     const canvas = document.createElement("canvas");
     document.body.appendChild(canvas);
+
     const engine = new BABYLON.Engine(canvas, true);
     const scene  = new BABYLON.Scene(engine);
+
+    const camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(0, 5, -10), scene);
+    camera.setTarget(BABYLON.Vector3.Zero());
 
     // ✅ Kuş sesi
     const birdsSound = new BABYLON.Sound(
@@ -42,7 +47,7 @@
       { loop: true, autoplay: false, volume: 0.5 }
     );
 
-    // ✅ İlk etkileşimde başlat (mobile/PC uyumlu)
+    // ✅ İlk etkileşimde ses aç
     const unlock = () => {
       try {
         engine.getAudioContext()?.resume();
@@ -55,7 +60,7 @@
 
     window.addEventListener("pointerdown", unlock);
 
-    // Otomatik test: 2 saniye sonra çalmaya çalış
+    // Otomatik test
     setTimeout(() => {
       birdsSound.play();
     }, 2000);
@@ -66,4 +71,3 @@
   </script>
 </body>
 </html>
-
