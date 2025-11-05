@@ -356,75 +356,34 @@ bg.addControl(text);
     })();
 
     // Kamera sınırı + yükseklik sabitleme
-   scene.onBeforeRenderObservable.add(() => {
-  // Kamera avatarı takip etsin
-  if (avatar) {
-    camera.position.x = avatar.position.x - 4 * Math.sin(camera.rotation.y);
-    camera.position.z = avatar.position.z - 4 * Math.cos(camera.rotation.y);
-    camera.position.y = avatar.position.y + 1.8;
+    scene.onBeforeRenderObservable.add(() => {
+      // Kamera avatarı takip etsin
+if (avatar) {
+  camera.position.x = avatar.position.x - 4 * Math.sin(camera.rotation.y);
+  camera.position.z = avatar.position.z - 4 * Math.cos(camera.rotation.y);
+  camera.position.y = avatar.position.y + 1.8;
+}
+if (typeof window.__stepCd === "undefined") window.__stepCd = 0;
+const dt = engine.getDeltaTime();
+window.__stepCd = Math.max(0, window.__stepCd - dt);
+
+if (moveForward && avatar) {
+  if (steps && window.__stepCd === 0) {
+    steps.currentTime = 0;
+    steps.volume = 0.8;
+    steps.play().catch(()=>{});
+    window.__stepCd = 250; // 0.25sn
   }
+}
 
-  // -------------------------
-  // ✅ STEP SESİ HAZIRLIĞI
-  // -------------------------
-  if (typeof window.__stepCd === "undefined") window.__stepCd = 0;
-  const dt = engine.getDeltaTime();
-  window.__stepCd = Math.max(0, window.__stepCd - dt);
-
-  let isMoving = false;
-  let moveSpeed = 0.11;
-
-  // ✅ İleri
-  if (moveForward && avatar) {
-    avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
-    avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
-    isMoving = true;
+if (moveBackward && avatar) {
+  if (steps && window.__stepCd === 0) {
+    steps.currentTime = 0;
+    steps.volume = 0.8;
+    steps.play().catch(()=>{});
+    window.__stepCd = 250;
   }
-
-  // ✅ Geri
-  if (moveBackward && avatar) {
-    avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
-    avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
-    isMoving = true;
-  }
-
-  // ✅ Sağ-Sol dönüş
-  if (moveLeft) {
-    camera.rotation.y -= 0.04;
-  }
-  if (moveRight) {
-    camera.rotation.y += 0.04;
-  }
-
-  // Avatar yönü kameraya paralel
-  if (avatar) {
-    avatar.rotation.y = camera.rotation.y;
-  }
-
-  // ✅ Yürüyüş sesi
-  if (steps) {
-    if (isMoving && window.__stepCd === 0) {
-      steps.currentTime = 0;
-      steps.volume = 0.8;
-      steps.play().catch(()=>{});
-      window.__stepCd = 260;   // daha kısa adım efekti için düşürebilirsin
-    } else if (!isMoving) {
-      steps.pause();
-    }
-  }
-
-  // -------------------------
-  // ✅ Kamera / avatar sınır
-  // -------------------------
-  if (camera.position.x > 25) camera.position.x = 25;
-  if (camera.position.x < -25) camera.position.x = -25;
-  if (camera.position.z > 25) camera.position.z = 25;
-  if (camera.position.z < -25) camera.position.z = -25;
-
-  if (camera.position.y < 1.6) camera.position.y = 1.6;
-  if (camera.position.y > 3.0) camera.position.y = 3.0;
-
-});
+}
 
       // ✅ Mobil hareket uygula
 let moveSpeed = 0.11;
@@ -437,23 +396,6 @@ if (moveForward && avatar) {
 if (moveBackward && avatar) {
   avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
   avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
-}
-// ✅ Adım sesi — hareket halindeyken çalsın
-if (typeof window.__stepCd === "undefined") window.__stepCd = 0;
-const dt = engine.getDeltaTime();
-window.__stepCd = Math.max(0, window.__stepCd - dt);
-
-const isMoving = (moveForward || moveBackward) && avatar;
-
-if (isMoving) {
-  if (steps && window.__stepCd === 0) {
-    steps.currentTime = 0;
-    steps.volume = 0.8;
-    steps.play().catch(()=>{});
-    window.__stepCd = 350; // adım aralığı (ms) — istersen 250 yap
-  }
-} else {
-  if (steps) steps.pause();
 }
 
 if (moveLeft) {
