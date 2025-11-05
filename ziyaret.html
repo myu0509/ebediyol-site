@@ -69,56 +69,11 @@
     const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
 
     const scene = new BABYLON.Scene(engine);
-    // --- SES TANIMLARI --- 
-const birdsSound = new BABYLON.Sound(
-  "birds",
-  "https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/birds.mp3?raw=1",
-  scene,
-  null,
-  { loop: true, autoplay: false, volume: 0.35 }
-);
-
-const stepSound = new BABYLON.Sound(
-  "steps",
-  "https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/steps.mp3?raw=1",
-  scene,
-  null,
-  { loop: false, autoplay: false, volume: 0.7 }
-);
-
     scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
-//---------------------------------------
-// 🔓 İlk etkileşimde kuş sesini başlat
-//---------------------------------------
-let soundsUnlocked = false;
-
-const unlockSounds = () => {
-  try {
-    engine.getAudioContext()?.resume();
-    engine.audioEngine?.unlock();
-  } catch (e) {}
-
-  if (!birdsSound.isPlaying) {
-    birdsSound.play();
-  }
-
-  soundsUnlocked = true;
-  window.removeEventListener("pointerdown", unlockSounds);
-};
-
-window.addEventListener("pointerdown", unlockSounds, { once: true });
 
     // Kamera
     const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
     camera.attachControl(canvas, true);
-    // --- İlk tıklamada kuş sesini başlat ---
-window.addEventListener("pointerdown", () => {
-  try {
-    engine.getAudioContext()?.resume();
-    birdsSound.play();
-  } catch(e){}
-}, { once: true });
-
     camera.speed = 0.5;
 // ✅ Mobil hareket değişkenleri
 let moveForward = false;
@@ -402,19 +357,11 @@ let moveSpeed = 0.11;
 if (moveForward && avatar) {
   avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
   avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
-
-  if (!stepSound.isPlaying) stepSound.play();
 }
 
 if (moveBackward && avatar) {
   avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
   avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
-
-  if (!stepSound.isPlaying) stepSound.play();
-}
-
-if (!moveForward && !moveBackward) {
-  if (stepSound.isPlaying) stepSound.stop();
 }
 
 if (moveLeft) {
@@ -443,26 +390,10 @@ if (avatar) {
       if (camera.position.y < 1.6) camera.position.y = 1.6;
       if (camera.position.y > 3.0) camera.position.y = 3.0;
     });
-    
-// İlk etkileşimde kuş sesini aç
-const birdsAudio = document.getElementById("birds");
-const stepsAudio = document.getElementById("steps");
-
-let audioStarted = false;
-
-window.addEventListener("pointerdown", () => {
-    if (!audioStarted) {
-        birdsAudio.volume = 0.35;
-        birdsAudio.play();
-        audioStarted = true;
-    }
-});
 
     // Render döngüsü
     engine.runRenderLoop(() => scene.render());
     window.addEventListener("resize", () => engine.resize());
   </script>
-  <audio id="birds" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/birds.mp3?raw=1" preload="auto" loop></audio>
-<audio id="steps" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/steps.mp3?raw=1" preload="auto"></audio>
 </body>
 </html>
