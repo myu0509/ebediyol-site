@@ -340,6 +340,13 @@ if (moveRight) {
 if (avatar) {
   avatar.rotation.y = camera.rotation.y;
 }
+// Avatar sınır kontrolü
+if (avatar) {
+  if (avatar.position.x > 25) avatar.position.x = 25;
+  if (avatar.position.x < -25) avatar.position.x = -25;
+  if (avatar.position.z > 25) avatar.position.z = 25;
+  if (avatar.position.z < -25) avatar.position.z = -25;
+}
 
       if (camera.position.x > 25) camera.position.x = 25;
       if (camera.position.x < -25) camera.position.x = -25;
