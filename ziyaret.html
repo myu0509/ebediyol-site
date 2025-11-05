@@ -69,6 +69,14 @@
     const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
 
     const scene = new BABYLON.Scene(engine);
+    const stepSound = new BABYLON.Sound(
+  "steps",
+  "https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/steps.mp3?raw=1",
+  scene,
+  null,
+  { loop: false, autoplay: false, volume: 0.7 }
+);
+
     scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
 
     // Kamera
@@ -357,13 +365,19 @@ let moveSpeed = 0.11;
 if (moveForward && avatar) {
   avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
   avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
+
+  stepSound.stop();
+  stepSound.play();
 }
 
 if (moveBackward && avatar) {
   avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
   avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
+
+  stepSound.stop();
+  stepSound.play();
 }
-  
+
 if (moveLeft) {
   camera.rotation.y -= 0.04;
 }
