@@ -155,6 +155,37 @@ if (btnRight) {
       skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
       skybox.material = skyboxMaterial;
     })();
+// === SESLER ===
+const birdSound = new BABYLON.Sound(
+  "birds",
+  "sounds/birds.mp3",
+  scene,
+  null,
+  { loop: true, autoplay: false, volume: 0.25 }
+);
+
+const stepSound = new BABYLON.Sound(
+  "steps",
+  "sounds/steps.mp3",
+  scene,
+  null,
+  { loop: false, autoplay: false, volume: 0.35 }
+);
+// Web Audio unlock + ilk dokunuşta kuş sesini başlat
+const unlockOnce = () => {
+  try {
+    engine.getAudioContext?.().resume?.();
+    engine.audioEngine?.unlock?.();
+  } catch(e) {}
+
+  if (!birdSound.isPlaying) {
+    birdSound.play();
+  }
+
+  window.removeEventListener("pointerdown", unlockOnce);
+};
+
+window.addEventListener("pointerdown", unlockOnce, { once: true });
 
     // Mezar isimleri (örnek liste - 100 mezar için döner; olmayanlara "Mezar" yazar)
     const gravesData = [
@@ -357,11 +388,19 @@ let moveSpeed = 0.11;
 if (moveForward && avatar) {
   avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
   avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
+
+  // ✅ Ayak sesi
+  if (!stepSound.isPlaying) stepSound.play();
 }
 
 if (moveBackward && avatar) {
   avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
   avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
+
+  if (!stepSound.isPlaying) stepSound.play();
+}
+if (!moveForward && !moveBackward && stepSound.isPlaying) {
+  stepSound.stop();
 }
 
 if (moveLeft) {
