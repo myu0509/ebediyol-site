@@ -1,1 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Ses Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #1a1a1a;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div>🔊 Kuş sesi testi…</div>
+
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+
+  <script>
+    const canvas = document.createElement("canvas");
+    document.body.appendChild(canvas);
+    const engine = new BABYLON.Engine(canvas, true);
+    const scene  = new BABYLON.Scene(engine);
+
+    // ✅ Kuş sesi
+    const birdsSound = new BABYLON.Sound(
+      "birds",
+      "https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/birds.mp3?raw=1",
+      scene,
+      null,
+      { loop: true, autoplay: false, volume: 0.5 }
+    );
+
+    // ✅ İlk etkileşimde başlat (mobile/PC uyumlu)
+    const unlock = () => {
+      try {
+        engine.getAudioContext()?.resume();
+        engine.audioEngine?.unlock();
+      } catch(e) {}
+
+      if (!birdsSound.isPlaying) birdsSound.play();
+      window.removeEventListener("pointerdown", unlock);
+    };
+
+    window.addEventListener("pointerdown", unlock);
+
+    // Otomatik test: 2 saniye sonra çalmaya çalış
+    setTimeout(() => {
+      birdsSound.play();
+    }, 2000);
+
+    engine.runRenderLoop(() => {
+      scene.render();
+    });
+  </script>
+</body>
+</html>
 
