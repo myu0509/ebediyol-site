@@ -155,6 +155,25 @@ if (btnRight) {
       skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
       skybox.material = skyboxMaterial;
     })();
+// === SESLER ===
+
+// Kuş sesi (aralıksız)
+const birdSound = new BABYLON.Sound(
+  "birds",
+  "https://assets.mixkit.co/sfx/preview/mixkit-bird-whistling-591.mp3",
+  scene,
+  null,
+  { loop: true, autoplay: true, volume: 0.25 }
+);
+
+// Ayak sesi
+const stepSound = new BABYLON.Sound(
+  "steps",
+  "https://assets.mixkit.co/sfx/preview/mixkit-footsteps-in-grass-532.mp3",
+  scene,
+  null,
+  { loop: false, autoplay: false, volume: 0.35 }
+);
 
     // Mezar isimleri (örnek liste - 100 mezar için döner; olmayanlara "Mezar" yazar)
     const gravesData = [
@@ -374,6 +393,23 @@ if (moveRight) {
 if (avatar) {
   avatar.rotation.y = camera.rotation.y;
 }
+      if (moveForward && avatar) {
+  avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
+  avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
+
+  // ✅ Ayak sesi
+  if (!stepSound.isPlaying) stepSound.play();
+}
+if (moveBackward && avatar) {
+  avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
+  avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
+
+  if (!stepSound.isPlaying) stepSound.play();
+}
+if (!moveForward && !moveBackward && stepSound.isPlaying) {
+  stepSound.stop();
+}
+
 // Avatar sınır kontrolü
 if (avatar) {
   if (avatar.position.x > 25) avatar.position.x = 25;
