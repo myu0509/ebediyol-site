@@ -69,32 +69,6 @@
     const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
 
     const scene = new BABYLON.Scene(engine);
-   
-    // --- SESLER (kuş + adım) ---
-const birdsSound = new BABYLON.Sound(
-  "birds",
-  "https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/birds.mp3?raw=1",
-  scene,
-  null,
-  { loop: true, autoplay: false, volume: 0.35 }
-);
-
-const stepSound = new BABYLON.Sound(
-  "steps",
-  "https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/steps.mp3?raw=1",
-  scene,
-  null,
-  { loop: false, autoplay: false, volume: 0.7 }
-);
-
-// Tarayıcı autoplay engelini aş: ilk dokunuşta kuş sesini başlat
-const __unlockOnce = () => {
-  try { engine.getAudioContext?.().resume?.(); engine.audioEngine?.unlock?.(); } catch(e) {}
-  if (!birdsSound.isPlaying) birdsSound.play();
-  window.removeEventListener("pointerdown", __unlockOnce);
-};
-window.addEventListener("pointerdown", __unlockOnce, { once: true });
-
     scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
 
     // Kamera
