@@ -49,6 +49,8 @@
 </head>
 <body>
   <canvas id="renderCanvas"></canvas>
+  <audio id="birds" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/birds.mp3?raw=1" preload="auto" loop></audio>
+<audio id="steps" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/steps.mp3?raw=1" preload="auto"></audio>
 <div id="mobileControls">
   <button class="ctrl" id="btnUp">▲</button>
   <div class="middleRow">
@@ -69,6 +71,17 @@
     const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
 
     const scene = new BABYLON.Scene(engine);
+    // ✅ Ses referansları
+const birds = document.getElementById("birds");
+const steps = document.getElementById("steps");
+
+// ✅ İlk tıklamada kuş sesini başlat
+window.addEventListener("pointerdown", () => {
+  try {
+    birds.volume = 0.35;
+    birds.play().catch(()=>{});
+  } catch(e){}
+}, { once:true });
     scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
 
     // Kamera
