@@ -365,7 +365,7 @@ if (avatar) {
 }
 
 // ✅ MESAFE TEMELLİ ADIM SESİ (durunca anında susar)
-if (avatar && steps) {
+if (avatar && stepSound) {
   if (window.__lastX === undefined) {
     window.__lastX = avatar.position.x;
     window.__lastZ = avatar.position.z;
@@ -385,16 +385,20 @@ if (avatar && steps) {
 
     if (window.__stepAccum >= STEP_STRIDE) {
       try {
-        steps.currentTime = 0;
-        steps.volume = 0.8;
-        steps.play().catch(()=>{});
+        stepSound.currentTime = 0;
+        stepSound.setVolume(0.8);
+        stepSound.play();
       } catch(e){}
       window.__stepAccum = 0;
     }
   } else {
-    steps.pause();
+    stepSound.stop();
     window.__stepAccum = 0;
   }
+
+  window.__lastX = avatar.position.x;
+  window.__lastZ = avatar.position.z;
+}
 
   window.__lastX = avatar.position.x;
   window.__lastZ = avatar.position.z;
