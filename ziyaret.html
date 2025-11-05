@@ -68,6 +68,24 @@
        Temel SAHNE
     ==========================*/
     const scene = new BABYLON.Scene(engine);
+    // Kuş sesi
+const birdsSound = new BABYLON.Sound(
+  "birds",
+  "https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/birds.mp3",
+  scene,
+  null,
+  { loop: true, autoplay: true, volume: 0.35 }
+);
+
+// Adım sesi
+const stepSound = new BABYLON.Sound(
+  "steps",
+  "https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/steps.mp3",
+  scene,
+  null,
+  { loop: false, autoplay: false, volume: 0.7 }
+);
+
     scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
 
     // Kamera
