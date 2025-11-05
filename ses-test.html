@@ -1,73 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval';">
-  <title>Ses Test</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #1a1a1a;
-      color: white;
-      font-family: sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Ses Testi</title>
 </head>
+<body style="background:#111; color:white; font-family:Arial;">
 
-<body>
-  <div>🔊 Kuş sesi testi…</div>
+<h2>Kuş Sesi Testi</h2>
 
-  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+<audio id="birds" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/birds.mp3?raw=1" preload="auto" loop></audio>
 
-  <script>
-    const canvas = document.createElement("canvas");
-    document.body.appendChild(canvas);
+<button id="btnPlay" style="font-size:20px; padding:15px; margin-top:20px;">
+▶ Başlat
+</button>
 
-    const engine = new BABYLON.Engine(canvas, true);
-    const scene  = new BABYLON.Scene(engine);
+<script>
+const birds = document.getElementById("birds");
 
-    const camera = new BABYLON.FreeCamera("cam", new BABYLON.Vector3(0, 5, -10), scene);
-    camera.setTarget(BABYLON.Vector3.Zero());
+document.getElementById("btnPlay").addEventListener("click", () => {
+    try {
+        birds.volume = 0.35;
+        birds.play();
+        console.log("✅ Çalıyor");
+    } catch(e) {
+        console.log("HATA:", e);
+    }
+});
+</script>
 
-    // ✅ Kuş sesi
-    const birdsSound = new BABYLON.Sound(
-      "birds",
-      "https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/birds.mp3?raw=1",
-      scene,
-      null,
-      { loop: true, autoplay: false, volume: 0.5 }
-    );
-
-    // ✅ İlk etkileşimde ses aç
-    const unlock = () => {
-      try {
-        engine.getAudioContext()?.resume();
-        engine.audioEngine?.unlock();
-      } catch(e) {}
-
-      if (!birdsSound.isPlaying) birdsSound.play();
-      window.removeEventListener("pointerdown", unlock);
-    };
-
-    window.addEventListener("pointerdown", unlock);
-
-    // Otomatik test
-    setTimeout(() => {
-      birdsSound.play();
-    }, 2000);
-
-    engine.runRenderLoop(() => {
-      scene.render();
-    });
-  </script>
 </body>
 </html>
+
