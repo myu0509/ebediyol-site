@@ -384,6 +384,41 @@ if (moveBackward && avatar) {
     window.__stepCd = 250;
   }
 }
+// ✅ MESAFE TEMELLİ ADIM SESİ (durunca anında susar)
+if (avatar && steps) {
+  if (window.__lastX === undefined) {
+    window.__lastX = avatar.position.x;
+    window.__lastZ = avatar.position.z;
+    window.__stepAccum = 0;
+  }
+
+  const dx = avatar.position.x - window.__lastX;
+  const dz = avatar.position.z - window.__lastZ;
+  const dist = Math.hypot(dx, dz);
+
+  const isMoving = (moveForward || moveBackward);
+
+  if (isMoving) {
+    window.__stepAccum += dist;
+
+    const STEP_STRIDE = 0.8;
+
+    if (window.__stepAccum >= STEP_STRIDE) {
+      try {
+        steps.currentTime = 0;
+        steps.volume = 0.8;
+        steps.play().catch(()=>{});
+      } catch(e){}
+      window.__stepAccum = 0;
+    }
+  } else {
+    steps.pause();
+    window.__stepAccum = 0;
+  }
+
+  window.__lastX = avatar.position.x;
+  window.__lastZ = avatar.position.z;
+}
 
       // ✅ Mobil hareket uygula
 let moveSpeed = 0.11;
