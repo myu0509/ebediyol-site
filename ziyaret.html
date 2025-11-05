@@ -363,16 +363,7 @@ if (moveBackward && avatar) {
   avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
   avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
 }
-      if (moveForward || moveBackward) {
-    if (avatar) {
-        if (stepsAudio.paused) {
-            stepsAudio.currentTime = 0;
-            stepsAudio.volume = 0.9;
-            stepsAudio.play();
-        }
-    }
-}
-
+  
 if (moveLeft) {
   camera.rotation.y -= 0.04;
 }
