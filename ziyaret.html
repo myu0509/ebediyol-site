@@ -269,6 +269,34 @@ text.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 text.outlineColor = "black";
 text.outlineWidth = 6;
 bg.addControl(text);
+// --- Seçenek ikon alanı ---
+const opts = new BABYLON.GUI.StackPanel();
+opts.height = "200px";
+opts.width = "500px";
+opts.isVertical = true;
+opts.top = "80px";   // yazının altına gelsin
+ui.addControl(opts);
+
+// ✅ Dua
+const pray = new BABYLON.GUI.TextBlock();
+pray.text = "🕯  Dua Et";
+pray.color = "white";
+pray.fontSize = "36px";
+opts.addControl(pray);
+
+// ✅ Çiçek
+const flower = new BABYLON.GUI.TextBlock();
+flower.text = "🌸  Çiçek Bırak";
+flower.color = "white";
+flower.fontSize = "36px";
+opts.addControl(flower);
+
+// ✅ Anı Defteri
+const memo = new BABYLON.GUI.TextBlock();
+memo.text = "📖  Anı Defteri";
+memo.color = "white";
+memo.fontSize = "36px";
+opts.addControl(memo);        
       }
     }
 
