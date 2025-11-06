@@ -366,40 +366,35 @@ if (avatar) {
 if (typeof window.__stepCd === "undefined") window.__stepCd = 0;
 const dt = engine.getDeltaTime();
 window.__stepCd = Math.max(0, window.__stepCd - dt);
-// ✅ ADIM SESİ — hareket ederken
+
+// ✅ Adım sesi — sadece yürürken
 if (avatar && steps) {
-
-  if (!window.__lastStepPos) {
-    window.__lastStepPos = avatar.position.clone();
-    window.__stepAccum = 0;
-  }
-
-  const dx = avatar.position.x - window.__lastStepPos.x;
-  const dz = avatar.position.z - window.__lastStepPos.z;
-  const dist = Math.hypot(dx, dz);
-
   const moving = (moveForward || moveBackward);
-
+  
   if (moving) {
-    window.__stepAccum += dist;
-
-    const STEP_DIST = 0.8; // kaç metreye bir adım sesi
-
-    if (window.__stepAccum >= STEP_DIST) {
-      try { steps.currentTime = 0; steps.play(); } catch(e){}
-      window.__stepAccum = 0;
+    if (steps.paused) {
+      steps.currentTime = 0;
+      steps.play().catch(()=>{});
     }
   } else {
     steps.pause();
-    window.__stepAccum = 0;
   }
-
-  window.__lastStepPos = avatar.position.clone();
 }
+
 
       // ✅ Mobil hareket uygula
 let moveSpeed = 0.11;
-      
+
+if (moveForward && avatar) {
+  avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
+  avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
+}
+
+if (moveBackward && avatar) {
+  avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
+  avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
+}
+
 if (moveLeft) {
   camera.rotation.y -= 0.04;
 }
@@ -426,19 +421,6 @@ if (avatar) {
       if (camera.position.y < 1.6) camera.position.y = 1.6;
       if (camera.position.y > 3.0) camera.position.y = 3.0;
     });
-// ✅ Adım sesi — sadece yürürken
-if (avatar && steps) {
-  const moving = (moveForward || moveBackward);
-  
-  if (moving) {
-    if (steps.paused) {
-      steps.currentTime = 0;
-      steps.play().catch(()=>{});
-    }
-  } else {
-    steps.pause();
-  }
-}
 
     // Render döngüsü
     engine.runRenderLoop(() => scene.render());
