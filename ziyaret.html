@@ -293,6 +293,7 @@ optPanel.rotation = new BABYLON.Vector3(0, Math.PI, 0);
 
 // PANEL ARKA PLAN
 const listBG = new BABYLON.GUI.Rectangle();
+        listBG.isPointerBlocker = false;
         listBG.width = 1;
 listBG.height = 1;
 listBG.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
@@ -322,6 +323,9 @@ pray.color = "white";
 pray.fontSize = "150px";
 pray.height = "200px";
 list.addControl(pray);
+pray.isPointerBlocker = true;
+pray.onPointerUpObservable.add(() => playPrayer());
+pray.onPointerClickObservable.add(() => playPrayer()); // mobil için ekstra
 
 // ✅ Çiçek
 const flower = new BABYLON.GUI.TextBlock();
