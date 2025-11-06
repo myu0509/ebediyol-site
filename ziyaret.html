@@ -423,38 +423,8 @@ if (avatar && steps) {
     steps.pause();
   }
 }
-// === MEZAR MENÜ KONTROL ===
-const graveMenu = document.getElementById("graveMenu");
-let selectedGrave = null;
 
-// Mezar taşına tıklamayı algıla
-scene.onPointerDown = (evt, pickInfo) => {
-    if (!pickInfo.hit) return;
 
-    if (pickInfo.pickedMesh && pickInfo.pickedMesh.name.includes("grave_")) {
-        selectedGrave = pickInfo.pickedMesh;
-
-        // Menü aç
-        graveMenu.style.display = "flex";
-    } else {
-        // Mezara tıklanmadıysa menüyü kapat
-        graveMenu.style.display = "none";
-        selectedGrave = null;
-    }
-};
-// === BUTON FONKSİYONLARI ===
-document.getElementById("prayBtn").addEventListener("click", () => {
-    alert("🕯 Dua okundu.");
-});
-
-document.getElementById("flowerBtn").addEventListener("click", () => {
-    alert("🌷 Çiçek bırakıldı.");
-});
-
-document.getElementById("noteBtn").addEventListener("click", () => {
-    const txt = prompt("Anı defteri için mesaj yaz:");
-    if (txt) alert("✅ Mesaj kaydedildi: " + txt);
-});
       // ✅ Mobil hareket uygula
 let moveSpeed = 0.11;
 
@@ -499,44 +469,5 @@ if (avatar) {
     engine.runRenderLoop(() => scene.render());
     window.addEventListener("resize", () => engine.resize());
   </script>
-  <!-- ==== MEZAR MENÜSÜ ==== -->
-<div id="graveMenu" style="
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(30,30,30,0.9);
-  padding: 18px;
-  border-radius: 12px;
-  border: 2px solid #ccc;
-  display: none;
-  text-align: center;
-  color: white;
-  z-index: 200;
-">
-  <h3 id="graveTitle">Mezar</h3>
-  <button class="menuBtn" onclick="pray()">Dua Et</button>
-  <button class="menuBtn" onclick="leaveFlower()">Çiçek Bırak</button>
-  <button class="menuBtn" onclick="memory()">Anı Defteri</button>
-  <br><br>
-  <button class="menuBtn" onclick="closeMenu()">Kapat ✖</button>
-</div>
-
-<style>
-.menuBtn {
-  display: block;
-  margin: 6px auto;
-  padding: 10px;
-  width: 140px;
-  background: #ffffff33;
-  border: 1px solid #aaa;
-  border-radius: 6px;
-  color: white;
-  font-size: 15px;
-}
-.menuBtn:hover {
-  background: #ffffff55;
-}
-</style>
 </body>
 </html>
