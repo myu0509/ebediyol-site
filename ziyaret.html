@@ -276,7 +276,20 @@ optPanel.position = new BABYLON.Vector3(
   grave.position.y + 0.05,   // taş yazısının hemen altı
   grave.position.z + 0.16
 );
-optPanel.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
+const optPanel = BABYLON.MeshBuilder.CreatePlane(`opt_${idx}`, { 
+  width: 0.9, 
+  height: 0.55 
+}, scene);
+
+optPanel.position = new BABYLON.Vector3(
+  grave.position.x,
+  grave.position.y + 0.05,
+  grave.position.z + 0.16
+);
+
+// ❌ Sabit kalsın → billboard kapat
+optPanel.billboardMode = BABYLON.Mesh.BILLBOARDMODE_NONE;
+
 const optUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(optPanel);
 
 // PANEL ARKA PLAN
