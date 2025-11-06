@@ -470,35 +470,6 @@ if (avatar) {
     window.addEventListener("resize", () => engine.resize());
   </script>
   <!-- ==== MEZAR MENÜSÜ ==== -->
-  function openGraveMenu(person) {
-  const menu = document.getElementById("graveMenu");
-  const title = document.getElementById("graveTitle");
-
-  if (person && person.name) {
-    title.textContent = person.name + " • " + person.birth + " - " + person.death;
-  } else {
-    title.textContent = "Ziyaret";
-  }
-
-  menu.style.display = "block";
-}
-
-function closeMenu() {
-  document.getElementById("graveMenu").style.display = "none";
-}
-
-function pray() {
-  alert("Bir Fatiha okundu 🙏");
-}
-
-function leaveFlower() {
-  alert("Bir çiçek bırakıldı 🌸");
-}
-
-function memory() {
-  let note = prompt("Anı defterine bir şey yaz:");
-  if (note) alert("Kaydedildi ✅");
-}
 <div id="graveMenu" style="
   position: fixed;
   top: 50%;
