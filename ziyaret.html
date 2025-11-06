@@ -49,7 +49,7 @@
 </head>
 <body>
   <canvas id="renderCanvas"></canvas>
-  <audio id="birds" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/birds.mp3?raw=1" preload="auto" loop playsinline></audio>
+  <audio id="birds" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/birds.mp3?raw=1" preload="auto" loop></audio>
 <audio id="steps" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/steps.mp3?raw=1" preload="auto"></audio>
 <div id="mobileControls">
   <button class="ctrl" id="btnUp">▲</button>
@@ -73,19 +73,7 @@
     const scene = new BABYLON.Scene(engine);
     // ✅ Ses referansları
 const birds = document.getElementById("birds");
-
-function unlockBirds() {
-  try {
-    birds.muted = false;
-    birds.volume = 1;
-    birds.play().catch(()=>{});
-  } catch(e){}
-  window.removeEventListener("pointerdown", unlockBirds);
-}
-window.addEventListener("pointerdown", unlockBirds);
-
-}
-window.addEventListener("pointerdown", unlockBirds);
+const steps = document.getElementById("steps");
 
 // ✅ İlk tıklamada kuş sesini başlat
 window.addEventListener("pointerdown", () => {
