@@ -397,25 +397,6 @@ if (moveBackward && avatar) {
   avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
   avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
 }
-// ✅ Adım sesi — sadece yürürken
-if (avatar && steps) {
-  let moving = (fwd || back);
-
-  if (moving) {
-    if (!lastStepPos) lastStepPos = avatar.position.clone();
-
-    const dist = BABYLON.Vector3.Distance(avatar.position, lastStepPos);
-
-    if (dist > 0.85) {
-      steps.stop();
-      steps.play();
-      lastStepPos = avatar.position.clone();
-    }
-  } else {
-    if (steps.isPlaying) steps.stop();
-    lastStepPos = null;
-  }
-}
 
 if (moveLeft) {
   camera.rotation.y -= 0.04;
@@ -445,28 +426,8 @@ if (avatar) {
     });
 
     // Render döngüsü
-    window.addEventListener("pointerdown", () => {
-  if (!birds.isPlaying) birds.play();
-}, { once:true });
-
     engine.runRenderLoop(() => scene.render());
     window.addEventListener("resize", () => engine.resize());
-    // ✅ Kuş sesi — mobilde ilk dokunuşta çalıştır
-const __unlockOnce = () => {
-  try {
-    engine.getAudioContext()?.resume?.();
-    BABYLON.Engine?.audioEngine?.unlock?.();
-  } catch(e) {}
-
-  if (!birds.isPlaying) birds.play();
-
-  window.removeEventListener("pointerdown", __unlockOnce);
-  window.removeEventListener("touchstart", __unlockOnce);
-  window.removeEventListener("keydown", __unlockOnce);
-};
-window.addEventListener("pointerdown", __unlockOnce, { once:true });
-window.addEventListener("touchstart", __unlockOnce, { once:true });
-window.addEventListener("keydown", __unlockOnce, { once:true });
   </script>
 </body>
 </html>
