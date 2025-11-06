@@ -269,14 +269,48 @@ text.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 text.outlineColor = "black";
 text.outlineWidth = 6;
 bg.addControl(text);
-// --- Seçenek ikon alanı ---
-const opts = new BABYLON.GUI.StackPanel();
-opts.height = "200px";
-opts.width = "500px";
-opts.isVertical = true;
-opts.top = "80px";   // yazının altına gelsin
-ui.addControl(opts);
+// === ALT SEÇENEK PANELİ ===
+const optPanel = BABYLON.MeshBuilder.CreatePlane(`opt_${idx}`, { width: 0.9, height: 0.55 }, scene);
+optPanel.position = new BABYLON.Vector3(
+  grave.position.x,
+  grave.position.y + 0.05,   // taş yazısının hemen altı
+  grave.position.z + 0.16
+);
+optPanel.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
 
+const optUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(optPanel);
+
+// PANEL ARKA PLAN
+const listBG = new BABYLON.GUI.Rectangle();
+listBG.background = "rgba(0,0,0,0.35)";
+listBG.thickness = 0;
+optUI.addControl(listBG);
+
+// Dikey liste
+const list = new BABYLON.GUI.StackPanel();
+list.isVertical = true;
+listBG.addControl(list);
+
+// ✅ Dua
+const pray = new BABYLON.GUI.TextBlock();
+pray.text = "🕯  Dua Et";
+pray.color = "white";
+pray.fontSize = "36px";
+list.addControl(pray);
+
+// ✅ Çiçek
+const flower = new BABYLON.GUI.TextBlock();
+flower.text = "🌸  Çiçek Bırak";
+flower.color = "white";
+flower.fontSize = "36px";
+list.addControl(flower);
+
+// ✅ Anı Defteri
+const memo = new BABYLON.GUI.TextBlock();
+memo.text = "📖  Anı Defteri";
+memo.color = "white";
+memo.fontSize = "36px";
+list.addControl(memo);
 // ✅ Dua
 const pray = new BABYLON.GUI.TextBlock();
 pray.text = "🕯  Dua Et";
