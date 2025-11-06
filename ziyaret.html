@@ -51,7 +51,8 @@
   <canvas id="renderCanvas"></canvas>
   <audio id="birds" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/birds.mp3?raw=1" preload="auto" loop></audio>
 <audio id="steps" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/steps.mp3?raw=1" preload="auto"></audio>
-<div id="mobileControls">
+<audio id="prayerSound" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/prayer.mp3" preload="auto"></audio>
+  <div id="mobileControls">
   <button class="ctrl" id="btnUp">▲</button>
   <div class="middleRow">
     <button class="ctrl" id="btnLeft">◀</button>
@@ -88,6 +89,16 @@ window.addEventListener("pointerdown", () => {
     const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
     camera.attachControl(canvas, true);
     camera.speed = 0.5;
+    
+    function playPrayer() {
+  const p = document.getElementById("prayerSound");
+  if (!p) return;
+
+  p.currentTime = 0;
+  p.volume = 1.0;
+  p.play().catch(()=>{});
+}
+
 // ✅ Mobil hareket değişkenleri
 let moveForward = false;
 let moveBackward = false;
@@ -302,6 +313,10 @@ listBG.addControl(list);
 
 // ✅ Dua
 const pray = new BABYLON.GUI.TextBlock();
+        pray.onPointerUpObservable.add(() => {
+  playPrayer();
+});
+
 pray.text = "🕯  Dua Et";
 pray.color = "white";
 pray.fontSize = "150px";
