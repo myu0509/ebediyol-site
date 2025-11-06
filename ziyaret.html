@@ -269,30 +269,44 @@ text.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 text.outlineColor = "black";
 text.outlineWidth = 6;
 bg.addControl(text);
-//// ✅ Mum + Seçenekler yazısı
+// === Mum + "Seçenekler" İkonu (güvenli sürüm) ===
 const candlePlane = BABYLON.MeshBuilder.CreatePlane(`candle_${idx}`, { 
-  width: 0.25, 
-  height: 0.25 
+  width: 0.5,   // biraz büyüttük
+  height: 0.5 
 }, scene);
 
+// Yazıyı net görecek şekilde ön-üstte dursun
 candlePlane.position = new BABYLON.Vector3(
   grave.position.x, 
-  grave.position.y + 0.9, 
-  grave.position.z + 0.18
+  grave.position.y + 1.05,     // biraz daha yukarı
+  grave.position.z + 0.22      // etiketten daha önde
 );
 
-// Yazana doğru dönsün
+// Görünürlük ve tıklanabilirlik
+candlePlane.isPickable = true;
 candlePlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
+candlePlane.renderingGroupId = 2;                // üste çizdir
+candlePlane.alwaysSelectAsActiveMesh = true;     // pick kolay olsun
 
-// GUI
-const candleUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(candlePlane);
+// Kendi materyalini verelim ki derinlik/ışık etkisi azalsın
+const candleMat = new BABYLON.StandardMaterial(`candleMat_${idx}`, scene);
+candleMat.disableLighting = true;
+candleMat.emissiveColor = new BABYLON.Color3(1, 1, 0.2); // hafif parlak
+candlePlane.material = candleMat;
+
+// GUI yüzeyi
+const candleUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(candlePlane, 256, 256, false);
 const candleText = new BABYLON.GUI.TextBlock();
 candleText.text = "🕯\nSeçenekler";
 candleText.color = "yellow";
-candleText.fontSize = "36px";
+candleText.outlineColor = "black";
+candleText.outlineWidth = 4;
+candleText.fontSize = "48px";
+candleText.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+candleText.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 candleUI.addControl(candleText);
 
-// ✅ Tıklanınca menü aç
+// Tıklanınca menüyü aç
 candlePlane.actionManager = new BABYLON.ActionManager(scene);
 candlePlane.actionManager.registerAction(
   new BABYLON.ExecuteCodeAction(
@@ -300,6 +314,7 @@ candlePlane.actionManager.registerAction(
     () => openGraveMenu(person)
   )
 );
+
 
       }
     }
@@ -519,7 +534,18 @@ window.memory = function(){
 if (prayBtn)   prayBtn.addEventListener("click",  window.pray);
 if (flowerBtn) flowerBtn.addEventListener("click",window.leaveFlower);
 if (noteBtn)   noteBtn.addEventListener("click",  window.memory);
+function openGraveMenu(person) {
+  // Mezar kişisi yoksa genel menü
+  const name = person?.name ?? "Bilinmiyor";
 
+  const msg = `Kişi: ${name}
+
+1) Dua Oku
+2) Çiçek Bırak
+3) Anı Defteri Yaz`;
+
+  alert(msg);
+}
     engine.runRenderLoop(() => scene.render());
     window.addEventListener("resize", () => engine.resize());
   </script>
@@ -563,18 +589,6 @@ if (noteBtn)   noteBtn.addEventListener("click",  window.memory);
 }
 </style>
 // ✅ Mezara tıklayınca açılacak basit menü
-function openGraveMenu(person) {
-  // Mezar kişisi yoksa genel menü
-  const name = person?.name ?? "Bilinmiyor";
-
-  const msg = `Kişi: ${name}
-
-1) Dua Oku
-2) Çiçek Bırak
-3) Anı Defteri Yaz`;
-
-  alert(msg);
-}
 
 </body>
 </html>
