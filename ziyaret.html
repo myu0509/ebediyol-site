@@ -399,17 +399,7 @@ if (avatar && steps) {
 
       // ✅ Mobil hareket uygula
 let moveSpeed = 0.11;
-
-if (moveForward && avatar) {
-  avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
-  avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
-}
-
-if (moveBackward && avatar) {
-  avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
-  avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
-}
-
+      
 if (moveLeft) {
   camera.rotation.y -= 0.04;
 }
@@ -436,6 +426,19 @@ if (avatar) {
       if (camera.position.y < 1.6) camera.position.y = 1.6;
       if (camera.position.y > 3.0) camera.position.y = 3.0;
     });
+// ✅ Adım sesi — sadece yürürken
+if (avatar && steps) {
+  const moving = (moveForward || moveBackward);
+  
+  if (moving) {
+    if (steps.paused) {
+      steps.currentTime = 0;
+      steps.play().catch(()=>{});
+    }
+  } else {
+    steps.pause();
+  }
+}
 
     // Render döngüsü
     engine.runRenderLoop(() => scene.render());
