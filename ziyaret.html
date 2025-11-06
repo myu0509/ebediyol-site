@@ -85,8 +85,13 @@ window.addEventListener("pointerdown", () => {
     scene.clearColor = new BABYLON.Color3(0.1, 0.15, 0.1);
 
     // Kamera
-    const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
-    camera.attachControl(canvas, true);
+    const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0,2,-10), scene);
+camera.attachControl(canvas, false);
+    scene.useRightHandedSystem = false;
+scene.detachControl();   // güvenlik
+camera.inputs.clear();
+camera.attachControl(canvas, false);   // pick’i engellemeden bağla
+
     camera.speed = 0.5;
 // ✅ Mobil hareket değişkenleri
 let moveForward = false;
@@ -311,10 +316,11 @@ candlePlane.actionManager = new BABYLON.ActionManager(scene);
 candlePlane.actionManager.registerAction(
   new BABYLON.ExecuteCodeAction(
     BABYLON.ActionManager.OnPickTrigger,
-    () => openGraveMenu(person)
+    function(){
+      openGraveMenu(person);
+    }
   )
 );
-
 
       }
     }
