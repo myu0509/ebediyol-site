@@ -270,12 +270,12 @@ text.outlineColor = "black";
 text.outlineWidth = 6;
 bg.addControl(text);
         // ✅ Mum tıklanabilir ikon
-const candlePlane = BABYLON.MeshBuilder.CreatePlane(`candle_${idx}`, { width: 0.25, height: 0.25 }, scene);
+let candlePlane = BABYLON.MeshBuilder.CreatePlane(`candle_${idx}`, { width: 0.25, height: 0.25 }, scene);
 candlePlane.position = new BABYLON.Vector3(grave.position.x, grave.position.y + 0.9, grave.position.z + 0.18);
 candlePlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
 
-const candleUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(candlePlane);
-const candleText = new BABYLON.GUI.TextBlock();
+let candleUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(candlePlane);
+let candleText = new BABYLON.GUI.TextBlock();
 candleText.text = "🕯\nSeçenekler";
 candleText.color = "yellow";
 candleText.fontSize = "36px";
