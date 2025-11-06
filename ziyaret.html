@@ -366,23 +366,35 @@ if (avatar) {
 if (typeof window.__stepCd === "undefined") window.__stepCd = 0;
 const dt = engine.getDeltaTime();
 window.__stepCd = Math.max(0, window.__stepCd - dt);
+// ✅ ADIM SESİ — hareket ederken
+if (avatar && steps) {
 
-if (moveForward && avatar) {
-  if (steps && window.__stepCd === 0) {
-    steps.currentTime = 0;
-    steps.volume = 0.8;
-    steps.play().catch(()=>{});
-    window.__stepCd = 250; // 0.25sn
+  if (!window.__lastStepPos) {
+    window.__lastStepPos = avatar.position.clone();
+    window.__stepAccum = 0;
   }
-}
 
-if (moveBackward && avatar) {
-  if (steps && window.__stepCd === 0) {
-    steps.currentTime = 0;
-    steps.volume = 0.8;
-    steps.play().catch(()=>{});
-    window.__stepCd = 250;
+  const dx = avatar.position.x - window.__lastStepPos.x;
+  const dz = avatar.position.z - window.__lastStepPos.z;
+  const dist = Math.hypot(dx, dz);
+
+  const moving = (moveForward || moveBackward);
+
+  if (moving) {
+    window.__stepAccum += dist;
+
+    const STEP_DIST = 0.8; // kaç metreye bir adım sesi
+
+    if (window.__stepAccum >= STEP_DIST) {
+      try { steps.currentTime = 0; steps.play(); } catch(e){}
+      window.__stepAccum = 0;
+    }
+  } else {
+    steps.pause();
+    window.__stepAccum = 0;
   }
+
+  window.__lastStepPos = avatar.position.clone();
 }
 
       // ✅ Mobil hareket uygula
