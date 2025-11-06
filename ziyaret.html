@@ -562,6 +562,19 @@ if (noteBtn)   noteBtn.addEventListener("click",  window.memory);
   background: #ffffff55;
 }
 </style>
+// ✅ Mezara tıklayınca açılacak basit menü
+function openGraveMenu(person) {
+  // Mezar kişisi yoksa genel menü
+  const name = person?.name ?? "Bilinmiyor";
+
+  const msg = `Kişi: ${name}
+
+1) Dua Oku
+2) Çiçek Bırak
+3) Anı Defteri Yaz`;
+
+  alert(msg);
+}
 
 </body>
 </html>
