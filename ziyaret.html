@@ -269,25 +269,36 @@ text.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 text.outlineColor = "black";
 text.outlineWidth = 6;
 bg.addControl(text);
-var candlePlane = BABYLON.MeshBuilder.CreatePlane(`candle_${idx}`, { width: 0.25, height: 0.25 }, scene);
-candlePlane.position = new BABYLON.Vector3(grave.position.x, grave.position.y + 0.9, grave.position.z + 0.18);
+//// ✅ Mum + Seçenekler yazısı
+const candlePlane = BABYLON.MeshBuilder.CreatePlane(`candle_${idx}`, { 
+  width: 0.25, 
+  height: 0.25 
+}, scene);
+
+candlePlane.position = new BABYLON.Vector3(
+  grave.position.x, 
+  grave.position.y + 0.9, 
+  grave.position.z + 0.18
+);
+
+// Yazana doğru dönsün
 candlePlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
 
-var candleUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(candlePlane);
-var candleText = new BABYLON.GUI.TextBlock();
+// GUI
+const candleUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(candlePlane);
+const candleText = new BABYLON.GUI.TextBlock();
 candleText.text = "🕯\nSeçenekler";
 candleText.color = "yellow";
 candleText.fontSize = "36px";
-candleText.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-candleText.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 candleUI.addControl(candleText);
 
-// 🔥 Tıklama → Menü Aç
+// ✅ Tıklanınca menü aç
 candlePlane.actionManager = new BABYLON.ActionManager(scene);
 candlePlane.actionManager.registerAction(
-    new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, function () {
-        openGraveMenu(person);
-    })
+  new BABYLON.ExecuteCodeAction(
+    BABYLON.ActionManager.OnPickTrigger,
+    () => openGraveMenu(person)
+  )
 );
 
       }
