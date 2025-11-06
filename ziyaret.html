@@ -467,6 +467,72 @@ if (avatar) {
     });
 
     // Render döngüsü
+    /* ==== MEZAR MENÜSÜ: FONKSİYONLAR ==== */
+/* HTML tarafında id'leri zaten ekledin:
+   #graveMenu, #prayBtn, #flowerBtn, #noteBtn, #graveTitle
+*/
+
+const graveMenu   = document.getElementById("graveMenu");
+const graveTitle  = document.getElementById("graveTitle");
+const prayBtn     = document.getElementById("prayBtn");
+const flowerBtn   = document.getElementById("flowerBtn");
+const noteBtn     = document.getElementById("noteBtn");
+
+let _currentGraveData = null;   // { name, birth, death } gelebilir
+let _currentGraveMesh = null;   // ileride gerekirse (şimdilik null kalabilir)
+
+// Mum “🕯 Seçenekler” ikonunda çağırdığın fonksiyon:
+// candlePlane.registerAction(... openGraveMenu(person) ...)
+window.openGraveMenu = function(person, graveMesh=null){
+  _currentGraveData = person || null;
+  _currentGraveMesh = graveMesh || null;
+
+  if (person && person.name) {
+    graveTitle.textContent = `${person.name} • ${person.birth} - ${person.death}`;
+  } else {
+    graveTitle.textContent = "Ziyaret";
+  }
+
+  graveMenu.style.display = "block";
+};
+
+window.closeMenu = function(){
+  graveMenu.style.display = "none";
+  _currentGraveData = null;
+  _currentGraveMesh = null;
+};
+
+// — Basit ilk sürüm davranışları —
+// (Şimdilik alert; ileride gerçek çiçek objesi / dua sesi / anı kaydı ekleyeceğiz)
+function _toast(msg){
+  // İstersen alert yerine non-blocking minik bildirim de yazabiliriz.
+  alert(msg);
+}
+
+window.pray = function(){
+  _toast("🕯 Dua okundu.");
+  closeMenu();
+};
+
+window.leaveFlower = function(){
+  _toast("🌷 Çiçek bırakıldı.");
+  closeMenu();
+};
+
+window.memory = function(){
+  const note = prompt("Anı defterine bir not yaz:");
+  if (note && note.trim().length){
+    // TODO: localStorage/server kaydı yapılabilir
+    _toast("✅ Not kaydedildi.");
+  }
+  closeMenu();
+};
+
+// Menünün kendi butonlarına tıklama (eğer HTML'de onclick yazmadıysan)
+if (prayBtn)   prayBtn.addEventListener("click",  window.pray);
+if (flowerBtn) flowerBtn.addEventListener("click",window.leaveFlower);
+if (noteBtn)   noteBtn.addEventListener("click",  window.memory);
+
     engine.runRenderLoop(() => scene.render());
     window.addEventListener("resize", () => engine.resize());
   </script>
