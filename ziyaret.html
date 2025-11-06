@@ -281,37 +281,47 @@ const optUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(optPanel);
 
 // PANEL ARKA PLAN
 const listBG = new BABYLON.GUI.Rectangle();
+        listBG.width = 1;
+listBG.height = 1;
+listBG.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
+listBG.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
 listBG.background = "rgba(0,0,0,0.35)";
 listBG.thickness = 0;
 optUI.addControl(listBG);
 
-// Dikey liste
+   // Dikey liste
 const list = new BABYLON.GUI.StackPanel();
 list.isVertical = true;
+list.width = 1;
+list.height = 1;
+list.top = 0;
+list.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+list.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 listBG.addControl(list);
 
 // ✅ Dua
 const pray = new BABYLON.GUI.TextBlock();
 pray.text = "🕯  Dua Et";
 pray.color = "white";
-pray.fontSize = "36px";
+pray.fontSize = "46px";
+pray.height = "120px";
 list.addControl(pray);
-
-;
 
 // ✅ Çiçek
 const flower = new BABYLON.GUI.TextBlock();
 flower.text = "🌸  Çiçek Bırak";
 flower.color = "white";
-flower.fontSize = "36px";
+flower.fontSize = "46px";
+flower.height = "120px";
 list.addControl(flower);
 
 // ✅ Anı Defteri
 const memo = new BABYLON.GUI.TextBlock();
 memo.text = "📖  Anı Defteri";
 memo.color = "white";
-memo.fontSize = "36px";
-list.addControl(memo);        
+memo.fontSize = "46px";
+memo.height = "120px";
+list.addControl(memo);     
       }
     }
 
