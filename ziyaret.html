@@ -74,6 +74,13 @@
     // ✅ Ses referansları
 const birds = document.getElementById("birds");
 const steps = document.getElementById("steps");
+// ✅ Mobil autoplay açıcı — ilk dokunuşta başlat
+function unlockBirds() {
+  birds.volume = 0.35;
+  birds.play().catch(()=>{});
+  window.removeEventListener("pointerdown", unlockBirds);
+}
+window.addEventListener("pointerdown", unlockBirds);
 
 // ✅ İlk tıklamada kuş sesini başlat
 window.addEventListener("pointerdown", () => {
