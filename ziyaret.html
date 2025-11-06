@@ -469,39 +469,6 @@ if (avatar) {
     // Render döngüsü
     engine.runRenderLoop(() => scene.render());
     window.addEventListener("resize", () => engine.resize());
-    // === MEZAR MENÜ KONTROL ===
-const graveMenu = document.getElementById("graveMenu");
-let selectedGrave = null;
-
-// Mezar taşına tıklamayı algıla
-scene.onPointerDown = (evt, pickInfo) => {
-    if (!pickInfo.hit) return;
-
-    if (pickInfo.pickedMesh && pickInfo.pickedMesh.name.includes("grave_")) {
-        selectedGrave = pickInfo.pickedMesh;
-
-        // Menü aç
-        graveMenu.style.display = "flex";
-    } else {
-        // Mezara tıklanmadıysa menüyü kapat
-        graveMenu.style.display = "none";
-        selectedGrave = null;
-    }
-};
-// === BUTON FONKSİYONLARI ===
-document.getElementById("prayBtn").addEventListener("click", () => {
-    alert("🕯 Dua okundu.");
-});
-
-document.getElementById("flowerBtn").addEventListener("click", () => {
-    alert("🌷 Çiçek bırakıldı.");
-});
-
-document.getElementById("noteBtn").addEventListener("click", () => {
-    const txt = prompt("Anı defteri için mesaj yaz:");
-    if (txt) alert("✅ Mesaj kaydedildi: " + txt);
-});
-
   </script>
   <!-- ==== MEZAR MENÜSÜ ==== -->
 <div id="graveMenu" style="
