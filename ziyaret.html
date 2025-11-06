@@ -384,30 +384,7 @@ if (moveBackward && avatar) {
     window.__stepCd = 250;
   }
 }
-// ✅ MESAFE TEMELLİ ADIM SESİ (ANLIK)
-if (avatar && steps) {
 
-  if (window.__lastStepPos === undefined) {
-    window.__lastStepPos = avatar.position.clone();
-  }
-
-  const dx = avatar.position.x - window.__lastStepPos.x;
-  const dz = avatar.position.z - window.__lastStepPos.z;
-  const dist = Math.hypot(dx, dz);
-
-  const isMoving = (moveForward || moveBackward);
-
-  if (isMoving) {
-    if (dist > 0.35) {
-      steps.currentTime = 0;
-      steps.volume = 0.8;
-      steps.play().catch(()=>{});
-      window.__lastStepPos = avatar.position.clone();
-    }
-  } else {
-    steps.pause();
-  }
-        }
       // ✅ Mobil hareket uygula
 let moveSpeed = 0.11;
 
