@@ -278,6 +278,7 @@ optPanel.position = new BABYLON.Vector3(
 );
 optPanel.billboardMode = BABYLON.Mesh.BILLBOARDMODE_NONE;
 const optUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(optPanel);
+optPanel.rotation = new BABYLON.Vector3(0, Math.PI, 0);
 
 // PANEL ARKA PLAN
 const listBG = new BABYLON.GUI.Rectangle();
