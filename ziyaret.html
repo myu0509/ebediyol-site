@@ -269,13 +269,13 @@ text.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 text.outlineColor = "black";
 text.outlineWidth = 6;
 bg.addControl(text);
-        // ✅ Mum tıklanabilir ikon
-let candlePlane = BABYLON.MeshBuilder.CreatePlane(`candle_${idx}`, { width: 0.25, height: 0.25 }, scene);
+// ✅ Mum tıklanabilir ikon
+var candlePlane = BABYLON.MeshBuilder.CreatePlane(`candle_${idx}`, { width: 0.25, height: 0.25 }, scene);
 candlePlane.position = new BABYLON.Vector3(grave.position.x, grave.position.y + 0.9, grave.position.z + 0.18);
 candlePlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
 
-let candleUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(candlePlane);
-let candleText = new BABYLON.GUI.TextBlock();
+var candleUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(candlePlane);
+var candleText = new BABYLON.GUI.TextBlock();
 candleText.text = "🕯\nSeçenekler";
 candleText.color = "yellow";
 candleText.fontSize = "36px";
@@ -290,6 +290,7 @@ candlePlane.actionManager.registerAction(
         openGraveMenu(person);
     })
 );
+
 
         // --- Mum + "Seçenekler" ---
 const candlePlane = BABYLON.MeshBuilder.CreatePlane(
