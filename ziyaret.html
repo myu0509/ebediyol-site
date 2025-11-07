@@ -97,23 +97,19 @@ let moveLeft = false;
 let moveRight = false;
 let avatar = null;
 
-// =====================================
-// ✅ Mezarlık Temalı Basit Avatar
-// =====================================
-const body = BABYLON.MeshBuilder.CreateCapsule("avatar", {
-  height: 2.1,
-  radius: 0.45
-}, scene);
+BABYLON.SceneLoader.ImportMeshAsync(
+  "",
+  "https://models.babylonjs.com/CesiumMan/glTF/",
+  "CesiumMan.glb",
+  scene
+).then(res => {
+  avatar = res.meshes[0];
+  avatar.scaling = new BABYLON.Vector3(1.2, 1.2, 1.2);
+  avatar.position = new BABYLON.Vector3(0, 0, -5);
 
-body.position = new BABYLON.Vector3(0, 1.05, -5);
-
-// Koyu giysi renkleri
-const mat = new BABYLON.StandardMaterial("avatarMat", scene);
-mat.diffuseColor = new BABYLON.Color3(0.05, 0.05, 0.07);   // Siyah + gri
-mat.specularColor = new BABYLON.Color3(0, 0, 0);
-body.material = mat;
-
-avatar = body;
+  // Kamera avatarı karşılasın
+  avatar.rotation = new BABYLON.Vector3(0, Math.PI, 0);
+});
 // ✅ Klavye kontrolü
 window.addEventListener("keydown", (e) => {
   if (e.key === "w" || e.key === "ArrowUp")    moveForward  = true;
