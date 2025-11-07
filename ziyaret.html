@@ -99,12 +99,12 @@ let avatar = null;
 
 BABYLON.SceneLoader.ImportMeshAsync(
   "",
-  "https://models.babylonjs.com/",
-  "BoomBox.glb",
+  "https://www.babylonjs.com/Scenes/Dude/",
+  "Dude.babylon",
   scene
 ).then((res) => {
   avatar = res.meshes[0];
-  avatar.scaling = new BABYLON.Vector3(1.2, 1.2, 1.2);
+  avatar.scaling = new BABYLON.Vector3(0.012, 0.012, 0.012);
   avatar.position = new BABYLON.Vector3(0, 0, -5);
 });
 // ✅ Klavye kontrolü
