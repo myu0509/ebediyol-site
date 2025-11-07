@@ -51,6 +51,7 @@
   <canvas id="renderCanvas"></canvas>
   <audio id="birds" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/birds.mp3?raw=1" preload="auto" loop></audio>
 <audio id="steps" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/steps.mp3?raw=1" preload="auto"></audio>
+  <audio id="prayerSound" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/ihlas.mp3" preload="auto"></audio>
 <div id="mobileControls">
   <button class="ctrl" id="btnUp">▲</button>
   <div class="middleRow">
@@ -74,6 +75,7 @@
     // ✅ Ses referansları
 const birds = document.getElementById("birds");
 const steps = document.getElementById("steps");
+const prayerSound = document.getElementById("prayerSound");
 
 // ✅ İlk tıklamada kuş sesini başlat
 window.addEventListener("pointerdown", () => {
@@ -307,6 +309,12 @@ pray.color = "white";
 pray.fontSize = "150px";
 pray.height = "200px";
 list.addControl(pray);
+pray.onPointerUpObservable.add(() => {
+  try {
+    prayerSound.currentTime = 0;
+    prayerSound.play().catch(()=>{});
+  } catch(e){}
+});
 
 // ✅ Çiçek
 const flower = new BABYLON.GUI.TextBlock();
