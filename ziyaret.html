@@ -97,17 +97,29 @@ let moveLeft = false;
 let moveRight = false;
 let avatar = null;
 
-avatar = BABYLON.MeshBuilder.CreateCapsule("avatar", {
-    height: 2.4,
-    radius: 0.35
-}, scene);
+BABYLON.SceneLoader.ImportMeshAsync(
+  "",
+  "https://www.babylonjs.com/Scenes/Dude/",
+  "Dude.babylon",
+  scene
+).then((res) => {
+  avatar = res.meshes[0];
 
-avatar.position = new BABYLON.Vector3(0, 1.2, -5);
+  // Boy biraz daha uzun
+  avatar.scaling = new BABYLON.Vector3(0.014, 0.014, 0.014);
 
-let avMat = new BABYLON.StandardMaterial("avMat", scene);
-avMat.diffuseColor = new BABYLON.Color3(0.15, 0.15, 0.15);
-avMat.specularColor = new BABYLON.Color3(0, 0, 0);
-avatar.material = avMat;
+  // Koyu silüet kıyafet
+  const darkMat = new BABYLON.StandardMaterial("darkMat", scene);
+  darkMat.diffuseColor = new BABYLON.Color3(0.05, 0.05, 0.05); // siyaha yakın
+  darkMat.specularColor = new BABYLON.Color3(0,0,0);
+
+  // Modeldeki tüm mesh'lerin malzemesini koyulaştır
+  res.meshes.forEach(m => {
+    m.material = darkMat;
+  });
+
+  avatar.position = new BABYLON.Vector3(0, 0, -5);
+});
 // ✅ Klavye kontrolü
 window.addEventListener("keydown", (e) => {
   if (e.key === "w" || e.key === "ArrowUp")    moveForward  = true;
