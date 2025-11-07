@@ -308,7 +308,17 @@ pray.text = "🕯  Dua Et";
 pray.color = "white";
 pray.fontSize = "150px";
 pray.height = "200px";
+        pray.hoverCursor = "pointer";
 list.addControl(pray);
+        // Hover büyüt
+pray.onPointerEnterObservable.add(() => {
+  pray.fontSize = "185px";
+});
+
+// Hover eski hâline dön
+pray.onPointerOutObservable.add(() => {
+  pray.fontSize = "150px";
+});
 pray.onPointerUpObservable.add(() => {
   try {
     prayerSound.currentTime = 0;
