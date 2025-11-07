@@ -119,6 +119,13 @@ BABYLON.SceneLoader.ImportMeshAsync(
   });
 
   avatar.position = new BABYLON.Vector3(0, 0, -5);
+  avatar.getChildMeshes().forEach(m=>{
+    if(m.material){
+        m.material = new BABYLON.StandardMaterial("darkMat", scene);
+        m.material.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);  // koyu gri
+        m.material.specularColor = new BABYLON.Color3(0,0,0);
+    }
+});
 });
 // ✅ Klavye kontrolü
 window.addEventListener("keydown", (e) => {
