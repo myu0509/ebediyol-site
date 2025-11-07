@@ -99,18 +99,13 @@ let avatar = null;
 
 BABYLON.SceneLoader.ImportMeshAsync(
   "",
-  "https://models.babylonjs.com/CesiumMan/",
-  "CesiumMan.glb",
+  "https://models.babylonjs.com/",
+  "BoomBox.glb",
   scene
 ).then((res) => {
   avatar = res.meshes[0];
-  avatar.scaling = new BABYLON.Vector3(0.9, 0.9, 0.9);
+  avatar.scaling = new BABYLON.Vector3(1.2, 1.2, 1.2);
   avatar.position = new BABYLON.Vector3(0, 0, -5);
-
-  // Kameraya dönmesi için
-  if (avatar) {
-    avatar.rotation.y = camera.rotation.y;
-  }
 });
     
 // ✅ Klavye kontrolü
