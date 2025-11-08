@@ -582,7 +582,8 @@ if (avatar) {
   });
       </script>
 <script>
-  document.getElementById("sendFormBtn").addEventListener("click", () => {
+  document.getElementById("sendFormBtn").addEventListener("click", (e) => {
+    e.preventDefault();
 
     const form = document.getElementById("graveForm");
     const data = new FormData(form);
