@@ -538,5 +538,41 @@ if (avatar) {
   });
 </script>
   <div id="createGraveBtn">Mezar Taşı Oluştur</div>
+<div id="graveFormBox" style="
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.85);
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 99999;
+  width: 260px;
+  display: none;
+  color: white;
+  font-family: Arial;
+">
+  <h3 style="margin-top:0;">Mezar Bilgisi</h3>
+
+  <label>Ad Soyad:</label><br>
+  <input id="graveName" type="text" style="width:100%; margin-bottom:10px;"><br>
+
+  <label>Doğum Yılı:</label><br>
+  <input id="birthYear" type="number" style="width:100%; margin-bottom:10px;"><br>
+
+  <label>Vefat Yılı:</label><br>
+  <input id="deathYear" type="number" style="width:100%; margin-bottom:10px;"><br>
+
+  <button id="sendFormBtn" style="
+    width:100%;
+    padding:8px;
+    background:#2b9348;
+    border:none;
+    color:white;
+    font-size:15px;
+    border-radius:6px;
+    cursor:pointer;
+  ">Gönder</button>
+</div>
 </body>
 </html>
