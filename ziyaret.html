@@ -580,12 +580,19 @@ if (avatar) {
   document.getElementById("createGraveBtn").addEventListener("click", () => {
     document.getElementById("graveFormBox").style.display = "block";
   });
-</script>
-  <script>
+<script>
   document.getElementById("sendFormBtn").addEventListener("click", () => {
+
+    const form = document.getElementById("graveForm");
+    const data = new FormData(form);
+
+    fetch(form.action, {
+      method: "POST",
+      body: data
+    });
+
     alert("Bilgileriniz alınmıştır. Mezar taşınız gün içinde hazırlanacaktır.");
     document.getElementById("graveFormBox").style.display = "none";
-    document.getElementById("graveForm").submit();
   });
 </script>
 </body>
