@@ -24,6 +24,26 @@
       text-align: center;
       transform: translateY(-60px);
     }
+.button-container {
+  margin-top: 80px;
+  display: flex;
+  justify-content: center;
+}
+
+.button-box {
+  background: rgba(0,0,0,0.45);
+  border: 2px solid rgba(255,255,255,0.4);
+  padding: 25px 35px;
+  border-radius: 18px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.button-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.45);
+}
 
     /* 🔹 YAZILAR */
     h1 {
@@ -96,7 +116,10 @@
   <p>Sanal 3-D ziyaret alanımıza hoş geldiniz.</p>
 
   <div class="button-container">
-  <a href="ziyaret.html" class="button">Ziyaret Alanına Gir</a>
+  <div class="button-box">
+    <a href="ziyaret.html" class="button">Ziyaret Alanına Gir</a>
+  </div>
+
   <p class="visit-subtext">Sitemiz test aşamasında olup güncelleme çalışmaları devam etmektedir. Her türlü görüş ve öneriliniz için ebediyol@outlook.com mail adresinden bizlere ulaşabilirsiniz</p>
 </div>
 </body>
