@@ -532,7 +532,11 @@ if (avatar) {
     window.addEventListener("resize", () => engine.resize());
   
   </script>
-document.getElementById("graveFormBox").style.display = "block";
+  <script>
+  document.getElementById("createGraveBtn").addEventListener("click", () => {
+    document.getElementById("graveFormBox").style.display = "block";
+  });
+</script>
   <div id="createGraveBtn">Mezar Taşı Oluştur</div>
 <div id="graveFormBox" style="
   position: fixed;
