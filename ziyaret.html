@@ -574,7 +574,8 @@ if (avatar) {
   ">Gönder</button>
     <input type="hidden" name="_next" value="">
     <input type="hidden" name="_subject" value="Yeni Mezar Talebi">
-    </form>
+    <input type="hidden" name="_captcha" value="false">
+  </form>
 </div>
     <script>
   document.getElementById("createGraveBtn").addEventListener("click", () => {
@@ -589,9 +590,10 @@ if (avatar) {
     const data = new FormData(form);
 
     fetch(form.action, {
-      method: "POST",
-      body: data
-    });
+  method: "POST",
+  body: data,
+  headers: { "Accept": "application/json" }
+});
 
     alert("Bilgileriniz alınmıştır. Mezar taşınız gün içinde hazırlanacaktır.");
     document.getElementById("graveFormBox").style.display = "none";
