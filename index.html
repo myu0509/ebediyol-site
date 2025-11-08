@@ -39,24 +39,30 @@
     }
 
     /* 🔹 BUTON STİLİ */
-    .button {
-      background-color: #2b9348;
-      color: white;
-      padding: 15px 35px;
-      border: none;
-      border-radius: 12px;
-      font-size: clamp(16px, 3vw, 22px);
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    }
+    ..button {
+  background: linear-gradient(135deg, #2b9348, #1f6f35);
+  color: white;
+  padding: 18px 42px;
+  border: none;
+  border-radius: 14px;
+  font-size: clamp(16px, 3vw, 22px);
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
 
-    .button:hover {
-      background-color: #1f6f35;
-      transform: scale(1.05);
-    }
+  transition: transform 0.22s ease, 
+              box-shadow 0.22s ease,
+              background 0.25s ease;
+}
+
+.button:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.38);
+  background: linear-gradient(135deg, #33a655, #1b5a2d);
+}
+
 
     /* 🔹 ALT YAZI */
     .visit-subtext {
