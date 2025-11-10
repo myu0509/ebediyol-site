@@ -615,6 +615,33 @@ const poleRight = BABYLON.MeshBuilder.CreateCylinder("poleRight", {
 }, scene);
 poleRight.position = new BABYLON.Vector3(3, 2, -19);
 poleRight.material = poleMat;
+// === GİRİŞ TABELASI ===
+const welcomeSign = BABYLON.MeshBuilder.CreatePlane("welcomeSign", {
+  width: 5,
+  height: 1.5
+}, scene);
+
+// KONUM
+welcomeSign.position = new BABYLON.Vector3(0, 3.1, -19);
+welcomeSign.rotation = new BABYLON.Vector3(0, 0, 0);
+
+// === PANEL ARKA PLAN ===
+const welcomeTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(welcomeSign);
+
+// Dikdörtgen arka plan
+const bg = new BABYLON.GUI.Rectangle();
+bg.thickness = 0;
+bg.background = "rgba(60, 40, 20, 0.85)";   // Kahverengi tabela görünümü
+welcomeTexture.addControl(bg);
+
+// Yazı
+const welcomeText = new BABYLON.GUI.TextBlock();
+welcomeText.text = "EBEDİYOL MEZARLIĞI";
+welcomeText.color = "white";
+welcomeText.fontSize = "70px";
+welcomeText.outlineWidth = 6;
+welcomeText.outlineColor = "black";
+bg.addControl(welcomeText);
 
     // Kamera sınırı + yükseklik sabitleme
     scene.onBeforeRenderObservable.add(() => {
