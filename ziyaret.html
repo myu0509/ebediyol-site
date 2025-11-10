@@ -189,7 +189,7 @@ if (btnRight) {
     light.intensity = 1.2;
 
     // Zemin (50x50)
-    const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 50 }, scene);
+    const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 50, }, scene);
     const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
     groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.35, 0.2);
     ground.material = groundMat;
