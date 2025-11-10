@@ -411,6 +411,10 @@ list.addControl(memo);
     })();
 // === ÇİTLER ===
 (function addFences() {
+const fenceMat = new BABYLON.PBRMaterial("fenceMat", scene);
+fenceMat.albedoColor = new BABYLON.Color3(0.25, 0.18, 0.10);  // koyu kestane
+fenceMat.roughness = 0.9;
+fenceMat.metallic = 0;
 
   const fenceMat = new BABYLON.StandardMaterial("fenceMat", scene);
   fenceMat.diffuseColor = new BABYLON.Color3(0.6, 0.45, 0.25);
