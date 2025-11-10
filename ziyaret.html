@@ -465,6 +465,9 @@ list.addControl(memo);
 pathMat.albedoTexture = new BABYLON.Texture("https://www.babylonjs.com/assets/wood.jpg", scene);
 pathMat.roughness = 1;
 pathMat.metallic = 0;
+pathMat.albedoColor = new BABYLON.Color3(0.6, 0.6, 0.6);
+pathMat.albedoTexture.uScale = 4;
+pathMat.albedoTexture.vScale = 4;
 
 // --- YATAY KALDIRIMLAR (her satır arası) ---
 for (let r = 0; r < 10; r++) {
