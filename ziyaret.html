@@ -430,7 +430,7 @@ list.addControl(memo);
 }, scene);
 
 rightBar.rotation.x = Math.PI / 2;
-rightBar.position.set(25, 0.9, 0);
+rightBar.position.set(25, 1.2, 0);
 rightBar.material = fenceMat;
 const rightBar2 = BABYLON.MeshBuilder.CreateCylinder("rightBar2", {
   diameter: 0.12,
@@ -439,7 +439,7 @@ const rightBar2 = BABYLON.MeshBuilder.CreateCylinder("rightBar2", {
 }, scene);
 
 rightBar2.rotation.x = Math.PI / 2;
-rightBar2.position.set(25, 0.5, 0);
+rightBar2.position.set(25, 0.7, 0);
 rightBar2.material = fenceMat;
 const rightBar3 = BABYLON.MeshBuilder.CreateCylinder("rightBar3", {
   diameter: 0.12,
@@ -448,7 +448,7 @@ const rightBar3 = BABYLON.MeshBuilder.CreateCylinder("rightBar3", {
 }, scene);
 
 rightBar3.rotation.x = Math.PI / 2;
-rightBar3.position.set(25, 0.1, 0);
+rightBar3.position.set(25, 0.2, 0);
 rightBar3.material = fenceMat;
 
 // ✅ Sol kenar – kesintisiz uzun bar
@@ -470,7 +470,7 @@ const leftBar2 = BABYLON.MeshBuilder.CreateCylinder("leftBar2", {
 leftBar2.rotation.x = Math.PI / 2;
 
 // ✅ Yüksekliği biraz aşağı
-leftBar2.position.set(-25, 0.5, 0);
+leftBar2.position.set(-25, 0.7, 0);
 leftBar2.material = fenceMat;
 const leftBar3 = BABYLON.MeshBuilder.CreateCylinder("leftBar3", {
   diameter: 0.12,
@@ -482,7 +482,7 @@ const leftBar3 = BABYLON.MeshBuilder.CreateCylinder("leftBar3", {
 leftBar3.rotation.x = Math.PI / 2;
 
 // ✅ Yüksekliği biraz aşağı
-leftBar3.position.set(-25, 0.1, 0);
+leftBar3.position.set(-25, 0.2, 0);
 leftBar3.material = fenceMat;
     const bar = BABYLON.MeshBuilder.CreateCylinder("fBar", {
   diameter: 0.12,
@@ -505,7 +505,7 @@ const topBar = BABYLON.MeshBuilder.CreateCylinder("topBar", {
 topBar.rotation.z = Math.PI / 2;
 
 // Üst kenar – ortalanmış
-topBar.position.set(0, 0.9, 25);
+topBar.position.set(0, 1.2, 25);
 
 topBar.material = fenceMat;
 const topBar2 = BABYLON.MeshBuilder.CreateCylinder("topBar2", {
@@ -515,7 +515,7 @@ const topBar2 = BABYLON.MeshBuilder.CreateCylinder("topBar2", {
 }, scene);
 
 topBar2.rotation.z = Math.PI / 2;
-topBar2.position.set(0, 0.5, 25);
+topBar2.position.set(0, 0.7, 25);
 
 topBar2.material = fenceMat;
 const topBar3 = BABYLON.MeshBuilder.CreateCylinder("topBar3", {
@@ -525,7 +525,7 @@ const topBar3 = BABYLON.MeshBuilder.CreateCylinder("topBar3", {
 }, scene);
 
 topBar3.rotation.z = Math.PI / 2;
-topBar3.position.set(0, 0.1, 25);
+topBar3.position.set(0, 0.2, 25);
 
 topBar3.material = fenceMat;
 
