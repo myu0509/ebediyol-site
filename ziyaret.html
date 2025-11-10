@@ -289,7 +289,7 @@ if (person) {
 }
 
 const labelPlane = BABYLON.MeshBuilder.CreatePlane(`label_${idx}`, { width: 0.9, height: 0.45 }, scene);
-labelPlane.position = new BABYLON.Vector3(grave.position.x, grave.position.y + 0.45, grave.position.z + 0.16);
+labelPlane.position = new BABYLON.Vector3(grave.position.x, grave.position.y + 0.45, grave.position.z - 0.16);
 labelPlane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_NONE;
 labelPlane.rotationQuaternion = null;
 labelPlane.rotation = new BABYLON.Vector3(0, Math.PI, 0);
@@ -315,7 +315,7 @@ const optPanel = BABYLON.MeshBuilder.CreatePlane(`opt_${idx}`, { width: 0.9, hei
 optPanel.position = new BABYLON.Vector3(
   grave.position.x,
   grave.position.y - 0.15,   // taş yazısının hemen altı
-  grave.position.z + 0.16
+  grave.position.z - 0.16
 );
 optPanel.billboardMode = BABYLON.Mesh.BILLBOARDMODE_NONE;
 const optUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(optPanel);
