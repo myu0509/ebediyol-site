@@ -528,21 +528,6 @@ topBar3.position.set(0, 0.1, 25);
 
 topBar3.material = fenceMat;
 
-  // --- SOL KENAR (X = -25, Z -25 → +25)
-  for (let z = -25; z <= 25; z += 2) {
-    makeFence(-25, z, Math.PI / 2);
-  }
-
-  // --- SAĞ KENAR (X = +25, Z -25 → +25)
-  for (let z = -25; z <= 25; z += 2) {
-    makeFence(25, z, Math.PI / 2);
-  }
-
-  // --- ÜST KENAR (Z = +25, X -25 → +25)
-  for (let x = -25; x <= 25; x += 2) {
-    makeFence(x, 25);
-  }
-
 })();
 
     // Yollar (siyah-beyaz/gri, dokusuz – sade)
