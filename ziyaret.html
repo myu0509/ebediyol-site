@@ -624,7 +624,21 @@ const welcomeSign = BABYLON.MeshBuilder.CreatePlane("welcomeSign", {
 // KONUM
 welcomeSign.position = new BABYLON.Vector3(0, 3.1, -19);
 welcomeSign.rotation = new BABYLON.Vector3(0, 0, 0);
-welcomeSign.scaling.y = 1.4;
+function updateSignScale() {
+  if (window.innerWidth < 600) {
+    // 📱 mobil → küçült
+    welcomeSign.scaling = new BABYLON.Vector3(0.45, 0.65, 1);
+  } else if (window.innerWidth < 1000) {
+    // tablet → hafif küçük
+    welcomeSign.scaling = new BABYLON.Vector3(0.75, 1.0, 1);
+  } else {
+    // PC → normal
+    welcomeSign.scaling = new BABYLON.Vector3(1, 1.3, 1);
+  }
+}
+
+updateSignScale();
+window.addEventListener("resize", updateSignScale);
 
 // === PANEL ARKA PLAN ===
 const welcomeTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(welcomeSign);
