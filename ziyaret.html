@@ -411,15 +411,14 @@ list.addControl(memo);
     })();
 // === ÇİTLER ===
 (function addFences() {
-const fenceMat = new BABYLON.PBRMaterial("fenceMat", scene);
-fenceMat.albedoColor = new BABYLON.Color3(0.25, 0.18, 0.10);  // koyu kestane
-fenceMat.roughness = 0.9;
-fenceMat.metallic = 0;
 
-  const fenceMat = new BABYLON.StandardMaterial("fenceMat", scene);
-  fenceMat.diffuseColor = new BABYLON.Color3(0.6, 0.45, 0.25);
+  // ✅ Yeni koyu ahşap PBR malzeme
+  const fenceMat = new BABYLON.PBRMaterial("fenceMat", scene);
+  fenceMat.albedoColor = new BABYLON.Color3(0.25, 0.18, 0.10);  // koyu kestane
+  fenceMat.roughness = 0.9;
+  fenceMat.metallic = 0;
 
-  // Tek bir çit parçası
+  // ✅ Tek bir çit parçası
   function makeFence(x, z, rotY = 0) {
     const pole = BABYLON.MeshBuilder.CreateBox("fPole", { width: 0.1, height: 1.2, depth: 0.1 }, scene);
     pole.position.set(x, 0.6, z);
