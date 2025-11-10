@@ -464,6 +464,9 @@ list.addControl(memo);
       const pathMat = new BABYLON.StandardMaterial("pathMat", scene);
 pathMat.diffuseColor = new BABYLON.Color3(0.6, 0.6, 0.6);
 pathMat.specularColor = new BABYLON.Color3(0, 0, 0);
+      pathMat.bumpTexture = new BABYLON.NoiseProceduralTexture("noise", 256, scene);
+pathMat.bumpTexture.octaves = 4;
+pathMat.bumpTexture.persistence = 0.5;
 
 // --- YATAY KALDIRIMLAR (her satır arası) ---
 for (let r = 0; r < 10; r++) {
