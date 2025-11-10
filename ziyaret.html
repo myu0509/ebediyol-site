@@ -596,6 +596,19 @@ for (let c = 0; c < 10; c++) {
 }
 
     })();
+// === GİRİŞ YAZISI ===
+const welcomePlane = BABYLON.MeshBuilder.CreatePlane("welcomePlane", { width: 10, height: 2 }, scene);
+welcomePlane.position = new BABYLON.Vector3(0, 1.8, -23);  // KONUM
+welcomePlane.rotation = new BABYLON.Vector3(0, 0, 0);      // ZİYARETÇİYE DÖNÜK
+
+const welcomeUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(welcomePlane);
+const welcomeText = new BABYLON.GUI.TextBlock();
+welcomeText.text = "EBEDİYOL MEZARLIĞINA HOŞ GELDİNİZ";
+welcomeText.color = "white";
+welcomeText.fontSize = "70px";
+welcomeText.outlineWidth = 6;
+welcomeText.outlineColor = "black";
+welcomeUI.addControl(welcomeText);
 
     // Kamera sınırı + yükseklik sabitleme
     scene.onBeforeRenderObservable.add(() => {
