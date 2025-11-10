@@ -261,6 +261,7 @@ for (let i = 0; i < 100; i++) {
         grave.position.y = 0.6;
         grave.position.z = startZ - r * spacingZ;
         grave.material = graveMat;
+grave.rotation.y = Math.PI;
 
         // Toprak höyüğü
         const mound = BABYLON.MeshBuilder.CreateCylinder(`mound_${r}_${c}`, {
@@ -276,6 +277,8 @@ for (let i = 0; i < 100; i++) {
         const moundMat = new BABYLON.StandardMaterial("moundMat", scene);
         moundMat.diffuseColor = new BABYLON.Color3(0.3, 0.2, 0.1);
         mound.material = moundMat;
+        mound.rotation.y = Math.PI;
+
 // ✅ Mezar yazısı
 let idx = r * cols + c;
 let person = gravesData[idx] ?? null;
