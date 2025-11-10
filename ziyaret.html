@@ -624,6 +624,29 @@ const welcomeSign = BABYLON.MeshBuilder.CreatePlane("welcomeSign", {
 // KONUM
 welcomeSign.position = new BABYLON.Vector3(0, 3.1, -19);
 welcomeSign.rotation = new BABYLON.Vector3(0, 0, 0);
+function updateSignScale() {
+  if (window.innerWidth < 600) {
+    // 📱 mobil
+    welcomeSign.scaling = new BABYLON.Vector3(0.45, 0.65, 1);
+
+    poleLeft.position.x  = -2.8;
+    poleRight.position.x =  2.8;
+
+  } else if (window.innerWidth < 1000) {
+    // tablet
+    welcomeSign.scaling = new BABYLON.Vector3(0.75, 1.0, 1);
+
+    poleLeft.position.x  = -3.8;
+    poleRight.position.x =  3.8;
+
+  } else {
+    // PC
+    welcomeSign.scaling = new BABYLON.Vector3(1, 1.3, 1);
+
+    poleLeft.position.x  = -4.8;
+    poleRight.position.x =  4.8;
+  }
+}
 
 updateSignScale();
 window.addEventListener("resize", updateSignScale);
