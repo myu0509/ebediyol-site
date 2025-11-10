@@ -494,6 +494,39 @@ leftBar3.material = fenceMat;
     bar.rotation.y = rotY;
     bar.material = fenceMat;
   }
+const topBar = BABYLON.MeshBuilder.CreateCylinder("topBar", {
+  diameter: 0.12,
+  height: 50,
+  tessellation: 12
+}, scene);
+
+// YATAY
+topBar.rotation.x = Math.PI / 2;
+
+// Üst kenar – ortalanmış
+topBar.position.set(0, 0.9, 25);
+
+topBar.material = fenceMat;
+const topBar2 = BABYLON.MeshBuilder.CreateCylinder("topBar2", {
+  diameter: 0.12,
+  height: 50,
+  tessellation: 12
+}, scene);
+
+topBar2.rotation.x = Math.PI / 2;
+topBar2.position.set(0, 0.5, 25);
+
+topBar2.material = fenceMat;
+const topBar3 = BABYLON.MeshBuilder.CreateCylinder("topBar3", {
+  diameter: 0.12,
+  height: 50,
+  tessellation: 12
+}, scene);
+
+topBar3.rotation.x = Math.PI / 2;
+topBar3.position.set(0, 0.1, 25);
+
+topBar3.material = fenceMat;
 
   // --- SOL KENAR (X = -25, Z -25 → +25)
   for (let z = -25; z <= 25; z += 2) {
