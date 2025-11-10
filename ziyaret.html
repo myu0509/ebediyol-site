@@ -461,12 +461,10 @@ list.addControl(memo);
       rowRoadMat.diffuseColor = new BABYLON.Color3(0.6, 0.6, 0.6);
       rowRoadMat.specularColor = new BABYLON.Color3(0, 0, 0);
       rowRoad.material = rowRoadMat;
-      const pathMat = new BABYLON.StandardMaterial("pathMat", scene);
-pathMat.diffuseColor = new BABYLON.Color3(0.6, 0.6, 0.6);
-pathMat.specularColor = new BABYLON.Color3(0, 0, 0);
-      pathMat.bumpTexture = new BABYLON.NoiseProceduralTexture("noise", 256, scene);
-pathMat.bumpTexture.octaves = 4;
-pathMat.bumpTexture.persistence = 0.5;
+      const pathMat = new BABYLON.PBRMaterial("pathMat", scene);
+pathMat.albedoTexture = new BABYLON.Texture("https://www.babylonjs.com/assets/wood.jpg", scene);
+pathMat.roughness = 1;
+pathMat.metallic = 0;
 
 // --- YATAY KALDIRIMLAR (her satır arası) ---
 for (let r = 0; r < 10; r++) {
