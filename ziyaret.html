@@ -501,7 +501,7 @@ const topBar = BABYLON.MeshBuilder.CreateCylinder("topBar", {
 }, scene);
 
 // YATAY
-topBar.rotation.x = Math.PI / 2;
+topBar.rotation.z = Math.PI / 2;
 
 // Üst kenar – ortalanmış
 topBar.position.set(0, 0.9, 25);
@@ -513,7 +513,7 @@ const topBar2 = BABYLON.MeshBuilder.CreateCylinder("topBar2", {
   tessellation: 12
 }, scene);
 
-topBar2.rotation.x = Math.PI / 2;
+topBar2.rotation.z = Math.PI / 2;
 topBar2.position.set(0, 0.5, 25);
 
 topBar2.material = fenceMat;
@@ -523,7 +523,7 @@ const topBar3 = BABYLON.MeshBuilder.CreateCylinder("topBar3", {
   tessellation: 12
 }, scene);
 
-topBar3.rotation.x = Math.PI / 2;
+topBar3.rotation.z = Math.PI / 2;
 topBar3.position.set(0, 0.1, 25);
 
 topBar3.material = fenceMat;
