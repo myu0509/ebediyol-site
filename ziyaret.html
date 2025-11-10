@@ -420,11 +420,15 @@ list.addControl(memo);
 
   // ✅ Tek bir çit parçası
   function makeFence(x, z, rotY = 0) {
-    const pole = BABYLON.MeshBuilder.CreateBox("fPole", { width: 0.1, height: 1.2, depth: 0.1 }, scene);
+    const pole = BABYLON.MeshBuilder.CreateBox("fPole", { width: 0.07, height: 1.2, depth: 0.07 }, scene);
     pole.position.set(x, 0.6, z);
     pole.material = fenceMat;
 
-    const bar = BABYLON.MeshBuilder.CreateBox("fBar", { width: 1.5, height: 0.15, depth: 0.1 }, scene);
+    const bar = BABYLON.MeshBuilder.CreateCylinder("fBar", {
+  diameter: 0.12,
+  height: 1.5,
+  tessellation: 12
+}, scene);
     bar.position.set(x, 0.9, z);
     bar.rotation.y = rotY;
     bar.material = fenceMat;
