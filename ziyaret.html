@@ -458,7 +458,7 @@ const leftBar = BABYLON.MeshBuilder.CreateCylinder("leftBar", {
   tessellation: 12
 }, scene);
 leftBar.rotation.x = Math.PI / 2;
-leftBar.position.set(-25, 1.2, 0);
+leftBar.position.set(-25, 0.9, 0);
 leftBar.material = fenceMat;
 const leftBar2 = BABYLON.MeshBuilder.CreateCylinder("leftBar2", {
   diameter: 0.12,
@@ -489,8 +489,20 @@ leftBar3.material = fenceMat;
   height: 1.5,
   tessellation: 12
 }, scene);
+   
+    // ✅ YATAY
+leftBar4.rotation.x = Math.PI / 2;
+
+// ✅ Yüksekliği biraz aşağı
+leftBar4.position.set(-25, 0.1, 0);
+leftBar4.material = fenceMat;
+    const bar = BABYLON.MeshBuilder.CreateCylinder("fBar", {
+  diameter: 0.12,
+  height: 1.5,
+  tessellation: 12
+}, scene);
     bar.rotation.z = Math.PI / 2;
-    bar.position.set(x, 0.9, z);
+    bar.position.set(x, 1.2, z);
     bar.rotation.y = rotY;
     bar.material = fenceMat;
   }
