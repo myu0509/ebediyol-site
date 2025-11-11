@@ -81,6 +81,7 @@
   <script src="https://cdn.babylonjs.com/babylon.js"></script>
   <!-- Babylon GUI (yazı etiketleri için GEREKLİ) -->
   <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
 
   <script>
     // --- Temel kurulum ---
@@ -744,9 +745,6 @@ if (avatar) {
   createMountain(-150, 0, 200, 120, 80, -Math.PI/2);
 
 })();
-
-engine.runRenderLoop(() => scene.render());
-window.addEventListener("resize", () => engine.resize());
 
     // Render döngüsü
     engine.runRenderLoop(() => scene.render());
