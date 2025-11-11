@@ -710,33 +710,6 @@ if (avatar) {
       if (camera.position.y < 1.6) camera.position.y = 1.6;
       if (camera.position.y > 3.0) camera.position.y = 3.0;
     });
-// === DAĞLAR ===
-(function addMountains() {
-
-  const mountainMat = new BABYLON.StandardMaterial("mountainMat", scene);
-  mountainMat.diffuseColor = new BABYLON.Color3(0.25, 0.25, 0.25);
-  mountainMat.specularColor = new BABYLON.Color3(0,0,0);
-
-  const w = 400;
-  const h = 70;
-  const d = 40;
-
-  const mTop = BABYLON.MeshBuilder.CreateBox("mTop", { width: w, height: h, depth: d }, scene);
-  mTop.position = new BABYLON.Vector3(0, h/2, 120);
-  mTop.material = mountainMat;
-
-  const mBottom = BABYLON.MeshBuilder.CreateBox("mBottom", { width: w, height: h, depth: d }, scene);
-  mBottom.position = new BABYLON.Vector3(0, h/2, -120);
-  mBottom.material = mountainMat;
-
-  const mLeft = BABYLON.MeshBuilder.CreateBox("mLeft", { width: d, height: h, depth: w }, scene);
-  mLeft.position = new BABYLON.Vector3(-120, h/2, 0);
-  mLeft.material = mountainMat;
-
-  const mRight = BABYLON.MeshBuilder.CreateBox("mRight", { width: d, height: h, depth: w }, scene);
-  mRight.position = new BABYLON.Vector3(120, h/2, 0);
-  mRight.material = mountainMat;
-// bu satır artık çalışmaz
 
 })();
 
