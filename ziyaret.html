@@ -719,7 +719,18 @@ BABYLON.SceneLoader.ImportMesh(
   "hill.glb",
   scene,
   function (meshes) {
-console.log("⛰️ DAĞ YÜKLENDİ", meshes);
+    console.log("⛰️ DAĞ YÜKLENDİ", meshes);
+
+    const mountain = meshes[0];
+    mountain.position = new BABYLON.Vector3(0, 0, 120);
+    mountain.scaling = new BABYLON.Vector3(12, 12, 12);
+    mountain.rotation.y = Math.PI;
+
+    mountain.getChildMeshes().forEach(m => {
+      m.receiveShadows = true;
+    });
+  }
+);
 
     // Pozisyon (arkaya koyalım)
     mountain.position = new BABYLON.Vector3(0, 0, 120);
