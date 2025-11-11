@@ -710,9 +710,7 @@ if (avatar) {
       if (camera.position.y < 1.6) camera.position.y = 1.6;
       if (camera.position.y > 3.0) camera.position.y = 3.0;
     });
-
-    // Render döngüsü
-    // === DAĞ GÖRÜNÜMLÜ ARAZİ (NOISE) ===
+// === DAĞ GÖRÜNÜMLÜ ARAZİ (NOISE) ===
 (function addMountains() {
   const mountainMat = new BABYLON.StandardMaterial("mountainMat", scene);
   mountainMat.diffuseColor = new BABYLON.Color3(0.32, 0.30, 0.28);
@@ -750,6 +748,7 @@ if (avatar) {
   makeMountain(-120, 0,   160, 70);  // sol
 })();
 
+    // Render döngüsü
     engine.runRenderLoop(() => scene.render());
     window.addEventListener("resize", () => engine.resize());
   
