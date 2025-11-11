@@ -81,8 +81,7 @@
   <script src="https://cdn.babylonjs.com/babylon.js"></script>
   <!-- Babylon GUI (yazı etiketleri için GEREKLİ) -->
   <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
-<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
-<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+
   <script>
     // --- Temel kurulum ---
     const canvas = document.getElementById("renderCanvas");
@@ -189,8 +188,8 @@ if (btnRight) {
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
     light.intensity = 1.2;
 
-    // Zemin (300x300)
-    const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 300, height: 300 }, scene);
+    // Zemin (50x50)
+    const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 50 }, scene);
     const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
     groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.35, 0.2);
     ground.material = groundMat;
@@ -711,41 +710,6 @@ if (avatar) {
       if (camera.position.y < 1.6) camera.position.y = 1.6;
       if (camera.position.y > 3.0) camera.position.y = 3.0;
     });
-    
-// === TEK DAĞ MODELİ ===
-BABYLON.SceneLoader.ImportMesh(
-  "",
-  "https://assets.babylonjs.com/meshes/",
-  "hill.glb",
-  scene,
-  function (meshes) {
-    console.log("⛰️ DAĞ YÜKLENDİ", meshes);
-
-    const mountain = meshes[0];
-    mountain.position = new BABYLON.Vector3(0, 0, 120);
-    mountain.scaling = new BABYLON.Vector3(12, 12, 12);
-    mountain.rotation.y = Math.PI;
-
-    mountain.getChildMeshes().forEach(m => {
-      m.receiveShadows = true;
-    });
-  }
-);
-
-mountain.position = new BABYLON.Vector3(0, 0, 120);
-
-    // Ölçek → büyüt
-    mountain.scaling = new BABYLON.Vector3(12, 12, 12);
-
-    // Hafif çevir
-    mountain.rotation.y = Math.PI;
-
-    // Malzeme sade dursun
-    mountain.getChildMeshes().forEach(m => {
-      m.receiveShadows = true;
-    });
-  }
-);
 
     // Render döngüsü
     engine.runRenderLoop(() => scene.render());
