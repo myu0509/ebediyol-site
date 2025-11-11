@@ -711,43 +711,44 @@ if (avatar) {
       if (camera.position.y > 3.0) camera.position.y = 3.0;
     });
     
-// === DAĞ GÖRÜNÜMLÜ ARAZİ (NOISE) ===
+// === DAĞLAR ===
 (function addMountains() {
   const mountainMat = new BABYLON.StandardMaterial("mountainMat", scene);
-  mountainMat.diffuseColor = new BABYLON.Color3(0.32, 0.30, 0.28);
+  mountainMat.diffuseTexture = new BABYLON.Texture("https://assets.babylonjs.com/environments/rockyground.jpg", scene);
   mountainMat.specularColor = new BABYLON.Color3(0,0,0);
 
-  function makeMountain(x, z, size = 120, height = 300) {
-    const m = BABYLON.MeshBuilder.CreateGround(`mount_${x}_${z}`, {
-      width: size,
-      height: size,
-      subdivisions: 64
-    }, scene);
+  function createMountain(x, z, scaleX = 180, scaleY = 80, scaleZ = 40, rotY = 0) {
+    BABYLON.SceneLoader.ImportMesh(
+      "",
+      "https://assets.babylonjs.com/meshes/",
+      "hill.glb",
+      scene,
+      function (meshes) {
+        const m = meshes[0];
+        m.position = new BABYLON.Vector3(x, 0, z);
+        m.scaling = new BABYLON.Vector3(scaleX, scaleY, scaleZ);
+        m.rotation.y = rotY;
 
-    m.material = mountainMat;
-    m.position = new BABYLON.Vector3(x, 0.08, z);
-
-    // Gürültü: yüzeyi kırık/dağ gibi yap
-    const pos = m.getVerticesData(BABYLON.VertexBuffer.PositionKind);
-    for (let i = 0; i < pos.length; i += 3) {
-      // i+1 = Y ekseni
-      const nx = pos[i] / size;      // -0.5..0.5 civarı
-      const nz = pos[i+2] / size;
-      const r = Math.sin(nx * Math.PI * 3.5) * Math.cos(nz * Math.PI * 3.5);
-      const noise = (Math.random() * 1.40 + 0.80); // hafif rastgele
-      pos[i+1] = Math.max(0, r * height * noise);
-    }
-    m.updateVerticesData(BABYLON.VertexBuffer.PositionKind, pos);
-
-    return m;
+        m.getChildMeshes().forEach(mm => {
+          mm.material = mountainMat;
+          mm.receiveShadows = true;
+        });
+      }
+    );
   }
 
-  // Dört yönde dağlar (zemin 300x300 olduğuna göre kenarlara yakın)
-  makeMountain(0,   120, 160, 300);   // üst
-  makeMountain(0,  -120, 160, 300);   // alt
-  makeMountain(120,  0,   160, 300);  // sağ
-  makeMountain(-120, 0,   160, 300);  // sol
+  // üst — sağ — alt — sol
+  createMountain(0,  150, 200, 120, 80, 0);
+  createMountain(150, 0, 200, 120, 80, Math.PI/2);
+  createMountain(0, -150, 200, 120, 80, Math.PI);
+  createMountain(-150, 0, 200, 120, 80, -Math.PI/2);
+
 })();
+//// YAPIŞTIRMA BİTTİ ////
+
+engine.runRenderLoop(() => scene.render());
+window.addEventListener("resize", () => engine.resize());
+
 
     // Render döngüsü
     engine.runRenderLoop(() => scene.render());
