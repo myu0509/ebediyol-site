@@ -718,13 +718,30 @@ if (avatar) {
   hillMat.diffuseColor = new BABYLON.Color3(0.32, 0.30, 0.28);
   hillMat.specularColor = new BABYLON.Color3(0,0,0);
 
-  function addHill(x, z, sx = 180, sy = 90, sz = 120) {
-    // 1 birimlik küreyi dev bir "tepe"ye esnetiyoruz
-    const s = BABYLON.MeshBuilder.CreateSphere("hill", { diameter: 1, segments: 16 }, scene);
-    s.scaling = new BABYLON.Vector3(sx, sy, sz);
-    s.position = new BABYLON.Vector3(x, sy * 0.5 - 5, z); // yere otursun diye Y yarım yükseklik
-    s.material = hillMat;
+  function addHill(x, z, size = 200, height = 160) {
+  const mountain = BABYLON.MeshBuilder.CreateGround("mount", {
+    width: size,
+    height: size,
+    subdivisions: 64
+  }, scene);
+
+  mountain.position = new BABYLON.Vector3(x, 0.1, z);
+  mountain.material = hillMat;
+
+  const pos = mountain.getVerticesData(BABYLON.VertexBuffer.PositionKind);
+
+  for (let i = 0; i < pos.length; i += 3) {
+    let nx = (pos[i] / size) * 2;     // -1..1 aralığı
+    let nz = (pos[i+2] / size) * 2;   // -1..1 aralığı
+    let r = Math.sqrt(nx*nx + nz*nz);
+
+    // merkez yüksek → kenar düşük
+    let h = Math.max(0, (1 - r*r) * height);
+    pos[i+1] = h;
   }
+
+  mountain.updateVerticesData(BABYLON.VertexBuffer.PositionKind, pos);
+}
 
   // dört yöne yerleştir
   addHill(   0,  120, 220, 110, 140); // üst
