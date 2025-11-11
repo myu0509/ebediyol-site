@@ -712,45 +712,36 @@ if (avatar) {
       if (camera.position.y > 3.0) camera.position.y = 3.0;
     });
     
-    // === DAĞ BLOKLARI ===
+   // === DAĞ BLOKLARI ===
 (function addMountains() {
 
   const mountainMat = new BABYLON.StandardMaterial("mountainMat", scene);
-  mountainMat.diffuseColor = new BABYLON.Color3(0.25, 0.23, 0.22); // koyu taş gibi
+  mountainMat.diffuseColor = new BABYLON.Color3(0.25, 0.23, 0.22);
 
   function makeWall(x, z, width, height, depth) {
-    const wall = BABYLON.MeshBuilder.CreateBox("mountain", {
+    const wall = BABYLON.MeshBuilder.CreateBox("mountainWall", {
       width,
       height,
       depth
     }, scene);
 
-    wall.position = new BABYLON.Vector3(x, height / 2, z);
+    wall.position = new BABYLON.Vector3(x, height/2, z);  // ✅ yükselti garanti
     wall.material = mountainMat;
   }
 
-  // üst - arka
-  makeWall(0, 120, 380, 120, 30);
+  // üst
+  makeWall(0, 150, 400, 150, 40);
 
-  // alt - ön
-  makeWall(0, -120, 380, 120, 30);
+  // alt
+  makeWall(0, -150, 400, 150, 40);
 
   // sağ
-  makeWall(120, 0, 30, 120, 380);
+  makeWall(150, 0, 40, 150, 400);
 
   // sol
-  makeWall(-120, 0, 30, 120, 380);
+  makeWall(-150, 0, 40, 150, 400);
 
 })();
-const testWall = BABYLON.MeshBuilder.CreateBox("testWall", {
-  width: 50,
-  height: 200,
-  depth: 5,
-}, scene);
-
-testWall.position = new BABYLON.Vector3(0, 100, 50);
-testWall.material = new BABYLON.StandardMaterial("mMat", scene);
-testWall.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
 
     // Render döngüsü
     engine.runRenderLoop(() => scene.render());
