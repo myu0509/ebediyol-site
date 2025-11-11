@@ -742,6 +742,15 @@ if (avatar) {
   makeWall(-120, 0, 30, 120, 380);
 
 })();
+const testWall = BABYLON.MeshBuilder.CreateBox("testWall", {
+  width: 50,
+  height: 200,
+  depth: 5,
+}, scene);
+
+testWall.position = new BABYLON.Vector3(0, 100, 50);
+testWall.material = new BABYLON.StandardMaterial("mMat", scene);
+testWall.material.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
 
     // Render döngüsü
     engine.runRenderLoop(() => scene.render());
