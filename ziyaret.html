@@ -710,6 +710,7 @@ if (avatar) {
       if (camera.position.y < 1.6) camera.position.y = 1.6;
       if (camera.position.y > 3.0) camera.position.y = 3.0;
     });
+    
 // === DAĞ GÖRÜNÜMLÜ ARAZİ (NOISE) ===
 (function addMountains() {
   const mountainMat = new BABYLON.StandardMaterial("mountainMat", scene);
@@ -733,7 +734,7 @@ if (avatar) {
       const nx = pos[i] / size;      // -0.5..0.5 civarı
       const nz = pos[i+2] / size;
       const r = Math.sin(nx * Math.PI * 2) * Math.cos(nz * Math.PI * 2);
-      const noise = (Math.random() * 0.35 + 0.65); // hafif rastgele
+      const noise = (Math.random() * 1.40 + 0.80); // hafif rastgele
       pos[i+1] = Math.max(0, r * height * noise);
     }
     m.updateVerticesData(BABYLON.VertexBuffer.PositionKind, pos);
