@@ -621,6 +621,40 @@ const welcomeSign = BABYLON.MeshBuilder.CreatePlane("welcomeSign", {
   height: 1.3
 }, scene);
 
+    // === DAĞLAR ===
+(function addMountains() {
+
+  const mountainMat = new BABYLON.StandardMaterial("mountainMat", scene);
+  mountainMat.diffuseColor = new BABYLON.Color3(0.25, 0.25, 0.25); // koyu gri
+  mountainMat.specularColor = new BABYLON.Color3(0,0,0);
+
+  // Boyut ayarları
+  const w = 400;   // genişlik
+  const h = 70;    // yükseklik
+  const d = 40;    // kalınlık
+
+  // ÜST (Z+)
+  const mTop = BABYLON.MeshBuilder.CreateBox("mTop", { width: w, height: h, depth: d }, scene);
+  mTop.position = new BABYLON.Vector3(0, h/2, 150);
+  mTop.material = mountainMat;
+
+  // ALT (Z-)
+  const mBottom = BABYLON.MeshBuilder.CreateBox("mBottom", { width: w, height: h, depth: d }, scene);
+  mBottom.position = new BABYLON.Vector3(0, h/2, -150);
+  mBottom.material = mountainMat;
+
+  // SOL (X-)
+  const mLeft = BABYLON.MeshBuilder.CreateBox("mLeft", { width: d, height: h, depth: w }, scene);
+  mLeft.position = new BABYLON.Vector3(-150, h/2, 0);
+  mLeft.material = mountainMat;
+
+  // SAĞ (X+)
+  const mRight = BABYLON.MeshBuilder.CreateBox("mRight", { width: d, height: h, depth: w }, scene);
+  mRight.position = new BABYLON.Vector3(150, h/2, 0);
+  mRight.material = mountainMat;
+
+})();
+
 // KONUM
 welcomeSign.position = new BABYLON.Vector3(0, 3.1, -12);
 welcomeSign.rotation = new BABYLON.Vector3(0, 0, 0);
