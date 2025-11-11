@@ -82,7 +82,7 @@
   <!-- Babylon GUI (yazı etiketleri için GEREKLİ) -->
   <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
 <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
-
+<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
   <script>
     // --- Temel kurulum ---
     const canvas = document.getElementById("renderCanvas");
@@ -712,36 +712,30 @@ if (avatar) {
       if (camera.position.y > 3.0) camera.position.y = 3.0;
     });
     
-   // === DAĞ BLOKLARI ===
-(function addMountains() {
+// === TEK DAĞ MODELİ ===
+BABYLON.SceneLoader.ImportMesh(
+  "",
+  "https://assets.babylonjs.com/meshes/",
+  "hill.glb",
+  scene,
+  function (meshes) {
+    const mountain = meshes[0];
 
-  const mountainMat = new BABYLON.StandardMaterial("mountainMat", scene);
-  mountainMat.diffuseColor = new BABYLON.Color3(0.25, 0.23, 0.22);
+    // Pozisyon (arkaya koyalım)
+    mountain.position = new BABYLON.Vector3(0, 0, 120);
 
-  function makeWall(x, z, width, height, depth) {
-    const wall = BABYLON.MeshBuilder.CreateBox("mountainWall", {
-      width,
-      height,
-      depth
-    }, scene);
+    // Ölçek → büyüt
+    mountain.scaling = new BABYLON.Vector3(12, 12, 12);
 
-    wall.position = new BABYLON.Vector3(x, height/2, z);  // ✅ yükselti garanti
-    wall.material = mountainMat;
+    // Hafif çevir
+    mountain.rotation.y = Math.PI;
+
+    // Malzeme sade dursun
+    mountain.getChildMeshes().forEach(m => {
+      m.receiveShadows = true;
+    });
   }
-
-  // üst
-  makeWall(0, 120, 400, 150, 40);
-
-  // alt
-  makeWall(0, -120, 400, 150, 40);
-
-  // sağ
-  makeWall(120, 0, 40, 150, 400);
-
-  // sol
-  makeWall(-120, 0, 40, 150, 400);
-
-})();
+);
 
     // Render döngüsü
     engine.runRenderLoop(() => scene.render());
