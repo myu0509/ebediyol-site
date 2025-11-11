@@ -717,7 +717,7 @@ if (avatar) {
   mountainMat.diffuseColor = new BABYLON.Color3(0.32, 0.30, 0.28);
   mountainMat.specularColor = new BABYLON.Color3(0,0,0);
 
-  function makeMountain(x, z, size = 120, height = 60) {
+  function makeMountain(x, z, size = 120, height = 120) {
     const m = BABYLON.MeshBuilder.CreateGround(`mount_${x}_${z}`, {
       width: size,
       height: size,
