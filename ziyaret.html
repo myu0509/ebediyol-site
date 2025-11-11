@@ -733,7 +733,7 @@ if (avatar) {
       // i+1 = Y ekseni
       const nx = pos[i] / size;      // -0.5..0.5 civarı
       const nz = pos[i+2] / size;
-      const r = Math.sin(nx * Math.PI * 2) * Math.cos(nz * Math.PI * 2);
+      const r = Math.sin(nx * Math.PI * 3.5) * Math.cos(nz * Math.PI * 3.5);
       const noise = (Math.random() * 1.40 + 0.80); // hafif rastgele
       pos[i+1] = Math.max(0, r * height * noise);
     }
