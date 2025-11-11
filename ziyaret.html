@@ -711,43 +711,35 @@ if (avatar) {
       if (camera.position.y < 1.6) camera.position.y = 1.6;
       if (camera.position.y > 3.0) camera.position.y = 3.0;
     });
-    
-// === BASİT DAĞ/TEPELER (model yok, kesin görünür) ===
-(function addHills() {
-  const hillMat = new BABYLON.StandardMaterial("hillMat", scene);
-  hillMat.diffuseColor = new BABYLON.Color3(0.32, 0.30, 0.28);
-  hillMat.specularColor = new BABYLON.Color3(0,0,0);
+    // === DAĞ BLOKLARI ===
+(function addMountains() {
 
-  function addHill(x, z, size = 200, height = 160) {
-  const mountain = BABYLON.MeshBuilder.CreateGround("mount", {
-    width: size,
-    height: size,
-    subdivisions: 64
-  }, scene);
+  const mountainMat = new BABYLON.StandardMaterial("mountainMat", scene);
+  mountainMat.diffuseColor = new BABYLON.Color3(0.25, 0.23, 0.22); // koyu taş gibi
 
-  mountain.position = new BABYLON.Vector3(x, 0.1, z);
-  mountain.material = hillMat;
+  function makeWall(x, z, width, height, depth) {
+    const wall = BABYLON.MeshBuilder.CreateBox("mountain", {
+      width,
+      height,
+      depth
+    }, scene);
 
-  const pos = mountain.getVerticesData(BABYLON.VertexBuffer.PositionKind);
-
-  for (let i = 0; i < pos.length; i += 3) {
-    let nx = (pos[i] / size) * 2;     // -1..1 aralığı
-    let nz = (pos[i+2] / size) * 2;   // -1..1 aralığı
-    let r = Math.sqrt(nx*nx + nz*nz);
-
-    // merkez yüksek → kenar düşük
-    let h = Math.max(0, (1 - r*r) * height);
-    pos[i+1] = h;
+    wall.position = new BABYLON.Vector3(x, height / 2, z);
+    wall.material = mountainMat;
   }
 
-  mountain.updateVerticesData(BABYLON.VertexBuffer.PositionKind, pos);
-}
+  // üst - arka
+  makeWall(0, 160, 380, 120, 30);
 
-  // dört yöne yerleştir
-  addHill(   0,  120, 220, 110, 140); // üst
-  addHill( 120,    0, 220, 110, 140); // sağ
-  addHill(   0, -120, 220, 110, 140); // alt
-  addHill(-120,    0, 220, 110, 140); // sol
+  // alt - ön
+  makeWall(0, -160, 380, 120, 30);
+
+  // sağ
+  makeWall(160, 0, 30, 120, 380);
+
+  // sol
+  makeWall(-160, 0, 30, 120, 380);
+
 })();
 
     // Render döngüsü
