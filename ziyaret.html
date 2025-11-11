@@ -722,11 +722,11 @@ if (avatar) {
   const d = 40;
 
   const mTop = BABYLON.MeshBuilder.CreateBox("mTop", { width: w, height: h, depth: d }, scene);
-  mTop.position = new BABYLON.Vector3(0, h/2, 100);
+  mTop.position = new BABYLON.Vector3(0, h/2, 120);
   mTop.material = mountainMat;
 
   const mBottom = BABYLON.MeshBuilder.CreateBox("mBottom", { width: w, height: h, depth: d }, scene);
-  mBottom.position = new BABYLON.Vector3(0, h/2, -100);
+  mBottom.position = new BABYLON.Vector3(0, h/2, -120);
   mBottom.material = mountainMat;
 
   const mLeft = BABYLON.MeshBuilder.CreateBox("mLeft", { width: d, height: h, depth: w }, scene);
