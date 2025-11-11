@@ -717,7 +717,7 @@ if (avatar) {
   mountainMat.diffuseColor = new BABYLON.Color3(0.32, 0.30, 0.28);
   mountainMat.specularColor = new BABYLON.Color3(0,0,0);
 
-  function makeMountain(x, z, size = 120, height = 120) {
+  function makeMountain(x, z, size = 120, height = 300) {
     const m = BABYLON.MeshBuilder.CreateGround(`mount_${x}_${z}`, {
       width: size,
       height: size,
@@ -743,10 +743,10 @@ if (avatar) {
   }
 
   // Dört yönde dağlar (zemin 300x300 olduğuna göre kenarlara yakın)
-  makeMountain(0,   120, 160, 120);   // üst
-  makeMountain(0,  -120, 160, 120);   // alt
-  makeMountain(120,  0,   160, 120);  // sağ
-  makeMountain(-120, 0,   160, 120);  // sol
+  makeMountain(0,   120, 160, 300);   // üst
+  makeMountain(0,  -120, 160, 300);   // alt
+  makeMountain(120,  0,   160, 300);  // sağ
+  makeMountain(-120, 0,   160, 300);  // sol
 })();
 
     // Render döngüsü
