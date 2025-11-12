@@ -137,11 +137,6 @@ BABYLON.SceneLoader.ImportMeshAsync(
   avatar.position = new BABYLON.Vector3(0, 0, -5);
 });
 
-  // Koyu malzeme tanımla
-  const darkMat = new BABYLON.StandardMaterial("darkMat", scene);
-  darkMat.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
-  darkMat.specularColor = new BABYLON.Color3(0, 0, 0);
-
   // Modeldeki tüm mesh’lere uygula
   avatar.getChildMeshes().forEach(m => {
     m.material = darkMat;
