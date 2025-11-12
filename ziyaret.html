@@ -113,36 +113,40 @@ let moveLeft = false;
 let moveRight = false;
 let avatar = null;
 
+// ✅ GitHub'daki GLB dosyan (RAW link)
+const AVATAR_URL = "https://raw.githubusercontent.com/myu0509/ebediyol-site/main/avatar.glb";
+
 BABYLON.SceneLoader.ImportMeshAsync(
-  "",
-  "https://www.babylonjs.com/Scenes/Dude/",
-  "Dude.babylon",
+  "",                  // meshesNames
+  "",                  // rootUrl (boş bırakıyoruz)
+  AVATAR_URL,          // sceneFilename (tam URL)
   scene
 ).then((res) => {
-  avatar = res.meshes[0];
+  // En mantıklı ana mesh'i seç
+  avatar =
+    res.meshes[0] ||
+    res.meshes.find(m => m.name && m.name.toLowerCase().includes("avatar")) ||
+    res.meshes[res.meshes.length - 1];
 
-  // Boy biraz daha uzun
-  avatar.scaling = new BABYLON.Vector3(0.016, 0.016, 0.016);
-
-  // Koyu silüet kıyafet
-  const darkMat = new BABYLON.StandardMaterial("darkMat", scene);
-  darkMat.diffuseColor = new BABYLON.Color3(0.05, 0.05, 0.05); // siyaha yakın
-  darkMat.specularColor = new BABYLON.Color3(0,0,0);
-
-  // Modeldeki tüm mesh'lerin malzemesini koyulaştır
-  res.meshes.forEach(m => {
-    m.material = darkMat;
-  });
-
+  // Pozisyonu eski giriş noktanla uyumlu tut
   avatar.position = new BABYLON.Vector3(0, 0, -22);
-  avatar.getChildMeshes().forEach(m=>{
-    if(m.material){
-        m.material = new BABYLON.StandardMaterial("darkMat", scene);
-        m.material.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);  // koyu gri
-        m.material.specularColor = new BABYLON.Color3(0,0,0);
-    }
+
+  // 🔎 GLB'ler genelde 1.0 ölçekle gelir. Büyük/küçükse bu değeri değiştir.
+  avatar.scaling = new BABYLON.Vector3(1, 1, 1);
+
+  // Kameranın yönünü avatarla hizala
+  avatar.rotation.y = camera.rotation.y;
+
+  // 🎨 ÖNEMLİ: GLB'nin kendi dokularını korumak için koyu malzeme atamasını yapmıyoruz.
+  // Eğer yine koyu silüet istiyorsan aşağıdaki satırları açabilirsin:
+  /*
+  const darkMat = new BABYLON.StandardMaterial("darkMat", scene);
+  darkMat.diffuseColor = new BABYLON.Color3(0.05, 0.05, 0.05);
+  darkMat.specularColor = new BABYLON.Color3(0,0,0);
+  res.meshes.forEach(m => m.material = darkMat);
+  */
 });
-});
+
 // ✅ Klavye kontrolü
 window.addEventListener("keydown", (e) => {
   if (e.key === "w" || e.key === "ArrowUp")    moveForward  = true;
