@@ -655,7 +655,7 @@ scene.onBeforeRenderObservable.add(() => {
     avatar.rotationQuaternion = null; // GLB'lerde quaternion kilidi olabilir
 
   // Sadece Y ekseninde döndür (yana yatmayı engeller)
-  avatar.rotation.y = camera.rotation.y + Math.PI; 
+  avatar.rotation.y = camera.rotation.y ; 
 }
 
   if (typeof window.__stepCd === "undefined") window.__stepCd = 0;
