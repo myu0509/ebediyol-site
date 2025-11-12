@@ -132,12 +132,6 @@ BABYLON.SceneLoader.ImportMeshAsync("", "", AVATAR_URL, scene).then((res) => {
 
   // Kamera yönüyle hizala
   avatar.rotation.y = camera.rotation.y + Math.PI;
-
-  // Test için bir işaret bırak (küçük küre)
-  const marker = BABYLON.MeshBuilder.CreateSphere("marker", { diameter: 0.2 }, scene);
-  marker.position = avatar.position.clone();
-  marker.material = new BABYLON.StandardMaterial("m", scene);
-  marker.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
 });
 
 // ✅ Klavye kontrolü
