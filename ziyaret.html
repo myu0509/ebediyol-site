@@ -643,7 +643,8 @@ bg.addControl(welcomeText);
 
    // Kamera sınırı + yükseklik sabitleme 
 scene.onBeforeRenderObservable.add(() => {
-  if (avatar) {
+ 
+ if (avatar) {
   // Kamera avatarı takip etsin
   camera.position.x = avatar.position.x - 4 * Math.sin(camera.rotation.y);
   camera.position.z = avatar.position.z - 4 * Math.cos(camera.rotation.y);
@@ -658,11 +659,6 @@ scene.onBeforeRenderObservable.add(() => {
   avatar.rotation.z = 0;
   avatar.rotation.y = camera.rotation.y + Math.PI; 
 }
-
-}
-    // Eğer ters bakıyorsa şu satırı kullan:
-    // avatar.rotation.y = camera.rotation.y + Math.PI;
-  }
 
   if (typeof window.__stepCd === "undefined") window.__stepCd = 0;
   const dt = engine.getDeltaTime();
