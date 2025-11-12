@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-856CRDN7X3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-856CRDN7X3');
-</script>
   <meta charset="UTF-8" />
   <title>Ebedi Yol - A Blok</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -122,7 +113,36 @@ let moveLeft = false;
 let moveRight = false;
 let avatar = null;
 
-    
+BABYLON.SceneLoader.ImportMeshAsync(
+  "",
+  "https://www.babylonjs.com/Scenes/Dude/",
+  "Dude.babylon",
+  scene
+).then((res) => {
+  avatar = res.meshes[0];
+
+  // Boy biraz daha uzun
+  avatar.scaling = new BABYLON.Vector3(0.016, 0.016, 0.016);
+
+  // Koyu silüet kıyafet
+  const darkMat = new BABYLON.StandardMaterial("darkMat", scene);
+  darkMat.diffuseColor = new BABYLON.Color3(0.05, 0.05, 0.05); // siyaha yakın
+  darkMat.specularColor = new BABYLON.Color3(0,0,0);
+
+  // Modeldeki tüm mesh'lerin malzemesini koyulaştır
+  res.meshes.forEach(m => {
+    m.material = darkMat;
+  });
+
+  avatar.position = new BABYLON.Vector3(0, 0, -22);
+  avatar.getChildMeshes().forEach(m=>{
+    if(m.material){
+        m.material = new BABYLON.StandardMaterial("darkMat", scene);
+        m.material.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);  // koyu gri
+        m.material.specularColor = new BABYLON.Color3(0,0,0);
+    }
+});
+});
 // ✅ Klavye kontrolü
 window.addEventListener("keydown", (e) => {
   if (e.key === "w" || e.key === "ArrowUp")    moveForward  = true;
@@ -168,8 +188,8 @@ if (btnRight) {
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
     light.intensity = 1.2;
 
-    // Zemin (300x300)
-    const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 300, height: 300 }, scene);
+    // Zemin (50x50)
+    const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 50 }, scene);
     const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
     groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.35, 0.2);
     ground.material = groundMat;
