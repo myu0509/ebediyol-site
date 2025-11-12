@@ -650,7 +650,12 @@ scene.onBeforeRenderObservable.add(() => {
     camera.position.y = avatar.position.y + 1.8;
 
     // 🔄 Kamera yönü değiştikçe avatar da aynı yöne baksın
-    avatar.rotation.y = camera.rotation.y;
+    // Kamera yönüyle avatarın yönünü senkronla (tüm alt mesh'lere uygula)
+if (avatar && avatar.getChildMeshes) {
+  avatar.getChildMeshes().forEach(m => {
+    m.rotation.y = camera.rotation.y + Math.PI; // gerekirse +Math.PI çıkar
+  });
+}
     // Eğer ters bakıyorsa şu satırı kullan:
     // avatar.rotation.y = camera.rotation.y + Math.PI;
   }
