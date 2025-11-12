@@ -124,9 +124,11 @@ let avatar = null;
 
 BABYLON.SceneLoader.ImportMeshAsync(
   "",
-  "https://www.babylonjs.com/Scenes/Dude/",
-  "Dude.babylon",
+  "./",
+  "avatar.glb",
   scene
+)
+
 ).then((res) => {
   avatar = res.meshes[0];
 
