@@ -641,25 +641,7 @@ welcomeText.outlineWidth = 6;
 welcomeText.outlineColor = "black";
 bg.addControl(welcomeText);
 
-    // Kamera sınırı + yükseklik sabitleme
-   scene.onBeforeRenderObservable.add(() => {
-  // Kamera avatarı takip etsin
-  if (avatar) {
-    camera.position.x = avatar.position.x - 4 * Math.sin(camera.rotation.y);
-    camera.position.z = avatar.position.z - 4 * Math.cos(camera.rotation.y);
-    camera.position.y = avatar.position.y + 1.8;
-
-    // 🔄 Kamera yönü değiştikçe avatar da aynı yöne baksın
-    avatar.rotation.y = camera.rotation.y;
-  }
-});
-
-}
-if (typeof window.__stepCd === "undefined") window.__stepCd = 0;
-const dt = engine.getDeltaTime();
-window.__stepCd = Math.max(0, window.__stepCd - dt);
-
-// Kamera sınırı + yükseklik sabitleme 
+   // Kamera sınırı + yükseklik sabitleme 
 scene.onBeforeRenderObservable.add(() => {
   // Kamera avatarı takip etsin
   if (avatar) {
@@ -669,7 +651,7 @@ scene.onBeforeRenderObservable.add(() => {
 
     // 🔄 Kamera yönü değiştikçe avatar da aynı yöne baksın
     avatar.rotation.y = camera.rotation.y;
-    // Eğer avatar ters bakıyorsa şu satırı kullan:
+    // Eğer ters bakıyorsa şu satırı kullan:
     // avatar.rotation.y = camera.rotation.y + Math.PI;
   }
 
@@ -722,7 +704,6 @@ scene.onBeforeRenderObservable.add(() => {
   if (camera.position.y < 1.6) camera.position.y = 1.6;
   if (camera.position.y > 3.0) camera.position.y = 3.0;
 });
-
 
     // Render döngüsü
     engine.runRenderLoop(() => scene.render());
