@@ -130,24 +130,21 @@ BABYLON.SceneLoader.ImportMeshAsync(
 ).then((res) => {
   avatar = res.meshes[0];
 
+  // Boyut ve konum ayarı
   avatar.scaling = new BABYLON.Vector3(0.016, 0.016, 0.016);
-  avatar.position = new BABYLON.Vector3(0, 0, -5);
-});
+  avatar.position = new BABYLON.Vector3(0, 2, -23);
 
-  // Modeldeki tüm mesh'lerin malzemesini koyulaştır
-  res.meshes.forEach(m => {
+  // Koyu malzeme tanımla
+  const darkMat = new BABYLON.StandardMaterial("darkMat", scene);
+  darkMat.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+  darkMat.specularColor = new BABYLON.Color3(0, 0, 0);
+
+  // Modeldeki tüm mesh’lere uygula
+  avatar.getChildMeshes().forEach(m => {
     m.material = darkMat;
   });
-
-  avatar.position = new BABYLON.Vector3(0, 2, -23);
-  avatar.getChildMeshes().forEach(m=>{
-    if(m.material){
-        m.material = new BABYLON.StandardMaterial("darkMat", scene);
-        m.material.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.1);  // koyu gri
-        m.material.specularColor = new BABYLON.Color3(0,0,0);
-    }
 });
-});
+    
 // ✅ Klavye kontrolü
 window.addEventListener("keydown", (e) => {
   if (e.key === "w" || e.key === "ArrowUp")    moveForward  = true;
