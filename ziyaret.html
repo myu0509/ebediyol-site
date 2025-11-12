@@ -124,20 +124,15 @@ let avatar = null;
 
 BABYLON.SceneLoader.ImportMeshAsync(
   "",
-  "https://www.ebediyol.com/avatar.glb",
+  "https://www.ebediyol.com/",
+  "avatar.glb",
   scene
-  
 ).then((res) => {
-    console.log("Avatar dosyası yüklendi!");
   avatar = res.meshes[0];
 
-  // Boy biraz daha uzun
   avatar.scaling = new BABYLON.Vector3(0.016, 0.016, 0.016);
-
-  // Koyu silüet kıyafet
-  const darkMat = new BABYLON.StandardMaterial("darkMat", scene);
-  darkMat.diffuseColor = new BABYLON.Color3(0.05, 0.05, 0.05); // siyaha yakın
-  darkMat.specularColor = new BABYLON.Color3(0,0,0);
+  avatar.position = new BABYLON.Vector3(0, 0, -5);
+});
 
   // Modeldeki tüm mesh'lerin malzemesini koyulaştır
   res.meshes.forEach(m => {
