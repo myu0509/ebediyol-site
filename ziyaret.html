@@ -643,18 +643,22 @@ bg.addControl(welcomeText);
 
    // Kamera sınırı + yükseklik sabitleme 
 scene.onBeforeRenderObservable.add(() => {
-  // Kamera avatarı takip etsin
   if (avatar) {
-    camera.position.x = avatar.position.x - 4 * Math.sin(camera.rotation.y);
-    camera.position.z = avatar.position.z - 4 * Math.cos(camera.rotation.y);
-    camera.position.y = avatar.position.y + 1.8;
+  // Kamera avatarı takip etsin
+  camera.position.x = avatar.position.x - 4 * Math.sin(camera.rotation.y);
+  camera.position.z = avatar.position.z - 4 * Math.cos(camera.rotation.y);
+  camera.position.y = avatar.position.y + 1.8;
 
-    // 🔄 Kamera yönü değiştikçe avatar da aynı yöne baksın
-    // Kamera yönüyle avatarın yönünü senkronla (tüm alt mesh'lere uygula)
-if (avatar && avatar.getChildMeshes) {
-  avatar.getChildMeshes().forEach(m => {
-    m.rotation.y = camera.rotation.y + Math.PI; // gerekirse +Math.PI çıkar
-  });
+  // 🔄 Avatar yönünü kameraya göre ayarla
+  if (avatar.rotationQuaternion)
+    avatar.rotationQuaternion = null; // GLB'lerde quaternion kilidi olabilir
+
+  // Sadece Y ekseninde döndür (yana yatmayı engeller)
+  avatar.rotation.x = 0;
+  avatar.rotation.z = 0;
+  avatar.rotation.y = camera.rotation.y + Math.PI; 
+}
+
 }
     // Eğer ters bakıyorsa şu satırı kullan:
     // avatar.rotation.y = camera.rotation.y + Math.PI;
