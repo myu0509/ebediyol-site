@@ -648,6 +648,11 @@ if (avatar) {
   camera.position.x = avatar.position.x - 4 * Math.sin(camera.rotation.y);
   camera.position.z = avatar.position.z - 4 * Math.cos(camera.rotation.y);
   camera.position.y = avatar.position.y + 1.8;
+  // 🔄 Kamera yönü değiştikçe avatar da aynı yöne baksın
+if (avatar) {
+  avatar.rotation.y = camera.rotation.y;
+}
+
 }
 if (typeof window.__stepCd === "undefined") window.__stepCd = 0;
 const dt = engine.getDeltaTime();
