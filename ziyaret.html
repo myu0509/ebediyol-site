@@ -122,25 +122,6 @@ let moveLeft = false;
 let moveRight = false;
 let avatar = null;
 
-// === AVATAR (YENİ, BASİT VE HATASIZ) ===
-BABYLON.SceneLoader.ImportMeshAsync(
-  "",
-  "https://www.ebediyol.com/",
-  "avatar.glb",
-  scene
-).then((res) => {
-  // __root__ dışındaki ilk gerçek mesh'i al; yoksa 0. elemanı al
-  avatar = res.meshes.find(m => m.name && m.name !== "__root__") || res.meshes[0];
-
-  // TEST için büyük tutalım ki kesin görünsün
-  avatar.scaling = new BABYLON.Vector3(1, 1, 1);
-  avatar.position = new BABYLON.Vector3(0, 0, -5);
-
-  // Modeldeki tüm mesh’lere uygula
-  avatar.getChildMeshes().forEach(m => {
-    m.material = darkMat;
-  });
-});
     
 // ✅ Klavye kontrolü
 window.addEventListener("keydown", (e) => {
