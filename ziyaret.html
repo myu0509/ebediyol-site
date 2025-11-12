@@ -659,60 +659,70 @@ if (typeof window.__stepCd === "undefined") window.__stepCd = 0;
 const dt = engine.getDeltaTime();
 window.__stepCd = Math.max(0, window.__stepCd - dt);
 
-// ✅ Adım sesi — sadece yürürken
-if (avatar && steps) {
-  const moving = (moveForward || moveBackward);
-  
-  if (moving) {
-    if (steps.paused) {
-      steps.currentTime = 0;
-      steps.play().catch(()=>{});
-    }
-  } else {
-    steps.pause();
+// Kamera sınırı + yükseklik sabitleme 
+scene.onBeforeRenderObservable.add(() => {
+  // Kamera avatarı takip etsin
+  if (avatar) {
+    camera.position.x = avatar.position.x - 4 * Math.sin(camera.rotation.y);
+    camera.position.z = avatar.position.z - 4 * Math.cos(camera.rotation.y);
+    camera.position.y = avatar.position.y + 1.8;
+
+    // 🔄 Kamera yönü değiştikçe avatar da aynı yöne baksın
+    avatar.rotation.y = camera.rotation.y;
+    // Eğer avatar ters bakıyorsa şu satırı kullan:
+    // avatar.rotation.y = camera.rotation.y + Math.PI;
   }
-}
 
+  if (typeof window.__stepCd === "undefined") window.__stepCd = 0;
+  const dt = engine.getDeltaTime();
+  window.__stepCd = Math.max(0, window.__stepCd - dt);
 
-      // ✅ Mobil hareket uygula
-let moveSpeed = 0.11;
+  // ✅ Adım sesi — sadece yürürken
+  if (avatar && steps) {
+    const moving = (moveForward || moveBackward);
+    if (moving) {
+      if (steps.paused) {
+        steps.currentTime = 0;
+        steps.play().catch(()=>{});
+      }
+    } else {
+      steps.pause();
+    }
+  }
 
-if (moveForward && avatar) {
-  avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
-  avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
-}
+  // ✅ Mobil hareket uygula
+  let moveSpeed = 0.11;
 
-if (moveBackward && avatar) {
-  avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
-  avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
-}
+  if (moveForward && avatar) {
+    avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
+    avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
+  }
 
-if (moveLeft) {
-  camera.rotation.y -= 0.04;
-}
+  if (moveBackward && avatar) {
+    avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
+    avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
+  }
 
-if (moveRight) {
-  camera.rotation.y += 0.04;
-}
-if (avatar) {
-  avatar.rotation.y = camera.rotation.y;
-}
-// Avatar sınır kontrolü
-if (avatar) {
-  if (avatar.position.x > 25) avatar.position.x = 25;
-  if (avatar.position.x < -25) avatar.position.x = -25;
-  if (avatar.position.z > 25) avatar.position.z = 25;
-  if (avatar.position.z < -25) avatar.position.z = -25;
-}
+  if (moveLeft) camera.rotation.y -= 0.04;
+  if (moveRight) camera.rotation.y += 0.04;
 
-      if (camera.position.x > 25) camera.position.x = 25;
-      if (camera.position.x < -25) camera.position.x = -25;
-      if (camera.position.z > 25) camera.position.z = 25;
-      if (camera.position.z < -25) camera.position.z = -25;
+  // Avatar sınır kontrolü
+  if (avatar) {
+    if (avatar.position.x > 25) avatar.position.x = 25;
+    if (avatar.position.x < -25) avatar.position.x = -25;
+    if (avatar.position.z > 25) avatar.position.z = 25;
+    if (avatar.position.z < -25) avatar.position.z = -25;
+  }
 
-      if (camera.position.y < 1.6) camera.position.y = 1.6;
-      if (camera.position.y > 3.0) camera.position.y = 3.0;
-    });
+  if (camera.position.x > 25) camera.position.x = 25;
+  if (camera.position.x < -25) camera.position.x = -25;
+  if (camera.position.z > 25) camera.position.z = 25;
+  if (camera.position.z < -25) camera.position.z = -25;
+
+  if (camera.position.y < 1.6) camera.position.y = 1.6;
+  if (camera.position.y > 3.0) camera.position.y = 3.0;
+});
+
 
     // Render döngüsü
     engine.runRenderLoop(() => scene.render());
