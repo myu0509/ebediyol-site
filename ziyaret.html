@@ -131,7 +131,7 @@ BABYLON.SceneLoader.ImportMeshAsync("", "", AVATAR_URL, scene).then((res) => {
   avatar.scaling = new BABYLON.Vector3(0.8, 0.6, 1);
 
   // Kamera yönüyle hizala
-  avatar.rotation.y = camera.rotation.y;
+  avatar.rotation.y = camera.rotation.y + Math.PI;
 
   // Test için bir işaret bırak (küçük küre)
   const marker = BABYLON.MeshBuilder.CreateSphere("marker", { diameter: 0.2 }, scene);
