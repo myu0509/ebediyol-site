@@ -113,38 +113,30 @@ let moveLeft = false;
 let moveRight = false;
 let avatar = null;
 
-// ✅ GitHub'daki GLB dosyan (RAW link)
+// ✅ Avatar GLB modelini yükleme
 const AVATAR_URL = "https://raw.githubusercontent.com/myu0509/ebediyol-site/main/avatar.glb";
 
-BABYLON.SceneLoader.ImportMeshAsync(
-  "",                  // meshesNames
-  "",                  // rootUrl (boş bırakıyoruz)
-  AVATAR_URL,          // sceneFilename (tam URL)
-  scene
-).then((res) => {
-  // En mantıklı ana mesh'i seç
-  avatar =
-    res.meshes[0] ||
-    res.meshes.find(m => m.name && m.name.toLowerCase().includes("avatar")) ||
-    res.meshes[res.meshes.length - 1];
+BABYLON.SceneLoader.ImportMeshAsync("", "", AVATAR_URL, scene).then((res) => {
+  // Model sahneye başarıyla yüklendiğinde
+  avatar = res.meshes[0] || res.meshes.find(m => m.name) || res.meshes.pop();
 
-  // Pozisyonu eski giriş noktanla uyumlu tut
+  // Görünürlük kontrolü için log
+  console.log("Avatar yüklendi:", avatar.name);
+
+  // Avatarın konumu
   avatar.position = new BABYLON.Vector3(0, 0, -22);
 
-  // 🔎 GLB'ler genelde 1.0 ölçekle gelir. Büyük/küçükse bu değeri değiştir.
+  // Eğer görünmüyorsa bu değeri 10 veya 0.1 gibi değiştirerek dene
   avatar.scaling = new BABYLON.Vector3(1, 1, 1);
 
-  // Kameranın yönünü avatarla hizala
+  // Kamera yönüyle hizala
   avatar.rotation.y = camera.rotation.y;
 
-  // 🎨 ÖNEMLİ: GLB'nin kendi dokularını korumak için koyu malzeme atamasını yapmıyoruz.
-  // Eğer yine koyu silüet istiyorsan aşağıdaki satırları açabilirsin:
-  /*
-  const darkMat = new BABYLON.StandardMaterial("darkMat", scene);
-  darkMat.diffuseColor = new BABYLON.Color3(0.05, 0.05, 0.05);
-  darkMat.specularColor = new BABYLON.Color3(0,0,0);
-  res.meshes.forEach(m => m.material = darkMat);
-  */
+  // Test için bir işaret bırak (küçük küre)
+  const marker = BABYLON.MeshBuilder.CreateSphere("marker", { diameter: 0.2 }, scene);
+  marker.position = avatar.position.clone();
+  marker.material = new BABYLON.StandardMaterial("m", scene);
+  marker.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
 });
 
 // ✅ Klavye kontrolü
