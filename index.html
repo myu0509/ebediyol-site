@@ -4,33 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Üstün Deneme Kulübü</title>
+
   <link rel="icon" type="image/png" href="favicon.png" />
 
   <style>
     body {
       margin: 0;
-      font-family: "Arial", sans-serif;
+      font-family: Arial, sans-serif;
       background: #0f172a;
       color: #ffffff;
     }
 
-    /* 🔝 ÜST MENÜ */
+    /* ================= HEADER ================= */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 40px;
+      padding: 18px 30px;
       background: #020617;
+      position: relative;
     }
 
     header img {
-      height: 55px;
+      height: 52px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
     }
 
     nav a {
       color: #e5e7eb;
       text-decoration: none;
-      margin-left: 25px;
+      margin-left: 24px;
       font-size: 16px;
       transition: 0.3s;
     }
@@ -39,7 +46,15 @@
       color: #facc15;
     }
 
-    /* 🎯 ANA ALAN */
+    /* Hamburger */
+    .menu-toggle {
+      display: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #facc15;
+    }
+
+    /* ================= HERO ================= */
     .hero {
       min-height: calc(100vh - 140px);
       display: flex;
@@ -51,28 +66,27 @@
     }
 
     .hero img {
-      max-width: 320px;
+      max-width: 300px;
       margin-bottom: 30px;
     }
 
     .hero h1 {
-      font-size: clamp(26px, 5vw, 48px);
-      margin-bottom: 20px;
+      font-size: clamp(26px, 5vw, 46px);
+      margin-bottom: 18px;
     }
 
     .hero p {
       font-size: clamp(15px, 2.5vw, 20px);
-      max-width: 700px;
+      max-width: 720px;
       color: #cbd5f5;
       margin-bottom: 40px;
       line-height: 1.6;
     }
 
-    /* 🔘 BUTON */
     .button {
       background: #facc15;
       color: #020617;
-      padding: 16px 40px;
+      padding: 16px 42px;
       border-radius: 12px;
       font-size: 18px;
       font-weight: bold;
@@ -85,13 +99,42 @@
       transform: scale(1.05);
     }
 
-    /* 🔻 FOOTER */
+    /* ================= FOOTER ================= */
     footer {
       background: #020617;
       text-align: center;
-      padding: 20px;
+      padding: 18px;
       font-size: 14px;
       color: #94a3b8;
+    }
+
+    /* ================= MOBILE ================= */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: #020617;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        padding: 12px 0;
+        border-top: 1px solid #1e293b;
+      }
+
+      nav a {
+        margin: 12px 0;
+        font-size: 18px;
+        text-align: center;
+      }
+
+      nav.active {
+        display: flex;
+      }
     }
   </style>
 </head>
@@ -100,7 +143,10 @@
 
 <header>
   <img src="logo.png" alt="Üstün Deneme Kulübü">
-  <nav>
+
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <nav id="mainMenu">
     <a href="#">Anasayfa</a>
     <a href="#">Denemeler</a>
     <a href="#">Hakkımızda</a>
@@ -127,6 +173,12 @@
   Bu platform pilot uygulama kapsamındadır.  
   İçerikler ve sistem sürekli geliştirilmektedir.
 </footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById("mainMenu").classList.toggle("active");
+  }
+</script>
 
 </body>
 </html>
