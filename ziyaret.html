@@ -269,18 +269,18 @@
     const poleMat = new BABYLON.StandardMaterial("poleMat", scene);
     poleMat.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
 
-    const poleLeft = BABYLON.MeshBuilder.CreateCylinder("poleLeft", { diameter: 0.3, height: 4 }, scene);
-    poleLeft.position = new BABYLON.Vector3(-2.5, 2, -12);
+    const poleLeft = BABYLON.MeshBuilder.CreateCylinder("poleLeft", { diameter: 0.3, height: 6 }, scene);
+    poleLeft.position = new BABYLON.Vector3(-2.5, 3, -12);
     poleLeft.material = poleMat;
 
-    const poleRight = BABYLON.MeshBuilder.CreateCylinder("poleRight", { diameter: 0.3, height: 4 }, scene);
-    poleRight.position = new BABYLON.Vector3(2.5, 2, -12);
+    const poleRight = BABYLON.MeshBuilder.CreateCylinder("poleRight", { diameter: 0.3, height: 6 }, scene);
+    poleRight.position = new BABYLON.Vector3(2.5, 3, -12);
     poleRight.material = poleMat;
 
     const welcomeSign = BABYLON.MeshBuilder.CreatePlane("welcomeSign", { width: 6.5, height: 1.6 }, scene);
-    welcomeSign.position = new BABYLON.Vector3(0, 3.1, -12);
+    welcomeSign.position = new BABYLON.Vector3(0, 5.4, -12);
     welcomeSign.rotation = new BABYLON.Vector3(0, 0, 0);
-    welcomeSign.scaling.y = 1.25;
+    welcomeSign.scaling.y = 1.5;
 
     const welcomeTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(welcomeSign);
     const bg = new BABYLON.GUI.Rectangle();
