@@ -277,7 +277,7 @@
     poleRight.position = new BABYLON.Vector3(2.5, 3, -12);
     poleRight.material = poleMat;
 
-    const welcomeSign = BABYLON.MeshBuilder.CreatePlane("welcomeSign", { width: 6.5, height: 1.6 }, scene);
+    const welcomeSign = BABYLON.MeshBuilder.CreatePlane("welcomeSign", { width: 7.2, height: 1.8 }, scene);
     welcomeSign.position = new BABYLON.Vector3(0, 5.4, -12);
     welcomeSign.rotation = new BABYLON.Vector3(0, 0, 0);
     welcomeSign.scaling.y = 1.5;
@@ -291,12 +291,21 @@
     const welcomeText = new BABYLON.GUI.TextBlock();
     welcomeText.text = "ÜSTÜN DENEME KAMPÜSÜNE\nHOŞGELDİNİZ";
     welcomeText.color = "white";
-    welcomeText.fontSize = "78px";
+    welcomeText.fontSize = "64px";              // 🔽 biraz küçülttük
+    welcomeText.lineSpacing = "16px";            // 🔽 satırlar nefes alsın
+    welcomeText.textWrapping = true;             // 🔑 taşmayı engeller
+    welcomeText.width = "95%";                   // 🔑 direklerin içine sığar
+    welcomeText.height = "100%";
+
+    welcomeText.textHorizontalAlignment =
+      BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+    welcomeText.textVerticalAlignment =
+      BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+
     welcomeText.outlineWidth = 6;
     welcomeText.outlineColor = "black";
-    welcomeText.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-    welcomeText.textVerticalAlignment   = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
-    bg.addControl(welcomeText);
+
+bg.addControl(welcomeText);
 
     // === 3 BİNA (bina gibi: gövde + çatı + kapı + tabela) ===
     function createCampusBuilding(opts) {
