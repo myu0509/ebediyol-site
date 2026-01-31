@@ -259,14 +259,23 @@
         bar.material = fenceMat;
       }
 
-      // Direk diz
+      // ÜST ve ALT (GİRİŞ ALT: z = -25)
       for (let x = -25; x <= 25; x += 2) {
+
+        // 🚪 GİRİŞ BOŞLUĞU
+        if (x > -3 && x < 3) {
+          makePole(x, 25); // üst kalsın
+          continue;        // altı atla
+        }
+
         makePole(x, 25);
-        makePole(x,-25);
+        makePole(x, -25);
       }
+
+      // SAĞ ve SOL AYNI
       for (let z = -25; z <= 25; z += 2) {
         makePole(25, z);
-        makePole(-25,z);
+        makePole(-25, z);
       }
 
       // 3 sıra bar
