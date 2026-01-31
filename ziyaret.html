@@ -79,7 +79,8 @@
     const canvas = document.getElementById("renderCanvas");
     const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
     const scene  = new BABYLON.Scene(engine);
-
+    scene.collisionsEnabled = true;
+    
     // Sesler
     const birds = document.getElementById("birds");
     const steps = document.getElementById("steps");
@@ -113,6 +114,11 @@
       avatar.position = new BABYLON.Vector3(0, 0, -22);
       avatar.scaling  = new BABYLON.Vector3(0.8, 1.3, 1);
       avatar.rotation.y = camera.rotation.y + Math.PI;
+      avatar.checkCollisions = true;
+
+      // avatarın fiziksel çarpışma hacmi
+      avatar.ellipsoid = new BABYLON.Vector3(0.6, 1.2, 0.6);
+      avatar.ellipsoidOffset = new BABYLON.Vector3(0, 1.2, 0);
     });
 
     // Klavye kontrol (seninki)
@@ -163,6 +169,7 @@
 
     // === ZEMİN (kampüse uygun) ===
     const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 50, height: 50 }, scene);
+    ground.checkCollisions = true;
     const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
     groundMat.diffuseColor = new BABYLON.Color3(0.14, 0.28, 0.16);
     ground.material = groundMat;
@@ -315,6 +322,7 @@ bg.addControl(welcomeText);
 
       // gövde
       const body = BABYLON.MeshBuilder.CreateBox(id + "_body", { width: 7, height: 4.5, depth: 7 }, scene);
+      body.checkCollisions = true;
       body.position = new BABYLON.Vector3(x, 2.25, z);
       const bodyMat = new BABYLON.StandardMaterial(id + "_bodyMat", scene);
       bodyMat.diffuseColor = bodyColor;
@@ -428,14 +436,18 @@ bg.addControl(welcomeText);
       // Mobil hareket uygula (seninki)
       const moveSpeed = 0.11;
 
+      const forward = new BABYLON.Vector3(
+        Math.sin(camera.rotation.y),
+        0,
+        Math.cos(camera.rotation.y)
+      );
+
       if (moveForward && avatar) {
-        avatar.position.z += moveSpeed * Math.cos(camera.rotation.y);
-        avatar.position.x += moveSpeed * Math.sin(camera.rotation.y);
+        avatar.moveWithCollisions(forward.scale(moveSpeed));
       }
 
       if (moveBackward && avatar) {
-        avatar.position.z -= moveSpeed * Math.cos(camera.rotation.y);
-        avatar.position.x -= moveSpeed * Math.sin(camera.rotation.y);
+        avatar.moveWithCollisions(forward.scale(-moveSpeed));
       }
 
       if (moveLeft)  camera.rotation.y -= 0.04;
