@@ -270,11 +270,11 @@
     poleMat.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
 
     const poleLeft = BABYLON.MeshBuilder.CreateCylinder("poleLeft", { diameter: 0.3, height: 6 }, scene);
-    poleLeft.position = new BABYLON.Vector3(-2.5, 3, -12);
+    poleLeft.position = new BABYLON.Vector3(-2, 3, -12);
     poleLeft.material = poleMat;
 
     const poleRight = BABYLON.MeshBuilder.CreateCylinder("poleRight", { diameter: 0.3, height: 6 }, scene);
-    poleRight.position = new BABYLON.Vector3(2.5, 3, -12);
+    poleRight.position = new BABYLON.Vector3(2, 3, -12);
     poleRight.material = poleMat;
 
     const welcomeSign = BABYLON.MeshBuilder.CreatePlane("welcomeSign", { width: 7.2, height: 1.8 }, scene);
