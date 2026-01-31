@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -258,23 +259,14 @@
         bar.material = fenceMat;
       }
 
-      // ÜST ve ALT KENARLAR
+      // Direk diz
       for (let x = -25; x <= 25; x += 2) {
-
-        // 🚪 GİRİŞ BOŞLUĞU (sadece üst kenar)
-        if (x > -3 && x < 3) {
-          makePole(x, -25); // alt kenar aynen devam
-          continue;
-        }
-
-        makePole(x, 25);   // üst kenar
-        makePole(x, -25);  // alt kenar
+        makePole(x, 25);
+        makePole(x,-25);
       }
-
-      // SAĞ ve SOL KENARLAR (AYNEN KALIYOR)
       for (let z = -25; z <= 25; z += 2) {
         makePole(25, z);
-        makePole(-25, z);
+        makePole(-25,z);
       }
 
       // 3 sıra bar
