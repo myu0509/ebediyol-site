@@ -289,11 +289,13 @@
     welcomeTexture.addControl(bg);
 
     const welcomeText = new BABYLON.GUI.TextBlock();
-    welcomeText.text = "ÜSTÜN DENEME KAMPÜSÜ";
+    welcomeText.text = "ÜSTÜN DENEME KAMPÜSÜNE\nHOŞGELDİNİZ";
     welcomeText.color = "white";
-    welcomeText.fontSize = "90px";
+    welcomeText.fontSize = "78px";
     welcomeText.outlineWidth = 6;
     welcomeText.outlineColor = "black";
+    welcomeText.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+    welcomeText.textVerticalAlignment   = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
     bg.addControl(welcomeText);
 
     // === 3 BİNA (bina gibi: gövde + çatı + kapı + tabela) ===
