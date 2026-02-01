@@ -1,148 +1,186 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Üstün Deneme Kampüsü</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Üstün Deneme Kampüsü</title>
+<link rel="icon" type="image/png" href="favicon.png">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png" />
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:Arial, sans-serif;
+  background:linear-gradient(180deg,#0b1020,#0e1630);
+  color:#fff;
+}
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+/* ===== HEADER ===== */
+header{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:64px;
+  background:linear-gradient(90deg,#050a18,#0b1020);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 16px;
+  z-index:1000;
+}
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+header img{
+  width:36px;height:36px;
+}
+header h1{
+  font-size:18px;
+  font-weight:600;
+}
 
-    body {
-      font-family: "Arial", sans-serif;
-      background: linear-gradient(180deg, #0b1020 0%, #0e1630 100%);
-      color: white;
-    }
+/* ===== MENU ===== */
+.menu-btn{
+  font-size:26px;
+  cursor:pointer;
+}
+nav{
+  position:fixed;
+  top:64px;right:-100%;
+  width:220px;
+  height:100%;
+  background:#050a18;
+  padding:20px;
+  transition:.3s;
+}
+nav a{
+  display:block;
+  color:#fff;
+  text-decoration:none;
+  padding:12px 0;
+  border-bottom:1px solid #1f2937;
+}
+nav.active{right:0}
 
-    /* ================= HEADER ================= */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 0 16px;
-      background: linear-gradient(90deg, #050a18, #0b1020);
-      z-index: 1000;
-    }
+/* ===== HERO ===== */
+.hero{
+  padding:110px 20px 80px;
+  text-align:center;
+}
+.hero h2{
+  font-size:clamp(32px,6vw,46px);
+  line-height:1.25;
+}
+.hero p{
+  max-width:720px;
+  margin:22px auto;
+  font-size:clamp(16px,3.5vw,20px);
+  color:#cbd5e1;
+  line-height:1.6;
+}
+.hero .cta{
+  display:inline-block;
+  margin-top:28px;
+  background:#22c55e;
+  color:#052e16;
+  padding:18px 40px;
+  border-radius:14px;
+  font-weight:bold;
+  text-decoration:none;
+  box-shadow:0 10px 30px rgba(34,197,94,.35);
+}
 
-    header img {
-      width: 36px;
-      height: 36px;
-    }
+/* ===== SECTIONS ===== */
+.section{
+  padding:70px 20px;
+  text-align:center;
+}
+.section h3{
+  font-size:28px;
+  margin-bottom:16px;
+}
+.section p{
+  max-width:720px;
+  margin:auto;
+  color:#cbd5e1;
+  line-height:1.6;
+}
 
-    header h1 {
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    /* ================= HERO ================= */
-    .hero {
-      min-height: 100vh;
-      padding: 96px 20px 80px; /* header altı boşluk ayarlı */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start; /* kritik nokta */
-      text-align: center;
-      gap: 22px;
-    }
-
-    .hero h2 {
-      font-size: clamp(32px, 6vw, 46px);
-      font-weight: 700;
-      line-height: 1.25;
-    }
-
-    .hero p {
-      max-width: 720px;
-      font-size: clamp(16px, 3.5vw, 20px);
-      line-height: 1.6;
-      color: #cbd5e1;
-    }
-
-    /* ================= CTA ================= */
-    .cta-btn {
-      margin-top: 32px;
-      background: #22c55e;
-      color: #052e16;
-      padding: 18px 40px;
-      font-size: 18px;
-      font-weight: bold;
-      border-radius: 14px;
-      text-decoration: none;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 10px 30px rgba(34,197,94,0.35);
-    }
-
-    .cta-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 14px 40px rgba(34,197,94,0.5);
-    }
-
-    /* ================= FOOTER ================= */
-    footer {
-      padding: 32px 16px;
-      text-align: center;
-      font-size: 14px;
-      color: #9ca3af;
-      background: #050a18;
-    }
-
-    /* ================= MOBILE ================= */
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 16px;
-      }
-
-      .cta-btn {
-        width: 100%;
-        max-width: 320px;
-      }
-    }
-  </style>
+/* ===== FOOTER ===== */
+footer{
+  padding:32px;
+  text-align:center;
+  background:#050a18;
+  color:#9ca3af;
+  font-size:14px;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- HEADER -->
-  <header>
-    <img src="favicon.png" alt="Üstün Logo">
+<header>
+  <div class="header-left">
+    <img src="favicon.png">
     <h1>Üstün Deneme Kampüsü</h1>
-  </header>
+  </div>
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+</header>
 
-  <!-- HERO -->
-  <main class="hero">
-    <h2>
-      Deneme Çözmek Değil,<br>
-      İlerlemek
-    </h2>
+<nav id="menu">
+  <a href="#">Anasayfa</a>
+  <a href="#">Denemeler</a>
+  <a href="#">Analiz</a>
+  <a href="#">Koçluk</a>
+  <a href="#">Hakkımızda</a>
+</nav>
 
+<main>
+  <section class="hero">
+    <h2>Deneme Çözmek Değil,<br>İlerlemek</h2>
     <p>
       Üstün Deneme Kampüsü, 8. sınıf öğrencileri için yalnızca deneme
-      uygulayan değil; sonuçları analiz eden, yorumlayan ve öğrenciyi
-      doğru yönde ilerleten dijital bir öğrenme alanıdır.
+      uygulayan değil; sonuçları analiz eden, yorumlayan ve yönlendiren
+      dijital bir öğrenme alanıdır.
     </p>
+    <a href="ziyaret.html" class="cta">Deneme Kampüsüne Gir</a>
+  </section>
 
-    <a href="ziyaret.html" class="cta-btn">
-      Deneme Kampüsüne Gir
-    </a>
-  </main>
+  <section class="section">
+    <h3>📊 Analiz Odaklı Sistem</h3>
+    <p>
+      Her deneme sonrası öğrencinin güçlü ve zayıf yönleri otomatik olarak
+      analiz edilir, gelişim süreci net şekilde takip edilir.
+    </p>
+  </section>
 
-  <!-- FOOTER -->
-  <footer>
-    © 2026 Üstün Deneme Kampüsü – Tüm hakları saklıdır.
-  </footer>
+  <section class="section">
+    <h3>🎯 Kişisel Yönlendirme</h3>
+    <p>
+      Öğrenciler yalnız bırakılmaz. Sonuçlara göre öneriler, çalışma
+      yönlendirmeleri ve koçluk desteği sunulur.
+    </p>
+  </section>
+
+  <section class="section">
+    <h3>🏫 3 Boyutlu Kampüs Deneyimi</h3>
+    <p>
+      Denemeler sadece bir test değil, dijital bir kampüs deneyiminin
+      parçasıdır.
+    </p>
+  </section>
+</main>
+
+<footer>
+  © 2026 Üstün Deneme Kampüsü – Tüm hakları saklıdır.
+</footer>
+
+<script>
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("active");
+}
+</script>
 
 </body>
 </html>
