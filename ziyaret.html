@@ -222,12 +222,21 @@
 
       const size = 25;
       const step = 6;
-      for (let i = -size; i <= size; i += step) {
-        createTree(i, -size);
-        createTree(i,  size);
-        createTree(-size, i);
-        createTree( size, i);
-      }
+      // GİRİŞ TARAFI (z = -25) → ORTASI BOŞ
+for (let i = -size; i <= size; i += step) {
+
+  // 🚪 GİRİŞTE TEK AĞAÇ OLMASIN
+  if (i > -3 && i < 3) continue;
+
+  createTree(i, -size);
+}
+
+// DİĞER KENARLAR (AYNEN KALIYOR)
+for (let i = -size; i <= size; i += step) {
+  createTree(i, size);
+  createTree(-size, i);
+  createTree(size, i);
+}
     })();
 
     // === ÇİTLER (giriş boşluklu) ===
