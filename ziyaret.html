@@ -102,6 +102,8 @@
     // Kamera (seninki)
     const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
     camera.attachControl(canvas, true);
+    // Kamera başlangıçta biraz yukarı baksın (avatarı kaçırmasın)
+camera.rotation.x = 0.05;
     camera.speed = 0.5;
 
     // Mobil hareket değişkenleri (seninki)
