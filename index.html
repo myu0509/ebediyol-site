@@ -1,185 +1,184 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Üstün Deneme Kampüsü</title>
-<link rel="icon" type="image/png" href="favicon.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Üstün Deneme Kulübü</title>
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:Arial, sans-serif;
-  background:linear-gradient(180deg,#0b1020,#0e1630);
-  color:#fff;
-}
+  <link rel="icon" type="image/png" href="favicon.png" />
 
-/* ===== HEADER ===== */
-header{
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:64px;
-  background:linear-gradient(90deg,#050a18,#0b1020);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 16px;
-  z-index:1000;
-}
-.header-left{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-header img{
-  width:36px;height:36px;
-}
-header h1{
-  font-size:18px;
-  font-weight:600;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #ffffff;
+    }
 
-/* ===== MENU ===== */
-.menu-btn{
-  font-size:26px;
-  cursor:pointer;
-}
-nav{
-  position:fixed;
-  top:64px;right:-100%;
-  width:220px;
-  height:100%;
-  background:#050a18;
-  padding:20px;
-  transition:.3s;
-}
-nav a{
-  display:block;
-  color:#fff;
-  text-decoration:none;
-  padding:12px 0;
-  border-bottom:1px solid #1f2937;
-}
-nav.active{right:0}
+    /* ================= HEADER ================= */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 30px;
+      background: #020617;
+      position: relative;
+    }
 
-/* ===== HERO ===== */
-.hero{
-  padding:110px 20px 80px;
-  text-align:center;
-}
-.hero h2{
-  font-size:clamp(32px,6vw,46px);
-  line-height:1.25;
-}
-.hero p{
-  max-width:720px;
-  margin:22px auto;
-  font-size:clamp(16px,3.5vw,20px);
-  color:#cbd5e1;
-  line-height:1.6;
-}
-.hero .cta{
-  display:inline-block;
-  margin-top:28px;
-  background:#22c55e;
-  color:#052e16;
-  padding:18px 40px;
-  border-radius:14px;
-  font-weight:bold;
-  text-decoration:none;
-  box-shadow:0 10px 30px rgba(34,197,94,.35);
-}
+    header img {
+      height: 52px;
+    }
 
-/* ===== SECTIONS ===== */
-.section{
-  padding:70px 20px;
-  text-align:center;
-}
-.section h3{
-  font-size:28px;
-  margin-bottom:16px;
-}
-.section p{
-  max-width:720px;
-  margin:auto;
-  color:#cbd5e1;
-  line-height:1.6;
-}
+    nav {
+      display: flex;
+      align-items: center;
+    }
 
-/* ===== FOOTER ===== */
-footer{
-  padding:32px;
-  text-align:center;
-  background:#050a18;
-  color:#9ca3af;
-  font-size:14px;
-}
-</style>
+    nav a {
+      color: #e5e7eb;
+      text-decoration: none;
+      margin-left: 24px;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #facc15;
+    }
+
+    /* Hamburger */
+    .menu-toggle {
+      display: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #facc15;
+    }
+
+    /* ================= HERO ================= */
+    .hero {
+      min-height: calc(100vh - 140px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .hero img {
+      max-width: 300px;
+      margin-bottom: 30px;
+    }
+
+    .hero h1 {
+      font-size: clamp(26px, 5vw, 46px);
+      margin-bottom: 18px;
+    }
+
+    .hero p {
+      font-size: clamp(15px, 2.5vw, 20px);
+      max-width: 720px;
+      color: #cbd5f5;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .button {
+      background: #facc15;
+      color: #020617;
+      padding: 16px 42px;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .button:hover {
+      background: #eab308;
+      transform: scale(1.05);
+    }
+
+    /* ================= FOOTER ================= */
+    footer {
+      background: #020617;
+      text-align: center;
+      padding: 18px;
+      font-size: 14px;
+      color: #94a3b8;
+    }
+
+    /* ================= MOBILE ================= */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: #020617;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        padding: 12px 0;
+        border-top: 1px solid #1e293b;
+      }
+
+      nav a {
+        margin: 12px 0;
+        font-size: 18px;
+        text-align: center;
+      }
+
+      nav.active {
+        display: flex;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
-  <div class="header-left">
-    <img src="favicon.png">
-    <h1>Üstün Deneme Kampüsü</h1>
-  </div>
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+  <img src="logo.png" alt="Üstün Deneme Kulübü">
+
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <nav id="mainMenu">
+    <a href="#">Anasayfa</a>
+    <a href="#">Denemeler</a>
+    <a href="#">Hakkımızda</a>
+    <a href="#">İletişim</a>
+  </nav>
 </header>
 
-<nav id="menu">
-  <a href="#">Anasayfa</a>
-  <a href="#">Denemeler</a>
-  <a href="#">Analiz</a>
-  <a href="#">Koçluk</a>
-  <a href="#">Hakkımızda</a>
-</nav>
+<section class="hero">
+  <img src="logo.png" alt="Üstün Deneme Kulübü Logo">
 
-<main>
-  <section class="hero">
-    <h2>Deneme Çözmek Değil,<br>İlerlemek</h2>
-    <p>
-      Üstün Deneme Kampüsü, 8. sınıf öğrencileri için yalnızca deneme
-      uygulayan değil; sonuçları analiz eden, yorumlayan ve yönlendiren
-      dijital bir öğrenme alanıdır.
-    </p>
-    <a href="ziyaret.html" class="cta">Deneme Kampüsüne Gir</a>
-  </section>
+  <h1>8. Sınıf Online Deneme Kulübü</h1>
 
-  <section class="section">
-    <h3>📊 Analiz Odaklı Sistem</h3>
-    <p>
-      Her deneme sonrası öğrencinin güçlü ve zayıf yönleri otomatik olarak
-      analiz edilir, gelişim süreci net şekilde takip edilir.
-    </p>
-  </section>
+  <p>
+    8. sınıf matematik denemeleri için yapılandırılmış,  
+    analiz ve gelişim odaklı dijital deneme ortamı.
+  </p>
 
-  <section class="section">
-    <h3>🎯 Kişisel Yönlendirme</h3>
-    <p>
-      Öğrenciler yalnız bırakılmaz. Sonuçlara göre öneriler, çalışma
-      yönlendirmeleri ve koçluk desteği sunulur.
-    </p>
-  </section>
-
-  <section class="section">
-    <h3>🏫 3 Boyutlu Kampüs Deneyimi</h3>
-    <p>
-      Denemeler sadece bir test değil, dijital bir kampüs deneyiminin
-      parçasıdır.
-    </p>
-  </section>
-</main>
+  <a href="deneme-alani.html" class="button">
+    Deneme Alanına Giriş
+  </a>
+</section>
 
 <footer>
-  © 2026 Üstün Deneme Kampüsü – Tüm hakları saklıdır.
+  Bu platform pilot uygulama kapsamındadır.  
+  İçerikler ve sistem sürekli geliştirilmektedir.
 </footer>
 
 <script>
-function toggleMenu(){
-  document.getElementById("menu").classList.toggle("active");
-}
+  function toggleMenu() {
+    document.getElementById("mainMenu").classList.toggle("active");
+  }
 </script>
 
 </body>
