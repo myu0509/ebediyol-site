@@ -20,7 +20,7 @@
       position: fixed;
       top: 0;
       width: 100%;
-      background: rgba(2, 6, 23, 0.85);
+      background: rgba(2, 6, 23, 0.88);
       backdrop-filter: blur(6px);
       z-index: 1000;
       border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -29,7 +29,7 @@
     .nav {
       max-width: 1200px;
       margin: auto;
-      padding: 14px 20px;
+      padding: 12px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -40,19 +40,19 @@
       align-items: center;
       gap: 10px;
       font-weight: bold;
-      font-size: 18px;
+      font-size: 17px;
     }
 
     .logo img {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
     }
 
     nav a {
-      margin-left: 24px;
+      margin-left: 22px;
       color: #e5e7eb;
       text-decoration: none;
-      font-size: 15px;
+      font-size: 14px;
       transition: opacity 0.2s;
     }
 
@@ -63,7 +63,7 @@
     /* ===== HERO ===== */
     .hero {
       min-height: 100vh;
-      padding: 140px 20px 80px;
+      padding: 110px 20px 80px; /* 🔧 üst boşluk azaltıldı */
       text-align: center;
       display: flex;
       flex-direction: column;
@@ -73,11 +73,11 @@
 
     .hero h1 {
       font-size: clamp(32px, 6vw, 56px);
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
     .hero p {
-      max-width: 700px;
+      max-width: 720px;
       font-size: 18px;
       color: #cbd5f5;
       line-height: 1.6;
@@ -85,12 +85,12 @@
 
     .hero-btn {
       margin-top: 36px;
-      padding: 16px 40px;
+      padding: 16px 42px;
       background: #22c55e;
       color: #052e16;
       font-size: 18px;
       font-weight: bold;
-      border-radius: 14px;
+      border-radius: 16px;
       text-decoration: none;
       transition: transform 0.2s, background 0.2s;
     }
@@ -100,7 +100,7 @@
       transform: scale(1.05);
     }
 
-    /* ===== BÖLÜMLER ===== */
+    /* ===== GENEL BÖLÜMLER ===== */
     section {
       padding: 90px 20px;
     }
@@ -113,12 +113,12 @@
 
     h2 {
       font-size: 36px;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
     .desc {
       color: #c7d2fe;
-      max-width: 750px;
+      max-width: 760px;
       margin: auto;
       line-height: 1.7;
     }
@@ -127,19 +127,19 @@
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 28px;
-      margin-top: 50px;
+      gap: 30px;
+      margin-top: 52px;
     }
 
     .card {
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 20px;
-      padding: 30px;
+      border-radius: 22px;
+      padding: 32px;
     }
 
     .card h3 {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .card p {
@@ -147,7 +147,7 @@
       line-height: 1.6;
     }
 
-    /* ===== VURGULU BÖLÜM ===== */
+    /* ===== VURGULU ALAN ===== */
     .highlight {
       background: linear-gradient(180deg, #020617, #020617);
     }
@@ -155,24 +155,28 @@
     .highlight ul {
       list-style: none;
       padding: 0;
-      margin-top: 40px;
+      margin-top: 42px;
     }
 
     .highlight li {
-      margin: 12px 0;
+      margin: 14px 0;
       font-size: 18px;
       color: #e5e7eb;
     }
 
-    /* ===== ALT CTA ===== */
+    /* ===== CTA ===== */
     .cta {
-      padding: 100px 20px;
+      padding: 120px 20px; /* 🔧 biraz daha aşağı alındı */
       text-align: center;
       background: linear-gradient(180deg, #020617, #0f172a);
     }
 
+    .cta .hero-btn {
+      margin-top: 56px; /* 🔧 buton aşağı alındı */
+    }
+
     footer {
-      padding: 30px;
+      padding: 32px;
       text-align: center;
       font-size: 14px;
       color: #94a3b8;
