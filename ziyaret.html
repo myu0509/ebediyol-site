@@ -469,8 +469,8 @@ bg.addControl(welcomeText);
     scene.onBeforeRenderObservable.add(() => {
       if (avatar) {
         // Kamera avatarı takip etsin (senin mantığın)
-        camera.position.x = avatar.position.x - 4 * Math.sin(camera.rotation.y);
-        camera.position.z = avatar.position.z - 4 * Math.cos(camera.rotation.y);
+        camera.position.x = avatar.position.x - 3.2 * Math.sin(camera.rotation.y);
+        camera.position.z = avatar.position.z - 3.2 * Math.cos(camera.rotation.y);
         camera.position.y = avatar.position.y + 1.8;
 
         // Avatar yönünü kameraya göre ayarla (sağa sola dönme)
