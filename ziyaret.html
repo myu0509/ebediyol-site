@@ -230,60 +230,96 @@
       }
     })();
 
-    // === ÇİTLER (senin çit mantığını koruyarak daha derli toplu) ===
-    (function addFences() {
-      const fenceMat = new BABYLON.PBRMaterial("fenceMat", scene);
-      fenceMat.albedoColor = new BABYLON.Color3(0.25, 0.18, 0.10);
-      fenceMat.roughness = 0.9;
-      fenceMat.metallic = 0;
+    // === ÇİTLER (giriş boşluklu) ===
+(function addFences() {
 
-      // Kenarlarda direkler
-      function makePole(x, z) {
-        const pole = BABYLON.MeshBuilder.CreateBox("fPole", { width: 0.09, height: 1.2, depth: 0.09 }, scene);
-        pole.position.set(x, 0.6, z);
-        pole.material = fenceMat;
-      }
+  const fenceMat = new BABYLON.PBRMaterial("fenceMat", scene);
+  fenceMat.albedoColor = new BABYLON.Color3(0.25, 0.18, 0.10);
+  fenceMat.roughness = 0.9;
+  fenceMat.metallic = 0;
 
-      // Yatay barlar (tek parça)
-      function makeBarX(z, y) {
-        const bar = BABYLON.MeshBuilder.CreateCylinder("barX", { diameter: 0.12, height: 50, tessellation: 12 }, scene);
-        bar.rotation.z = Math.PI / 2;
-        bar.position.set(0, y, z);
-        bar.material = fenceMat;
-      }
+  const GATE_MIN = -3;
+  const GATE_MAX =  3;
 
-      function makeBarZ(x, y) {
-        const bar = BABYLON.MeshBuilder.CreateCylinder("barZ", { diameter: 0.12, height: 50, tessellation: 12 }, scene);
-        bar.rotation.x = Math.PI / 2;
-        bar.position.set(x, y, 0);
-        bar.material = fenceMat;
-      }
+  // --- Direk ---
+  function makePole(x, z) {
+    const pole = BABYLON.MeshBuilder.CreateBox(
+      "fPole",
+      { width: 0.09, height: 1.2, depth: 0.09 },
+      scene
+    );
+    pole.position.set(x, 0.6, z);
+    pole.material = fenceMat;
+  }
 
-      // ÜST ve ALT (GİRİŞ ALT: z = -25)
-      for (let x = -25; x <= 25; x += 2) {
+  // --- Yatay bar (X doğrultusu) ---
+  function makeBarX(z, y, centerX, length) {
+    const bar = BABYLON.MeshBuilder.CreateCylinder(
+      "barX",
+      { diameter: 0.12, height: length, tessellation: 12 },
+      scene
+    );
+    bar.rotation.z = Math.PI / 2;
+    bar.position.set(centerX, y, z);
+    bar.material = fenceMat;
+  }
 
-        // 🚪 GİRİŞ BOŞLUĞU
-        if (x > -3 && x < 3) {
-          makePole(x, 25); // üst kalsın
-          continue;        // altı atla
-        }
+  // --- Yatay bar (Z doğrultusu) ---
+  function makeBarZ(x, y) {
+    const bar = BABYLON.MeshBuilder.CreateCylinder(
+      "barZ",
+      { diameter: 0.12, height: 50, tessellation: 12 },
+      scene
+    );
+    bar.rotation.x = Math.PI / 2;
+    bar.position.set(x, y, 0);
+    bar.material = fenceMat;
+  }
 
-        makePole(x, 25);
-        makePole(x, -25);
-      }
+  // === DİREKLER ===
 
-      // SAĞ ve SOL AYNI
-      for (let z = -25; z <= 25; z += 2) {
-        makePole(25, z);
-        makePole(-25, z);
-      }
+  // ÜST ve ALT (ALT = giriş tarafı z = -25)
+  for (let x = -25; x <= 25; x += 2) {
 
-      // 3 sıra bar
-      makeBarX( 25, 1.2); makeBarX( 25, 0.7); makeBarX( 25, 0.2);
-      makeBarX(-25, 1.2); makeBarX(-25, 0.7); makeBarX(-25, 0.2);
-      makeBarZ( 25, 1.2); makeBarZ( 25, 0.7); makeBarZ( 25, 0.2);
-      makeBarZ(-25, 1.2); makeBarZ(-25, 0.7); makeBarZ(-25, 0.2);
-    })();
+    // 🚪 giriş boşluğu: alt tarafta direk yok
+    if (x > GATE_MIN && x < GATE_MAX) {
+      makePole(x, 25); // üst kalsın
+      continue;
+    }
+
+    makePole(x, 25);
+    makePole(x, -25);
+  }
+
+  // SAĞ ve SOL
+  for (let z = -25; z <= 25; z += 2) {
+    makePole(25, z);
+    makePole(-25, z);
+  }
+
+  // === YATAY BARLAR ===
+
+  // ÜST KENAR (tek parça)
+  makeBarX(25, 1.2, 0, 50);
+  makeBarX(25, 0.7, 0, 50);
+  makeBarX(25, 0.2, 0, 50);
+
+  // ALT KENAR (giriş boşluklu – iki parça)
+  // sol parça
+  makeBarX(-25, 1.2, -14, 22);
+  makeBarX(-25, 0.7, -14, 22);
+  makeBarX(-25, 0.2, -14, 22);
+
+  // sağ parça
+  makeBarX(-25, 1.2,  14, 22);
+  makeBarX(-25, 0.7,  14, 22);
+  makeBarX(-25, 0.2,  14, 22);
+
+  // SAĞ ve SOL KENAR BARLARI
+  makeBarZ( 25, 1.2); makeBarZ( 25, 0.7); makeBarZ( 25, 0.2);
+  makeBarZ(-25, 1.2); makeBarZ(-25, 0.7); makeBarZ(-25, 0.2);
+
+})();
 
     // === GİRİŞ DİREKLERİ + TABELA (seninki gibi) ===
     const poleMat = new BABYLON.StandardMaterial("poleMat", scene);
