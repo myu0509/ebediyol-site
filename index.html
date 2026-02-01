@@ -35,7 +35,7 @@
       justify-content: space-between;
     }
 
-    .logo {
+    .brand {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -43,9 +43,10 @@
       font-size: 17px;
     }
 
-    .logo img {
+    .brand img {
       width: 34px;
       height: 34px;
+      border-radius: 8px;
     }
 
     nav a {
@@ -56,24 +57,48 @@
       transition: opacity 0.2s;
     }
 
-    nav a:hover {
-      opacity: 0.7;
-    }
+    nav a:hover { opacity: 0.7; }
 
     /* ===== HERO ===== */
     .hero {
       min-height: 100vh;
-      padding: 110px 20px 80px; /* 🔧 üst boşluk azaltıldı */
+      padding: 120px 20px 70px;
       text-align: center;
+
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: center; /* masaüstünde ortalı kalsın */
+      gap: 18px;
+    }
+
+    .hero-badge {
+      display: none; /* masaüstünde gizli */
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      padding: 10px 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .hero-badge img {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+    }
+
+    .hero-badge span {
+      font-weight: 700;
+      color: #e5e7eb;
+      font-size: 15px;
     }
 
     .hero h1 {
       font-size: clamp(32px, 6vw, 56px);
-      margin-bottom: 18px;
+      margin: 0;
+      line-height: 1.1;
     }
 
     .hero p {
@@ -81,10 +106,11 @@
       font-size: 18px;
       color: #cbd5f5;
       line-height: 1.6;
+      margin: 0;
     }
 
     .hero-btn {
-      margin-top: 36px;
+      margin-top: 18px;
       padding: 16px 42px;
       background: #22c55e;
       color: #052e16;
@@ -93,6 +119,7 @@
       border-radius: 16px;
       text-decoration: none;
       transition: transform 0.2s, background 0.2s;
+      display: inline-block;
     }
 
     .hero-btn:hover {
@@ -101,9 +128,7 @@
     }
 
     /* ===== GENEL BÖLÜMLER ===== */
-    section {
-      padding: 90px 20px;
-    }
+    section { padding: 90px 20px; }
 
     .container {
       max-width: 1100px;
@@ -111,15 +136,12 @@
       text-align: center;
     }
 
-    h2 {
-      font-size: 36px;
-      margin-bottom: 18px;
-    }
+    h2 { font-size: 36px; margin: 0 0 18px; }
 
     .desc {
       color: #c7d2fe;
       max-width: 760px;
-      margin: auto;
+      margin: 0 auto;
       line-height: 1.7;
     }
 
@@ -138,24 +160,16 @@
       padding: 32px;
     }
 
-    .card h3 {
-      margin-bottom: 14px;
-    }
-
-    .card p {
-      color: #cbd5f5;
-      line-height: 1.6;
-    }
+    .card h3 { margin: 0 0 14px; }
+    .card p { margin: 0; color: #cbd5f5; line-height: 1.6; }
 
     /* ===== VURGULU ALAN ===== */
-    .highlight {
-      background: linear-gradient(180deg, #020617, #020617);
-    }
+    .highlight { background: linear-gradient(180deg, #020617, #020617); }
 
     .highlight ul {
       list-style: none;
       padding: 0;
-      margin-top: 42px;
+      margin: 42px 0 0;
     }
 
     .highlight li {
@@ -166,13 +180,20 @@
 
     /* ===== CTA ===== */
     .cta {
-      padding: 120px 20px; /* 🔧 biraz daha aşağı alındı */
+      min-height: 80vh;
+      padding: 110px 20px 140px;
       text-align: center;
       background: linear-gradient(180deg, #020617, #0f172a);
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
     }
 
     .cta .hero-btn {
-      margin-top: 56px; /* 🔧 buton aşağı alındı */
+      margin-top: 70px; /* buton daha aşağı */
     }
 
     footer {
@@ -182,10 +203,27 @@
       color: #94a3b8;
     }
 
+    /* ===== MOBİL ===== */
     @media (max-width: 600px) {
-      nav {
-        display: none;
+      nav { display: none; }
+
+      /* Üstteki boşluk hissini bitiren asıl hamle */
+      .hero {
+        padding: 92px 18px 60px;   /* header altında daha az boşluk */
+        justify-content: flex-start; /* içerik yukarı hizalı */
       }
+
+      /* Mobilde üst boşluğu dolduracak logo/badge */
+      .hero-badge { display: flex; }
+
+      .hero p { font-size: 17px; }
+
+      .cta {
+        min-height: 72vh;
+        padding: 110px 18px 150px;
+      }
+
+      .cta .hero-btn { margin-top: 78px; }
     }
   </style>
 </head>
@@ -194,7 +232,7 @@
 
 <header>
   <div class="nav">
-    <div class="logo">
+    <div class="brand">
       <img src="favicon.png" alt="logo">
       Üstün Deneme Kampüsü
     </div>
@@ -208,12 +246,20 @@
 </header>
 
 <section class="hero">
+  <!-- Mobilde üst boşluğu dolduran logo -->
+  <div class="hero-badge">
+    <img src="favicon.png" alt="Üstün">
+    <span>Üstün Deneme Kampüsü</span>
+  </div>
+
   <h1>Deneme Çözmek Değil,<br>İlerlemek</h1>
+
   <p>
     Üstün Deneme Kampüsü, 8. sınıf öğrencileri için
     yalnızca deneme uygulayan değil; sonuçları analiz eden,
     yorumlayan ve yönlendiren dijital bir öğrenme alanıdır.
   </p>
+
   <a href="ziyaret.html" class="hero-btn">Deneme Kampüsüne Gir</a>
 </section>
 
@@ -228,26 +274,17 @@
     <div class="cards">
       <div class="card">
         <h3>📝 Deneme Merkezi</h3>
-        <p>
-          Güncel müfredata uygun,
-          süreli ve gerçek sınav formatında denemeler.
-        </p>
+        <p>Güncel müfredata uygun, süreli ve gerçek sınav formatında denemeler.</p>
       </div>
 
       <div class="card">
         <h3>📊 Analiz Merkezi</h3>
-        <p>
-          Netler, konu bazlı başarı durumu
-          ve gelişim takibi.
-        </p>
+        <p>Netler, konu bazlı başarı durumu ve gelişim takibi.</p>
       </div>
 
       <div class="card">
         <h3>🎯 Koçluk & Yönlendirme</h3>
-        <p>
-          Sonuçlara göre oluşturulan
-          çalışma önerileri ve yol haritaları.
-        </p>
+        <p>Sonuçlara göre oluşturulan çalışma önerileri ve yol haritaları.</p>
       </div>
     </div>
   </div>
@@ -268,8 +305,7 @@
   <div class="container">
     <h2>Kime Hitap Ediyor?</h2>
     <p class="desc">
-      8. sınıf öğrencileri, düzenli deneme çözmek isteyenler
-      ve eksiklerini net görmek isteyen tüm öğrenciler için.
+      8. sınıf öğrencileri, düzenli deneme çözmek isteyenler ve eksiklerini net görmek isteyen tüm öğrenciler için.
     </p>
   </div>
 </section>
@@ -277,8 +313,7 @@
 <section class="cta">
   <h2>Hazırsan Başlayalım</h2>
   <p class="desc">
-    Deneme sürecini kontrol altına almak için
-    kampüse adım at.
+    Deneme sürecini kontrol altına almak için kampüse adım at.
   </p>
   <a href="ziyaret.html" class="hero-btn">Kampüse Göz At</a>
 </section>
