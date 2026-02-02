@@ -431,26 +431,30 @@ titleText.outlineColor = "black";
 sBG.addControl(titleText);
 
 // === ALT BAŞLIK (sadece Sınav Merkezi için) ===
-let subText = null;
-let countdownText = null;
-
 if (id === "exam") {
 
-  subText = new BABYLON.GUI.TextBlock();
+  // ALT BLOK (sadece alt başlık + sayaç)
+  const subPanel = new BABYLON.GUI.StackPanel();
+  subPanel.isVertical = true;
+  subPanel.top = "60px";          // 🔽 ALT BLOĞUN TAMAMINI AŞAĞI ALIR
+  subPanel.spacing = 6;
+  sBG.addControl(subPanel);
+
+  // ALT BAŞLIK
+  const subText = new BABYLON.GUI.TextBlock();
   subText.text = "Güncel denemeye katıl";
-  subText.color = "#facc15";
+  subText.color = "#000000";      // 🖤 SİYAH
   subText.fontSize = "60px";
-  subText.top = "40px";
-  sBG.addControl(subText);
+  subPanel.addControl(subText);
 
-  countdownText = new BABYLON.GUI.TextBlock();
+  // SAYAÇ
+  const countdownText = new BABYLON.GUI.TextBlock();
   countdownText.text = "Yükleniyor...";
-  countdownText.color = "#ffffff";
+  countdownText.color = "#000000"; // 🖤 SİYAH
   countdownText.fontSize = "52px";
-  countdownText.top = "85px";
-  sBG.addControl(countdownText);
+  subPanel.addControl(countdownText);
 
-  // GLOBAL erişim için sakla
+  // GLOBAL erişim
   window.examCountdownText = countdownText;
 }
 
