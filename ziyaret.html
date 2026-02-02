@@ -462,7 +462,7 @@ const examSign = BABYLON.MeshBuilder.CreatePlane(
 
 // ÖNE BAKSIN + ÖN YÜZE OTURSUN
 examSign.position = new BABYLON.Vector3(EXAM_X, 3.5, EXAM_Z - 3.95);
-examUI.rootContainer.rotation = Math.PI;
+examSign.rotation.y = 0;
 examSign.renderingGroupId = 2;
 
 // GUI
