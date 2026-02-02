@@ -447,48 +447,55 @@ bg.addControl(welcomeText);
       bodyColor: new BABYLON.Color3(0.85, 0.45, 0.10),
       roofColor: new BABYLON.Color3(0.45, 0.75, 0.95)
     });
-   // === SINAV MERKEZİ ÖZEL TABELA + SAYAÇ ===
+   // === SINAV MERKEZİ ÖZEL TABELA + SAYAÇ (HATASIZ) ===
+
+// sınav binasının koordinatları
+const EXAM_X = 0;
+const EXAM_Z = 4;
+
+// tabela mesh
 const examSign = BABYLON.MeshBuilder.CreatePlane(
   "examExtraSign",
   { width: 6.5, height: 1.6 },
   scene
 );
 
-// 🔴 ÖNEMLİ AYARLAR
-examSign.renderingGroupId = 2;   // binanın önünde çizilsin
-examSign.position = new BABYLON.Vector3(x, 4.6, z - 3.95); // binanın TAM ön yüzü
-examSign.rotation.y = Math.PI;  // öne baksın
-
-// binanın ÜZERİNE konum
-examSign.position = new BABYLON.Vector3(0, 4.5, 0.9);
-examSign.rotation.y = 0;
+// ÖNE BAKSIN + ÖN YÜZE OTURSUN
+examSign.position = new BABYLON.Vector3(EXAM_X, 4.6, EXAM_Z - 3.95);
+examSign.rotation.y = Math.PI;
+examSign.renderingGroupId = 2;
 
 // GUI
-const examUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(examSign, 1024, 256);
+const examUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
+  examSign,
+  1024,
+  256,
+  false
+);
 
 const examBG = new BABYLON.GUI.Rectangle();
 examBG.thickness = 0;
-examBG.background = "rgba(255,255,255,0.85)";
+examBG.background = "rgba(255,255,255,0.9)";
 examUI.addControl(examBG);
 
-// üst yazı
+// ALT BAŞLIK
 const examTitle = new BABYLON.GUI.TextBlock();
 examTitle.text = "Güncel denemeye katıl";
 examTitle.color = "black";
-examTitle.fontSize = "72px";
+examTitle.fontSize = "70px";
 examTitle.top = "-30px";
 examTitle.fontWeight = "bold";
 examBG.addControl(examTitle);
 
-// sayaç
+// SAYAÇ
 const examCountdown = new BABYLON.GUI.TextBlock();
 examCountdown.text = "Yükleniyor...";
 examCountdown.color = "black";
-examCountdown.fontSize = "56px";
+examCountdown.fontSize = "54px";
 examCountdown.top = "40px";
 examBG.addControl(examCountdown);
 
-// global erişim
+// GLOBAL ERİŞİM
 window.examCountdownText = examCountdown;
     createCampusBuilding({
       id: "exam",
