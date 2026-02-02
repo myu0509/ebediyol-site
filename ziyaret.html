@@ -416,6 +416,7 @@ bg.addControl(welcomeText);
 
       const sUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(sign, 1024, 256, false);
       const sBG = new BABYLON.GUI.Rectangle();
+      sBG.height = "100%";
       sBG.thickness = 0;
       sBG.background = "rgba(0,0,0,0.45)";
       sUI.addControl(sBG);
@@ -434,15 +435,32 @@ sBG.addControl(titleText);
 if (id === "exam") {
 
   // ALT BLOK (sadece alt başlık + sayaç)
-  const subPanel = new BABYLON.GUI.StackPanel();
-subPanel.isVertical = true;
-subPanel.width = "100%";
-subPanel.height = "100%";
-subPanel.top = "60px";
-subPanel.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-subPanel.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
-subPanel.spacing = 6;
-sBG.addControl(subPanel);
+  const titleText = new BABYLON.GUI.TextBlock();
+titleText.text = title;
+titleText.color = "white";
+titleText.fontSize = "110px";
+titleText.top = "-30px";
+titleText.outlineWidth = 6;
+titleText.outlineColor = "black";
+sBG.addControl(titleText);
+  if (id === "exam") {
+
+  const subText = new BABYLON.GUI.TextBlock();
+  subText.text = "Güncel denemeye katıl";
+  subText.color = "black";
+  subText.fontSize = "58px";
+  subText.top = "35px";
+  sBG.addControl(subText);
+
+  const countdownText = new BABYLON.GUI.TextBlock();
+  countdownText.text = "Yükleniyor...";
+  countdownText.color = "black";
+  countdownText.fontSize = "50px";
+  countdownText.top = "85px";
+  sBG.addControl(countdownText);
+
+  window.examCountdownText = countdownText;
+}
 
   // ALT BAŞLIK
   const subText = new BABYLON.GUI.TextBlock();
