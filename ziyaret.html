@@ -411,7 +411,7 @@ bg.addControl(welcomeText);
 
       // tabela (ön)
       const sign = BABYLON.MeshBuilder.CreatePlane(id + "_sign", { width: 6.8, height: 1.2 }, scene);
-      sign.position = new BABYLON.Vector3(x, 3.5, z - 3.7);
+      sign.position = new BABYLON.Vector3(x, 5.1, z - 3.7);
       sign.parent = root;
 
       const sUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(sign, 1024, 256, false);
@@ -440,14 +440,14 @@ if (id === "exam") {
   subText.text = "Güncel denemeye katıl";
   subText.color = "#facc15";
   subText.fontSize = "60px";
-  subText.top = "20px";
+  subText.top = "40px";
   sBG.addControl(subText);
 
   countdownText = new BABYLON.GUI.TextBlock();
   countdownText.text = "Yükleniyor...";
   countdownText.color = "#ffffff";
   countdownText.fontSize = "52px";
-  countdownText.top = "80px";
+  countdownText.top = "85px";
   sBG.addControl(countdownText);
 
   // GLOBAL erişim için sakla
