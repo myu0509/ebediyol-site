@@ -84,7 +84,7 @@
     scene.fogDensity = 0.01;
     scene.fogColor = new BABYLON.Color3(0.75, 0.85, 0.95);
     scene.collisionsEnabled = true;
-    
+    const examDate = new Date("2026-03-15T10:00:00").getTime();
     // Sesler
     const birds = document.getElementById("birds");
     const steps = document.getElementById("steps");
@@ -420,13 +420,39 @@ bg.addControl(welcomeText);
       sBG.background = "rgba(0,0,0,0.45)";
       sUI.addControl(sBG);
 
-      const sT = new BABYLON.GUI.TextBlock();
-      sT.text = title;
-      sT.color = "white";
-      sT.fontSize = "120px";
-      sT.outlineWidth = 6;
-      sT.outlineColor = "black";
-      sBG.addControl(sT);
+      // === BAŞLIK ===
+const titleText = new BABYLON.GUI.TextBlock();
+titleText.text = title;
+titleText.color = "white";
+titleText.fontSize = "110px";
+titleText.top = "-40px";
+titleText.outlineWidth = 6;
+titleText.outlineColor = "black";
+sBG.addControl(titleText);
+
+// === ALT BAŞLIK (sadece Sınav Merkezi için) ===
+let subText = null;
+let countdownText = null;
+
+if (id === "exam") {
+
+  subText = new BABYLON.GUI.TextBlock();
+  subText.text = "Güncel denemeye katıl";
+  subText.color = "#facc15";
+  subText.fontSize = "60px";
+  subText.top = "20px";
+  sBG.addControl(subText);
+
+  countdownText = new BABYLON.GUI.TextBlock();
+  countdownText.text = "Yükleniyor...";
+  countdownText.color = "#ffffff";
+  countdownText.fontSize = "52px";
+  countdownText.top = "80px";
+  sBG.addControl(countdownText);
+
+  // GLOBAL erişim için sakla
+  window.examCountdownText = countdownText;
+}
 
       // tıklanabilirlik: gövdeye action manager
       body.actionManager = new BABYLON.ActionManager(scene);
@@ -526,6 +552,21 @@ bg.addControl(welcomeText);
 
       if (camera.position.y < 1.6) camera.position.y = 1.6;
       if (camera.position.y > 3.0) camera.position.y = 3.0;
+      // === SINAV MERKEZİ GERİ SAYIM ===
+  if (window.examCountdownText) {
+    const now = Date.now();
+    const diff = examDate - now;
+
+    if (diff <= 0) {
+      window.examCountdownText.text = "Sınav Başladı";
+    } else {
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const m = Math.floor((diff / (1000 * 60)) % 60);
+
+      window.examCountdownText.text = `${d}g ${h}s ${m}dk`;
+    }
+  }
     });
 
     // Render döngüsü
