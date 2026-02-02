@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -84,7 +85,7 @@
     scene.fogDensity = 0.01;
     scene.fogColor = new BABYLON.Color3(0.75, 0.85, 0.95);
     scene.collisionsEnabled = true;
-    const examDate = new Date("2026-03-15T10:00:00").getTime();
+    
     // Sesler
     const birds = document.getElementById("birds");
     const steps = document.getElementById("steps");
@@ -416,69 +417,17 @@ bg.addControl(welcomeText);
 
       const sUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(sign, 1024, 256, false);
       const sBG = new BABYLON.GUI.Rectangle();
-      sBG.height = "100%";
       sBG.thickness = 0;
       sBG.background = "rgba(0,0,0,0.45)";
       sUI.addControl(sBG);
 
-      // === BAŞLIK ===
-const titleText = new BABYLON.GUI.TextBlock();
-titleText.text = title;
-titleText.color = "white";
-titleText.fontSize = "110px";
-titleText.top = "-40px";
-titleText.outlineWidth = 6;
-titleText.outlineColor = "black";
-sBG.addControl(titleText);
-
-// === ALT BAŞLIK (sadece Sınav Merkezi için) ===
-if (id === "exam") {
-
-  // ALT BLOK (sadece alt başlık + sayaç)
-  const titleText = new BABYLON.GUI.TextBlock();
-titleText.text = title;
-titleText.color = "white";
-titleText.fontSize = "110px";
-titleText.top = "-30px";
-titleText.outlineWidth = 6;
-titleText.outlineColor = "black";
-sBG.addControl(titleText);
-  if (id === "exam") {
-
-  const subText = new BABYLON.GUI.TextBlock();
-  subText.text = "Güncel denemeye katıl";
-  subText.color = "black";
-  subText.fontSize = "58px";
-  subText.top = "35px";
-  sBG.addControl(subText);
-
-  const countdownText = new BABYLON.GUI.TextBlock();
-  countdownText.text = "Yükleniyor...";
-  countdownText.color = "black";
-  countdownText.fontSize = "50px";
-  countdownText.top = "85px";
-  sBG.addControl(countdownText);
-
-  window.examCountdownText = countdownText;
-}
-
-  // ALT BAŞLIK
-  const subText = new BABYLON.GUI.TextBlock();
-  subText.text = "Güncel denemeye katıl";
-  subText.color = "#000000";      // 🖤 SİYAH
-  subText.fontSize = "60px";
-  subPanel.addControl(subText);
-
-  // SAYAÇ
-  const countdownText = new BABYLON.GUI.TextBlock();
-  countdownText.text = "Yükleniyor...";
-  countdownText.color = "#000000"; // 🖤 SİYAH
-  countdownText.fontSize = "52px";
-  subPanel.addControl(countdownText);
-
-  // GLOBAL erişim
-  window.examCountdownText = countdownText;
-}
+      const sT = new BABYLON.GUI.TextBlock();
+      sT.text = title;
+      sT.color = "white";
+      sT.fontSize = "120px";
+      sT.outlineWidth = 6;
+      sT.outlineColor = "black";
+      sBG.addControl(sT);
 
       // tıklanabilirlik: gövdeye action manager
       body.actionManager = new BABYLON.ActionManager(scene);
@@ -578,21 +527,6 @@ sBG.addControl(titleText);
 
       if (camera.position.y < 1.6) camera.position.y = 1.6;
       if (camera.position.y > 3.0) camera.position.y = 3.0;
-      // === SINAV MERKEZİ GERİ SAYIM ===
-  if (window.examCountdownText) {
-    const now = Date.now();
-    const diff = examDate - now;
-
-    if (diff <= 0) {
-      window.examCountdownText.text = "Sınav Başladı";
-    } else {
-      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const m = Math.floor((diff / (1000 * 60)) % 60);
-
-      window.examCountdownText.text = `${d}g ${h}s ${m}dk`;
-    }
-  }
     });
 
     // Render döngüsü
