@@ -447,12 +447,17 @@ bg.addControl(welcomeText);
       bodyColor: new BABYLON.Color3(0.85, 0.45, 0.10),
       roofColor: new BABYLON.Color3(0.45, 0.75, 0.95)
     });
-    // === SINAV MERKEZİ ÖZEL TABELA + SAYAÇ ===
+   // === SINAV MERKEZİ ÖZEL TABELA + SAYAÇ ===
 const examSign = BABYLON.MeshBuilder.CreatePlane(
   "examExtraSign",
   { width: 6.5, height: 1.6 },
   scene
 );
+
+// 🔴 ÖNEMLİ AYARLAR
+examSign.renderingGroupId = 2;   // binanın önünde çizilsin
+examSign.position = new BABYLON.Vector3(x, 4.6, z - 3.95); // binanın TAM ön yüzü
+examSign.rotation.y = Math.PI;  // öne baksın
 
 // binanın ÜZERİNE konum
 examSign.position = new BABYLON.Vector3(0, 4.5, 0.9);
