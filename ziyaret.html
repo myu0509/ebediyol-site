@@ -435,10 +435,14 @@ if (id === "exam") {
 
   // ALT BLOK (sadece alt başlık + sayaç)
   const subPanel = new BABYLON.GUI.StackPanel();
-  subPanel.isVertical = true;
-  subPanel.top = "60px";          // 🔽 ALT BLOĞUN TAMAMINI AŞAĞI ALIR
-  subPanel.spacing = 6;
-  sBG.addControl(subPanel);
+subPanel.isVertical = true;
+subPanel.width = "100%";
+subPanel.height = "100%";
+subPanel.top = "60px";
+subPanel.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+subPanel.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+subPanel.spacing = 6;
+sBG.addControl(subPanel);
 
   // ALT BAŞLIK
   const subText = new BABYLON.GUI.TextBlock();
