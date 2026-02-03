@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -460,10 +461,10 @@ const examSign = BABYLON.MeshBuilder.CreatePlane(
   scene
 );
 
-// 🔴 SADECE ÖNDEN GÖRÜNSÜN
-examSign.material = new BABYLON.StandardMaterial("examSignMat", scene);
-examSign.material.backFaceCulling = true;
-examSign.material.diffuseColor = new BABYLON.Color3(1,1,1);
+// ÖNE BAKSIN + ÖN YÜZE OTURSUN
+examSign.position = new BABYLON.Vector3(EXAM_X, 3.5, EXAM_Z - 3.95);
+examSign.rotation.y = 0;
+examSign.renderingGroupId = 2;
 
 // GUI
 const examUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
