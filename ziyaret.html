@@ -468,7 +468,8 @@ examSign.material = examMat;
 
 // 🔑 KONUM + YÖN (SADECE BUNU YAPIYORUZ)
 examSign.position = new BABYLON.Vector3(EXAM_X, 3.5, EXAM_Z - 3.96);
-examSign.rotation.y = Math.PI; // 🔴 BİNANIN ÖNÜNE BAKSIN
+examSign.rotation.y = 0;
+examUI.rootContainer.scaleX = -1;
 
 // GUI
 const examUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
