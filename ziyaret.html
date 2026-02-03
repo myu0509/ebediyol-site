@@ -448,13 +448,12 @@ bg.addControl(welcomeText);
       bodyColor: new BABYLON.Color3(0.85, 0.45, 0.10),
       roofColor: new BABYLON.Color3(0.45, 0.75, 0.95)
     });
-   // === SINAV MERKEZİ ÖZEL TABELA + SAYAÇ (HATASIZ / TEK YÜZ) ===
+  // === SINAV MERKEZİ ÖZEL TABELA + SAYAÇ (SADECE ÖNDEN GÖRÜNÜR) ===
 
-// sınav binasının koordinatları
 const EXAM_X = 0;
 const EXAM_Z = 4;
 
-// tabela mesh (SADECE ÖN YÜZ)
+// Plane: tek yüz
 const examSign = BABYLON.MeshBuilder.CreatePlane(
   "examExtraSign",
   {
@@ -465,10 +464,10 @@ const examSign = BABYLON.MeshBuilder.CreatePlane(
   scene
 );
 
-// öne baksın + binanın ön yüzüne otursun
+// 🔴 KRİTİK NOKTA BURASI
+// Binanın ön yüzü -Z yönü → plane'i -Z'ye çeviriyoruz
 examSign.position = new BABYLON.Vector3(EXAM_X, 3.5, EXAM_Z - 3.95);
-examSign.rotation.y = 0;
-examSign.renderingGroupId = 2;
+examSign.rotation.y = Math.PI; // ← BU OLMAZSA OLMAZ
 
 // GUI
 const examUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
@@ -483,7 +482,7 @@ examBG.thickness = 0;
 examBG.background = "rgba(255,255,255,0.9)";
 examUI.addControl(examBG);
 
-// ALT BAŞLIK
+// Alt başlık
 const examTitle = new BABYLON.GUI.TextBlock();
 examTitle.text = "Güncel denemeye katıl";
 examTitle.color = "black";
@@ -492,7 +491,7 @@ examTitle.top = "-30px";
 examTitle.fontWeight = "bold";
 examBG.addControl(examTitle);
 
-// SAYAÇ
+// Sayaç
 const examCountdown = new BABYLON.GUI.TextBlock();
 examCountdown.text = "Yükleniyor...";
 examCountdown.color = "black";
