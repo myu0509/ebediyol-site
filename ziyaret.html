@@ -477,31 +477,31 @@ const examUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
   false
 );
 
+// 🔴 TEK VE DOĞRU AYAR
+examUI.rootContainer.scaleX = -1;
+
 const examBG = new BABYLON.GUI.Rectangle();
 examBG.thickness = 0;
 examBG.background = "rgba(255,255,255,0.9)";
 examUI.addControl(examBG);
 
-// Alt başlık
+// ALT BAŞLIK
 const examTitle = new BABYLON.GUI.TextBlock();
 examTitle.text = "Güncel denemeye katıl";
 examTitle.color = "black";
 examTitle.fontSize = "70px";
 examTitle.top = "-30px";
 examTitle.fontWeight = "bold";
-examTitle.scaleX = -1;
 examBG.addControl(examTitle);
 
-// Sayaç
+// SAYAÇ
 const examCountdown = new BABYLON.GUI.TextBlock();
 examCountdown.text = "Yükleniyor...";
 examCountdown.color = "black";
 examCountdown.fontSize = "54px";
 examCountdown.top = "40px";
-examCountdown.scaleX = -1;
 examBG.addControl(examCountdown);
 
-// global erişim
 window.examCountdownText = examCountdown;
 
 // === BİNALAR ===
