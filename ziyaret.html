@@ -564,7 +564,48 @@ createCampusBuilding({
   bodyColor: new BABYLON.Color3(0.85, 0.45, 0.10),
   roofColor: new BABYLON.Color3(0.45, 0.75, 0.95)
 });
+// === KOÇLUK MERKEZİ ALT BAŞLIK ===
 
+// koçluk binası koordinatları
+const COACH_X = 12;
+const COACH_Z = 4;
+
+// plane
+const coachSign = BABYLON.MeshBuilder.CreatePlane(
+  "coachExtraSign",
+  { width: 6.8, height: 1.5 },
+  scene
+);
+
+// material (arkadan görünmesin)
+const coachMat = new BABYLON.StandardMaterial("coachMat", scene);
+coachMat.diffuseColor = new BABYLON.Color3(1, 1, 1);
+coachMat.backFaceCulling = true;
+coachSign.material = coachMat;
+
+// konum + yön (binanın ön yüzü)
+coachSign.position = new BABYLON.Vector3(COACH_X, 3.5, COACH_Z - 3.96);
+coachSign.rotation.y = 0;
+
+// GUI
+const coachUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
+  coachSign,
+  1024,
+  256
+);
+
+const coachBG = new BABYLON.GUI.Rectangle();
+coachBG.thickness = 0;
+coachBG.background = "rgba(255,255,255,0.9)";
+coachUI.addControl(coachBG);
+
+// ALT BAŞLIK YAZISI
+const coachText = new BABYLON.GUI.TextBlock();
+coachText.text = "Bireysel rehberlik ve hedef takibi";
+coachText.color = "black";
+coachText.fontSize = "64px";
+coachText.fontWeight = "bold";
+coachBG.addControl(coachText);
     // === HAREKET + KAMERA/AVATAR HİZALAMA (seninki gibi) ===
     scene.onBeforeRenderObservable.add(() => {
       if (avatar) {
