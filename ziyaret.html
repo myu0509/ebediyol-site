@@ -88,6 +88,37 @@
   padding: 20px;
   overflow-y: auto;
 }
+    /* === SAYDAM ANALİZ PANELİ === */
+#analysisPanel {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45); /* kampüs arkadan görünsün */
+  display: none;                  /* 🔑 başta kapalı */
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+#analysisPanel .panelContent {
+  width: 420px;
+  max-width: 90%;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 14px;
+  padding: 24px 26px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  text-align: center;
+}
+
+#analysisPanel h2 {
+  margin: 0 0 10px;
+  font-size: 22px;
+}
+
+#analysisPanel p {
+  margin: 0;
+  font-size: 15px;
+  color: #333;
+}
   </style>
 </head>
 <body>
