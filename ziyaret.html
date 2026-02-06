@@ -427,38 +427,6 @@ bg.addControl(welcomeText);
       sT.outlineColor = "black";
       sBG.addControl(sT);
 
-      // tıklanabilirlik
-body.isPickable = true;
-body.actionManager = new BABYLON.ActionManager(scene);
-
-body.actionManager.registerAction(
-  new BABYLON.ExecuteCodeAction(
-    BABYLON.ActionManager.OnPickTrigger,
-    () => {
-      if (id === "analysis") {
-        window.location.href = "panel.html";
-      }
-    }
-  )
-);
-      // etkileşim ipucu için imleç
-      body.isPickable = true;
-
-      // tıklanabilirlik
-body.isPickable = true;
-body.actionManager = new BABYLON.ActionManager(scene);
-
-body.actionManager.registerAction(
-  new BABYLON.ExecuteCodeAction(
-    BABYLON.ActionManager.OnPickTrigger,
-    () => {
-      if (id === "analysis") {
-        window.location.href = "panel.html";
-      }
-    }
-  )
-);
-
 return root;
     }
 
