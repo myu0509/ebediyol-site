@@ -558,16 +558,16 @@ analysisUI.addControl(analysisBG);
 // yazı
 const analysisText = new BABYLON.GUI.TextBlock();
 analysisText.text = "Deneme ve gelişim analiz raporu";
-    analysisSubtitle.isPointerBlocker = true;
+analysisText.color = "black";
+analysisText.fontSize = "64px";
+analysisText.fontWeight = "bold";
+analysisBG.addControl(analysisText);
+analysisSubtitle.isPointerBlocker = true;
 analysisSubtitle.cursor = "pointer";
 
 analysisSubtitle.onPointerUpObservable.add(() => {
   openAnalysisPanel();
 });
-analysisText.color = "black";
-analysisText.fontSize = "64px";
-analysisText.fontWeight = "bold";
-analysisBG.addControl(analysisText);
   // === SINAV MERKEZİ ALT BAŞLIK + SAYAÇ (DOĞRU YÖN) ===
 
 // sınav binası koordinatı
