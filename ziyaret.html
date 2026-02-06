@@ -562,10 +562,12 @@ analysisText.color = "black";
 analysisText.fontSize = "64px";
 analysisText.fontWeight = "bold";
 analysisBG.addControl(analysisText);
-analysisSubtitle.isPointerBlocker = true;
-analysisSubtitle.cursor = "pointer";
 
-analysisSubtitle.onPointerUpObservable.add(() => {
+// 🔑 SADECE ALT BAŞLIK TIKLANABİLİR
+analysisText.isPointerBlocker = true;
+analysisText.cursor = "pointer";
+
+analysisText.onPointerUpObservable.add(() => {
   openAnalysisPanel();
 });
   // === SINAV MERKEZİ ALT BAŞLIK + SAYAÇ (DOĞRU YÖN) ===
