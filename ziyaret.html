@@ -50,6 +50,44 @@
       z-index: 12;
       max-width: 70vw;
     }
+    /* === ANALİZ MERKEZİ SAYDAM PANEL === */
+#analysisPanel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  max-width: 900px;
+  height: 70%;
+  background: rgba(15, 23, 42, 0.88);
+  color: white;
+  border-radius: 16px;
+  display: none;
+  z-index: 20;
+  box-shadow: 0 0 40px rgba(0,0,0,0.6);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  font-size: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.panel-header button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.panel-content {
+  padding: 20px;
+  overflow-y: auto;
+}
   </style>
 </head>
 <body>
