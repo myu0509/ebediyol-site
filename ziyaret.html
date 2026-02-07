@@ -512,18 +512,13 @@ analysisSubSign.position = new BABYLON.Vector3(
   ANALYSIS_Z - 3.96
 );
 analysisSubSign.rotation.y = 0;
-// 🔑 ALT BAŞLIK PLANE TIKLANABİLİR
 analysisSubSign.isPickable = true;
-analysisSubSign.actionManager = new BABYLON.ActionManager(scene);
 
-analysisSubSign.actionManager.registerAction(
-  new BABYLON.ExecuteCodeAction(
-    BABYLON.ActionManager.OnPickTrigger,
-    () => {
-      openAnalysisPanel();
-    }
-  )
-);
+scene.onPointerDown = function (evt, pickInfo) {
+  if (pickInfo.hit && pickInfo.pickedMesh === analysisSubSign) {
+    openAnalysisPanel();
+  }
+};
 // GUI
 const analysisUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
   analysisSubSign,
