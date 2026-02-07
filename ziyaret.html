@@ -90,7 +90,7 @@
 <div id="analysisPanel">
   <div class="panel-header">
     <span>Analiz Merkezi</span>
-    <button id="closePanel">✕</button>
+    <button onclick="closeAnalysisPanel()">✕</button>
   </div>
 
   <div class="panel-content">
@@ -726,6 +726,21 @@ if (window.examCountdownText) {
     // Render döngüsü
     engine.runRenderLoop(() => scene.render());
     window.addEventListener("resize", () => engine.resize());
+    function openAnalysisPanel() {
+  // BABYLON PANELİNİ KAPAT
+  analysisBG.isVisible = false;
+
+  // HTML PANELİNİ AÇ
+  document.getElementById("analysisPanel").style.display = "flex";
+}
+
+function closeAnalysisPanel() {
+  // HTML PANELİNİ KAPAT
+  document.getElementById("analysisPanel").style.display = "none";
+
+  // BABYLON PANELİNİ GERİ AÇ
+  analysisBG.isVisible = true;
+}
   </script>
   <!-- === ANALİZ MERKEZİ SAYDAM PANEL === -->
 <div id="analysisPanel">
