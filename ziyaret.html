@@ -7,7 +7,11 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
     html, body { margin: 0; padding: 0; overflow: hidden; width: 100%; height: 100%; background: #0f172a; }
-    #renderCanvas { width: 100%; height: 100%; touch-action: none; }
+    #renderCanvas { 
+  width: 100%; 
+  height: 100%; 
+  touch-action: manipulation;
+}
 
     /* Mobil kontrol butonları (seninki) */
     #mobileControls {
@@ -533,18 +537,13 @@ analysisText.fontWeight = "bold";
 analysisBG.addControl(analysisText);
 
 // 🔑 SADECE ALT BAŞLIK TIKLANABİLİR
-analysisText.isPointerBlocker = true;
-analysisText.cursor = "pointer";
 
-analysisText.isPointerBlocker = true;
+analysisText.cursor = "pointer";
 
 analysisText.onPointerDownObservable.add(() => {
   openAnalysisPanel();
 });
-    analysisText.isPointerBlocker = true;
-analysisText.onPointerClickObservable.add(() => {
-  openAnalysisPanel();
-});
+    
   // === SINAV MERKEZİ ALT BAŞLIK + SAYAÇ (DOĞRU YÖN) ===
 
 // sınav binası koordinatı
