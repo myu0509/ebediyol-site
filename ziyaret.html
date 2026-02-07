@@ -533,7 +533,9 @@ analysisBG.addControl(analysisText);
 analysisText.isPointerBlocker = true;
 analysisText.cursor = "pointer";
 
-analysisText.onPointerUpObservable.add(() => {
+analysisText.isPointerBlocker = true;
+
+analysisText.onPointerDownObservable.add(() => {
   openAnalysisPanel();
 });
     analysisText.isPointerBlocker = true;
