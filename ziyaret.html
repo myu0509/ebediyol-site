@@ -712,19 +712,6 @@ if (window.examCountdownText) {
     engine.runRenderLoop(() => scene.render());
     window.addEventListener("resize", () => engine.resize());
     function openAnalysisPanel() {
-  // BABYLON PANELİNİ KAPAT
-  analysisBG.isVisible = false;
-
-  // HTML PANELİNİ AÇ
-  document.getElementById("analysisPanel").style.display = "flex";
-}
-
-function closeAnalysisPanel() {
-  // HTML PANELİNİ KAPAT
-  document.getElementById("analysisPanel").style.display = "none";
-
-  // BABYLON PANELİNİ GERİ AÇ
-  analysisBG.isVisible = true;
 }
   </script>
   <!-- === ANALİZ MERKEZİ SAYDAM PANEL === -->
@@ -741,13 +728,6 @@ function closeAnalysisPanel() {
   </div>
 </div>
   <script>
-  function openAnalysisPanel() {
-    document.getElementById("analysisPanel").style.display = "flex";
-  }
-
-  function closeAnalysisPanel() {
-    document.getElementById("analysisPanel").style.display = "none";
-  }
     function openAnalysisPanel() {
   document.getElementById("analysisPanel").style.display = "flex";
 }
