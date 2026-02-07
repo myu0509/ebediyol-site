@@ -740,6 +740,7 @@ if (window.examCountdownText) {
     });
 
     // Render döngüsü
+    canvas.style.touchAction = "none";
     engine.runRenderLoop(() => scene.render());
     window.addEventListener("resize", () => engine.resize());
     function openAnalysisPanel() {
