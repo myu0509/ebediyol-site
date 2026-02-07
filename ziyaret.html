@@ -523,6 +523,9 @@ analysisUI.addControl(analysisBG);
 
 // yazı
 const analysisText = new BABYLON.GUI.TextBlock();
+    analysisText.isPointerBlocker = true;
+analysisText.pointerDownAnimation = null;
+analysisText.pointerUpAnimation = null;
 analysisText.text = "Deneme ve gelişim analiz raporu";
 analysisText.color = "black";
 analysisText.fontSize = "64px";
