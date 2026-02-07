@@ -536,6 +536,10 @@ analysisText.cursor = "pointer";
 analysisText.onPointerUpObservable.add(() => {
   openAnalysisPanel();
 });
+    analysisText.isPointerBlocker = true;
+analysisText.onPointerDownObservable.add(() => {
+  openAnalysisPanel();
+});
   // === SINAV MERKEZİ ALT BAŞLIK + SAYAÇ (DOĞRU YÖN) ===
 
 // sınav binası koordinatı
@@ -732,6 +736,15 @@ if (window.examCountdownText) {
     engine.runRenderLoop(() => scene.render());
     window.addEventListener("resize", () => engine.resize());
     function openAnalysisPanel() {
+  const panel = document.getElementById("analysisPanel");
+  panel.style.display = "flex";
+}
+
+function closeAnalysisPanel() {
+  const panel = document.getElementById("analysisPanel");
+  panel.style.display = "none";
+}
+    function openAnalysisPanel() {
 }
   </script>
   <!-- === ANALİZ MERKEZİ PANELİ === -->
@@ -763,8 +776,8 @@ function closeAnalysisPanel() {
 }
 </script>
   <!-- === ANALİZ MERKEZİ PANELİ (HTML) === -->
-<div id="analysisPanel">
-  <div class="panelBox">
+<div id="analysisPanel" onclick="closeAnalysisPanel()">
+  <div class="panelBox" onclick="event.stopPropagation()">
     <div class="panelHeader">
       <span>Analiz Merkezi</span>
       <button 
