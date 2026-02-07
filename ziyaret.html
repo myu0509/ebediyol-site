@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -50,6 +51,18 @@
       z-index: 12;
       max-width: 70vw;
     }
+    
+    /* === SAYDAM ANALİZ PANELİ === */
+#analysisPanel {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45); /* kampüs arkadan görünsün */
+  display: none;                  /* 🔑 başta kapalı */
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
 #analysisPanel .panelContent {
   width: 420px;
   max-width: 90%;
@@ -67,6 +80,26 @@
 
 #analysisPanel p {
   margin: 0;
+  font-size: 15px;
+  color: #333;
+}
+    .panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.panelHeader button {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.panelBody {
   font-size: 15px;
   color: #333;
 }
@@ -733,8 +766,15 @@ function closeAnalysisPanel() {
   <!-- === ANALİZ MERKEZİ SAYDAM PANEL === -->
 <div id="analysisPanel">
   <div class="panelContent">
-    <h2>Analiz Merkezi</h2>
-    <p>Deneme ve gelişim analiz raporu</p>
+    <div class="panelHeader">
+      <span>Analiz Merkezi</span>
+      <button onclick="closeAnalysisPanel()">✕</button>
+    </div>
+
+    <div class="panelBody">
+      <!-- içerik buraya -->
+      Deneme ve gelişim analiz raporu
+    </div>
   </div>
 </div>
   <script>
