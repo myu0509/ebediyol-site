@@ -731,18 +731,20 @@ if (window.examCountdownText) {
     function openAnalysisPanel() {
 }
   </script>
-  <!-- === ANALİZ MERKEZİ SAYDAM PANEL === -->
-<div id="analysisPanel">
-  <div class="panelBox">
+  <!-- === ANALİZ MERKEZİ PANELİ === -->
+<div id="analysisPanel" onclick="closeAnalysisPanel()">
+
+  <div class="panelBox" onclick="event.stopPropagation()">
     <div class="panelHeader">
       <span>Analiz Merkezi</span>
-      <button id="closePanel">✕</button>
+      <button onclick="closeAnalysisPanel()">✕</button>
     </div>
 
     <div class="panelBody">
       Deneme ve gelişim analiz raporu
     </div>
   </div>
+
 </div>
   <script>
     function openAnalysisPanel() {
