@@ -140,13 +140,6 @@
     // Kamera (seninki)
     const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
     camera.attachControl(canvas, false);
-    scene.onPointerDown = function () {
-  scene.activeCamera.detachControl();
-};
-
-scene.onPointerUp = function () {
-  scene.activeCamera.attachControl(canvas, true);
-};
     camera.speed = 0.5;
 
     // Mobil hareket değişkenleri (seninki)
