@@ -149,7 +149,7 @@
 
     // Kamera (seninki)
     const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
-    camera.attachControl(canvas, true);
+    camera.attachControl(canvas, false);
     camera.speed = 0.5;
 
     // Mobil hareket değişkenleri (seninki)
@@ -513,12 +513,14 @@ analysisSubSign.position = new BABYLON.Vector3(
 );
 analysisSubSign.rotation.y = 0;
 analysisSubSign.isPickable = true;
-
-scene.onPointerDown = function (evt, pickInfo) {
-  if (pickInfo.hit && pickInfo.pickedMesh === analysisSubSign) {
-    openAnalysisPanel();
+scene.onPointerObservable.add((pointerInfo) => {
+  if (pointerInfo.type === BABYLON.PointerEventTypes.POINTERUP) {
+    const pick = pointerInfo.pickInfo;
+    if (pick && pick.hit && pick.pickedMesh === analysisSubSign) {
+      openAnalysisPanel();
+    }
   }
-};
+});
     // GUI
 const analysisUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
   analysisSubSign,
