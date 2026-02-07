@@ -535,7 +535,11 @@ analysisUI.addControl(analysisBG);
 
 // yazı
 const analysisText = new BABYLON.GUI.TextBlock();
+analysisText.isPointerBlocker = true;
 
+analysisText.onPointerUpObservable.add(() => {
+  openAnalysisPanel();
+});
 
 analysisText.text = "Deneme ve gelişim analiz raporu";
 analysisText.color = "black";
