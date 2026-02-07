@@ -95,6 +95,9 @@
   padding: 20px;
   box-shadow: 0 20px 50px rgba(0,0,0,0.4);
 }
+    #analysisPanel {
+  pointer-events: auto;
+}
   </style>
 </head>
 <body>
@@ -737,7 +740,11 @@ if (window.examCountdownText) {
   <div class="panelBox" onclick="event.stopPropagation()">
     <div class="panelHeader">
       <span>Analiz Merkezi</span>
-      <button onclick="closeAnalysisPanel()">✕</button>
+      <button 
+  onclick="closeAnalysisPanel()" 
+  ontouchstart="closeAnalysisPanel()">
+  ✕
+</button>
     </div>
 
     <div class="panelBody">
@@ -760,7 +767,11 @@ function closeAnalysisPanel() {
   <div class="panelBox">
     <div class="panelHeader">
       <span>Analiz Merkezi</span>
-      <button onclick="closeAnalysisPanel()">✕</button>
+      <button 
+  onclick="openAnalysisPanel()" 
+  ontouchstart="openAnalysisPanel()">
+  Analiz Aç
+</button>
     </div>
 
     <div class="panelBody">
@@ -776,6 +787,9 @@ function openAnalysisPanel() {
 function closeAnalysisPanel() {
   document.getElementById("analysisPanel").style.display = "none";
 }
+</script>
+  <script>
+document.addEventListener("touchstart", function(){}, { passive: true });
 </script>
 </body>
 </html>
