@@ -450,6 +450,17 @@ const analysisSubSign = BABYLON.MeshBuilder.CreatePlane(
   { width: 6.5, height: 1.4 },
   scene
 );
+analysisSubSign.isPickable = true;
+
+analysisSubSign.actionManager = new BABYLON.ActionManager(scene);
+analysisSubSign.actionManager.registerAction(
+  new BABYLON.ExecuteCodeAction(
+    BABYLON.ActionManager.OnPickTrigger,
+    function () {
+      window.location.href = "analiz.html";
+    }
+  )
+);
 
 // material (arkası görünmez)
 const analysisMat = new BABYLON.StandardMaterial("analysisMat", scene);
