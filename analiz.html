@@ -5,7 +5,7 @@
   <title>Analiz Merkezi</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Babylon -->
+  <!-- BABYLON -->
   <script src="https://cdn.babylonjs.com/babylon.js"></script>
   <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
   <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
@@ -16,9 +16,9 @@
       height: 100%;
       margin: 0;
       overflow: hidden;
-      background: #000;
+      background: #1e1e1e;
     }
-    canvas {
+    #renderCanvas {
       width: 100%;
       height: 100%;
       touch-action: none;
@@ -33,124 +33,111 @@
 const canvas = document.getElementById("renderCanvas");
 const engine = new BABYLON.Engine(canvas, true);
 
+// AVATAR (ZİYARET.HTML İLE AYNI)
+const AVATAR_URL =
+  "https://raw.githubusercontent.com/myu0509/ebediyol-site/main/avatar.glb";
+
 const createScene = async () => {
   const scene = new BABYLON.Scene(engine);
-  scene.clearColor = new BABYLON.Color3(0.85, 0.9, 0.95);
+  scene.clearColor = new BABYLON.Color4(0.9, 0.9, 0.9, 1);
 
-  // IŞIK
-  new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-
-  // KAMERA (avatar takip)
-  const camera = new BABYLON.FollowCamera(
-    "followCam",
-    new BABYLON.Vector3(0, 2, -6),
+  /* IŞIK */
+  new BABYLON.HemisphericLight(
+    "light",
+    new BABYLON.Vector3(0, 1, 0),
     scene
   );
-  camera.radius = 6;
-  camera.heightOffset = 2;
-  camera.rotationOffset = 180;
-  camera.attachControl(canvas, true);
 
-  // ZEMİN
-  const ground = BABYLON.MeshBuilder.CreateGround(
-    "ground",
-    { width: 20, height: 20 },
+  /* ZEMİN – AHŞAP */
+  const floor = BABYLON.MeshBuilder.CreateGround(
+    "floor",
+    { width: 30, height: 20 },
     scene
   );
-  const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
-  groundMat.diffuseColor = new BABYLON.Color3(0.9, 0.9, 0.85);
-  ground.material = groundMat;
+  const floorMat = new BABYLON.StandardMaterial("floorMat", scene);
+  floorMat.diffuseColor = new BABYLON.Color3(0.55, 0.4, 0.25);
+  floor.material = floorMat;
 
-  // DUVARLAR (derslik)
-  const wallMat = new BABYLON.StandardMaterial("wallMat", scene);
-  wallMat.diffuseColor = new BABYLON.Color3(0.95, 0.95, 0.95);
-
-  const backWall = BABYLON.MeshBuilder.CreateBox("backWall", {
-    width: 20, height: 6, depth: 0.3
-  }, scene);
-  backWall.position.z = 10;
-  backWall.position.y = 3;
-  backWall.material = wallMat;
-
-  const leftWall = backWall.clone("leftWall");
-  leftWall.scaling = new BABYLON.Vector3(1,1,1);
-  leftWall.rotation.y = Math.PI / 2;
-  leftWall.position.x = -10;
-  leftWall.position.z = 0;
-
-  const rightWall = leftWall.clone("rightWall");
-  rightWall.position.x = 10;
-
-  // YAZI TAHTASI
+  /* TAHTA */
   const board = BABYLON.MeshBuilder.CreatePlane(
     "board",
-    { width: 8, height: 3 },
+    { width: 10, height: 4 },
     scene
   );
-  board.position = new BABYLON.Vector3(0, 3, 9.85);
+  board.position = new BABYLON.Vector3(0, 3, 9.9);
+  board.rotation.y = Math.PI;
 
   const boardMat = new BABYLON.StandardMaterial("boardMat", scene);
   boardMat.diffuseColor = new BABYLON.Color3(0.1, 0.4, 0.1);
   board.material = boardMat;
 
-  // TAHTA YAZISI
-  const boardUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(board);
-  const boardText = new BABYLON.GUI.TextBlock();
-  boardText.text =
-    "ANALİZ MENÜSÜ\n\n" +
-    "▶ Deneme Sonuçları\n" +
-    "▶ Gelişim Grafikleri\n" +
-    "▶ Raporlar";
-  boardText.color = "white";
-  boardText.fontSize = 48;
-  boardText.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
-  boardText.paddingLeft = "40px";
-  boardUI.addControl(boardText);
-
-  // SIRALAR
+  /* SIRALAR */
   const deskMat = new BABYLON.StandardMaterial("deskMat", scene);
-  deskMat.diffuseColor = new BABYLON.Color3(0.6, 0.4, 0.25);
+  deskMat.diffuseColor = new BABYLON.Color3(0.45, 0.3, 0.15);
 
-  for (let i = -6; i <= 6; i += 3) {
+  for (let i = 0; i < 4; i++) {
     const leftDesk = BABYLON.MeshBuilder.CreateBox(
-      "deskL",
-      { width: 2, height: 1, depth: 1 },
+      "deskL" + i,
+      { width: 1.2, height: 0.6, depth: 2 },
       scene
     );
-    leftDesk.position = new BABYLON.Vector3(-4, 0.5, i);
+    leftDesk.position = new BABYLON.Vector3(-5, 0.3, -4 + i * 3);
     leftDesk.material = deskMat;
 
-    const rightDesk = leftDesk.clone("deskR");
-    rightDesk.position.x = 4;
+    const rightDesk = leftDesk.clone("deskR" + i);
+    rightDesk.position.x = 5;
   }
 
-  // AVATAR
+  /* KAMERA */
+  const camera = new BABYLON.FollowCamera(
+    "followCam",
+    new BABYLON.Vector3(0, 3, -6),
+    scene
+  );
+  camera.radius = 6;
+  camera.heightOffset = 2;
+  camera.rotationOffset = 180;
+  camera.cameraAcceleration = 0.05;
+  camera.maxCameraSpeed = 10;
+  camera.attachControl(canvas, true);
+
+  /* AVATAR YÜKLE */
   const result = await BABYLON.SceneLoader.ImportMeshAsync(
     "",
     "",
-    "ebediyol-site/avatar.glb",
+    AVATAR_URL,
     scene
   );
 
   const avatar = result.meshes[0];
-  avatar.scaling.scaleInPlace(1);
+  avatar.scaling = new BABYLON.Vector3(1.2, 1.2, 1.2);
   avatar.position = new BABYLON.Vector3(0, 0, -6);
+
   camera.lockedTarget = avatar;
 
-  // MOBİL JOYSTICK
-  const ui = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("ui");
-  const joystick = new BABYLON.GUI.VirtualJoystick(true);
-  joystick.setJoystickColor("white");
-  joystick.setPosition(120, -120);
+  /* KONTROLLER */
+  const inputMap = {};
+  scene.actionManager = new BABYLON.ActionManager(scene);
+
+  scene.actionManager.registerAction(
+    new BABYLON.ExecuteCodeAction(
+      BABYLON.ActionManager.OnKeyDownTrigger,
+      evt => inputMap[evt.sourceEvent.key] = true
+    )
+  );
+
+  scene.actionManager.registerAction(
+    new BABYLON.ExecuteCodeAction(
+      BABYLON.ActionManager.OnKeyUpTrigger,
+      evt => inputMap[evt.sourceEvent.key] = false
+    )
+  );
 
   scene.onBeforeRenderObservable.add(() => {
-    avatar.moveWithCollisions(
-      new BABYLON.Vector3(
-        joystick.deltaPosition.x * 0.03,
-        0,
-        joystick.deltaPosition.y * 0.03
-      )
-    );
+    if (inputMap["w"]) avatar.position.z += 0.1;
+    if (inputMap["s"]) avatar.position.z -= 0.1;
+    if (inputMap["a"]) avatar.position.x -= 0.1;
+    if (inputMap["d"]) avatar.position.x += 0.1;
   });
 
   return scene;
