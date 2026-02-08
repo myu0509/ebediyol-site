@@ -449,6 +449,26 @@ const analysisSubSign = BABYLON.MeshBuilder.CreatePlane(
   "analysisSubSign",
   { width: 6.5, height: 1.4 },
   scene
+  const analysisHint = BABYLON.MeshBuilder.CreatePlane(
+  "analysisHint",
+  { width: 0.4, height: 0.4 },
+  scene
+);
+
+analysisHint.position = analysisSubSign.position.clone();
+analysisHint.position.y -= 0.45;
+analysisHint.position.z += 0.02;
+analysisHint.isPickable = false;
+const analysisHintTexture =
+  BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(analysisHint);
+
+const analysisHintText = new BABYLON.GUI.TextBlock();
+analysisHintText.text = "▶";
+analysisHintText.color = "white";
+analysisHintText.fontSize = 120;
+analysisHintText.fontWeight = "bold";
+
+analysisHintTexture.addControl(analysisHintText);
 );
 
 // material (arkası görünmez)
