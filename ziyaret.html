@@ -457,14 +457,19 @@ const analysisHint = BABYLON.MeshBuilder.CreatePlane(
 );
 
 analysisHint.position = analysisSubSign.position.clone();
-analysisHint.position.y -= 0.45;
-analysisHint.position.z += 0.02;
+analysisHint.position.y += 0.3;
+analysisHint.position.z += 0.15;
 analysisHint.isPickable = false;
 analysisHint.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
     const hintMat = new BABYLON.StandardMaterial("hintMat", scene);
 hintMat.emissiveColor = new BABYLON.Color3(1, 1, 1);
-hintMat.diffuseTexture = new BABYLON.Texture("arrow.png", scene);
-hintMat.opacityTexture = hintMat.diffuseTexture;
+    const hintMat = new BABYLON.StandardMaterial("hintMat", scene);
+hintMat.emissiveColor = new BABYLON.Color3(1, 0, 0); // KIRMIZI = GÖRÜLMESİ GARANTİ
+hintMat.disableLighting = true;
+hintMat.backFaceCulling = false;
+
+analysisHint.material = hintMat;
+
 hintMat.backFaceCulling = false;
 
 analysisHint.material = hintMat;
