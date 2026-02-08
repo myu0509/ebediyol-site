@@ -510,7 +510,12 @@ analysisText.text = "Deneme ve gelişim analiz raporu";
 analysisText.color = "black";
 analysisText.fontSize = "64px";
 analysisText.fontWeight = "bold";
-analysisBG.addControl(analysisText);
+analysisText.textHorizontalAlignment =
+  BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+
+analysisTexture.addControl(analysisText);
+
+// ok işareti
 const arrowText = new BABYLON.GUI.TextBlock();
 arrowText.text = "▶";
 arrowText.color = "red";
