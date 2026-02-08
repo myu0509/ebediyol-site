@@ -450,6 +450,30 @@ const analysisSubSign = BABYLON.MeshBuilder.CreatePlane(
   { width: 6.5, height: 1.4 },
   scene
 );
+// 👉 ANALİZ MERKEZİ TIKLANABİLİR İŞARETİ (TABLAYI BOZMAZ)
+const analysisHint = BABYLON.MeshBuilder.CreatePlane(
+  "analysisHint",
+  { width: 0.25, height: 0.25 },
+  scene
+);
+
+// ALT BAŞLIĞA BAĞLA
+analysisHint.parent = analysisSubSign;
+
+// SOL BAŞ TARAFINA AL
+analysisHint.position.x = -3.3;
+analysisHint.position.y = 0;
+analysisHint.position.z = -0.01;
+
+analysisHint.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+analysisHint.isPickable = false;
+
+const hintMat = new BABYLON.StandardMaterial("hintMat", scene);
+hintMat.emissiveColor = new BABYLON.Color3(1, 0, 0); // KIRMIZI
+hintMat.disableLighting = true;
+hintMat.backFaceCulling = false;
+
+analysisHint.material = hintMat;
 
 // === TIKLANABİLİR İŞARET ===
 const analysisHint = BABYLON.MeshBuilder.CreatePlane(
@@ -505,45 +529,36 @@ analysisBG.background = "rgba(255,255,255,0.9)";
 analysisUI.addControl(analysisBG);
 const analysisTexture =
   BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(analysisSubSign);
-// === ARKA PLAN TABELA ===
-const rect = new BABYLON.GUI.Rectangle();
-rect.background = "white";
-rect.thickness = 0;
-rect.cornerRadius = 20;
-analysisTexture.addControl(rect);
+// yatay panel (ok + yazı birlikte)
+const row = new BABYLON.GUI.StackPanel();
+row.isVertical = false;
+row.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+row.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 
-// === GRID ===
-const grid = new BABYLON.GUI.Grid();
-grid.addColumnDefinition(0.12);
-grid.addColumnDefinition(0.88);
-rect.addControl(grid);
+analysisTexture.addControl(row);
 
-// OK
-const arrowText = new BABYLON.GUI.TextBlock();
-arrowText.text = "▶";
-arrowText.color = "red";
-arrowText.fontSize = 60;
-arrowText.fontWeight = "bold";
-arrowText.textHorizontalAlignment =
+// ok işareti
+const arrow = new BABYLON.GUI.TextBlock();
+arrow.text = "▶";
+arrow.color = "red";
+arrow.fontSize = "48px";
+arrow.fontWeight = "bold";
+arrow.width = "50px";
+arrow.textHorizontalAlignment =
   BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-arrowText.textVerticalAlignment =
-  BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 
-grid.addControl(arrowText, 0, 0);
+row.addControl(arrow);
 
-// YAZI
+// yazı
 const analysisText = new BABYLON.GUI.TextBlock();
 analysisText.text = "Deneme ve gelişim analiz raporu";
 analysisText.color = "black";
-analysisText.fontSize = 64;
+analysisText.fontSize = "64px";
 analysisText.fontWeight = "bold";
 analysisText.textHorizontalAlignment =
   BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
-analysisText.textVerticalAlignment =
-  BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
-analysisText.paddingLeft = "10px";
 
-grid.addControl(analysisText, 0, 1);
+row.addControl(analysisText);
 
   // === SINAV MERKEZİ ALT BAŞLIK + SAYAÇ (DOĞRU YÖN) ===
 
