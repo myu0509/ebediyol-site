@@ -444,63 +444,12 @@ bg.addControl(welcomeText);
 const ANALYSIS_X = -12;
 const ANALYSIS_Z = 4;
 
-// plane (alt başlık zaten var)
+// plane
 const analysisSubSign = BABYLON.MeshBuilder.CreatePlane(
   "analysisSubSign",
   { width: 6.5, height: 1.4 },
   scene
 );
-// 👉 ANALİZ MERKEZİ TIKLANABİLİR İŞARETİ (TABLAYI BOZMAZ)
-const analysisHint = BABYLON.MeshBuilder.CreatePlane(
-  "analysisHint",
-  { width: 0.25, height: 0.25 },
-  scene
-);
-
-// ALT BAŞLIĞA BAĞLA
-analysisHint.parent = analysisSubSign;
-
-// SOL BAŞ TARAFINA AL
-analysisHint.position.x = -3.3;
-analysisHint.position.y = 0;
-analysisHint.position.z = -0.01;
-
-analysisHint.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-analysisHint.isPickable = false;
-
-const hintMat = new BABYLON.StandardMaterial("hintMat", scene);
-hintMat.emissiveColor = new BABYLON.Color3(1, 0, 0); // KIRMIZI
-hintMat.disableLighting = true;
-hintMat.backFaceCulling = false;
-
-analysisHint.material = hintMat;
-
-// === TIKLANABİLİR İŞARET ===
-const analysisHint = BABYLON.MeshBuilder.CreatePlane(
-  "analysisHint",
-  { width: 0.4, height: 0.4 },
-  scene
-);
-analysisHint.parent = analysisSubSign;
-
-analysisHint.position.x = -3.6;
-analysisHint.position.y = 0;
-analysisHint.position.z = -0.01;
-
-// konum: yazının biraz üstü ve önü
-analysisHint.position.y += 0.3;
-analysisHint.position.z += 0.15;
-
-// her açıdan görünsün
-analysisHint.isPickable = false;
-
-// MATERYAL (KESİN GÖRÜNÜR)
-const hintMat = new BABYLON.StandardMaterial("hintMat", scene);
-hintMat.emissiveColor = new BABYLON.Color3(1, 0, 0); // KIRMIZI
-hintMat.disableLighting = true;
-hintMat.backFaceCulling = false;
-
-analysisHint.material = hintMat;
 
 // material (arkası görünmez)
 const analysisMat = new BABYLON.StandardMaterial("analysisMat", scene);
@@ -527,27 +476,6 @@ const analysisBG = new BABYLON.GUI.Rectangle();
 analysisBG.thickness = 0;
 analysisBG.background = "rgba(255,255,255,0.9)";
 analysisUI.addControl(analysisBG);
-const analysisTexture =
-  BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(analysisSubSign);
-// yatay panel (ok + yazı birlikte)
-const row = new BABYLON.GUI.StackPanel();
-row.isVertical = false;
-row.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-row.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
-
-analysisTexture.addControl(row);
-
-// ok işareti
-const arrow = new BABYLON.GUI.TextBlock();
-arrow.text = "▶";
-arrow.color = "red";
-arrow.fontSize = "48px";
-arrow.fontWeight = "bold";
-arrow.width = "50px";
-arrow.textHorizontalAlignment =
-  BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-
-row.addControl(arrow);
 
 // yazı
 const analysisText = new BABYLON.GUI.TextBlock();
@@ -555,11 +483,7 @@ analysisText.text = "Deneme ve gelişim analiz raporu";
 analysisText.color = "black";
 analysisText.fontSize = "64px";
 analysisText.fontWeight = "bold";
-analysisText.textHorizontalAlignment =
-  BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
-
-row.addControl(analysisText);
-
+analysisBG.addControl(analysisText);
   // === SINAV MERKEZİ ALT BAŞLIK + SAYAÇ (DOĞRU YÖN) ===
 
 // sınav binası koordinatı
