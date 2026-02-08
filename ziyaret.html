@@ -457,14 +457,17 @@ const analysisHint = BABYLON.MeshBuilder.CreatePlane(
   { width: 0.4, height: 0.4 },
   scene
 );
+analysisHint.parent = analysisSubSign;
+
+analysisHint.position.x = -3.6;
+analysisHint.position.y = 0;
+analysisHint.position.z = -0.01;
 
 // konum: yazının biraz üstü ve önü
-analysisHint.position = analysisSubSign.position.clone();
 analysisHint.position.y += 0.3;
 analysisHint.position.z += 0.15;
 
 // her açıdan görünsün
-analysisHint.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
 analysisHint.isPickable = false;
 
 // MATERYAL (KESİN GÖRÜNÜR)
