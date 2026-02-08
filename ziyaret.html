@@ -56,7 +56,6 @@
   <canvas id="renderCanvas"></canvas>
 
   <!-- (İstersen kuş sesi de kalsın; kaldırmak istersen söylerim) -->
-  <audio id="birds" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/birds.mp3?raw=1" preload="auto" loop></audio>
   <audio id="steps" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/steps.mp3?raw=1" preload="auto"></audio>
 
   <div id="mobileControls">
@@ -83,16 +82,7 @@
     scene.collisionsEnabled = true;
     const examDate = new Date("2026-03-15T10:00:00").getTime();
     // Sesler
-    const birds = document.getElementById("birds");
     const steps = document.getElementById("steps");
-
-    // İlk tıklamada kuş sesi (seninki gibi)
-    window.addEventListener("pointerdown", () => {
-      try {
-        birds.volume = 0.25;
-        birds.play().catch(()=>{});
-      } catch(e){}
-    }, { once: true });
 
     scene.clearColor = new BABYLON.Color3(0.07, 0.10, 0.16);
 
