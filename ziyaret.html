@@ -505,12 +505,18 @@ analysisBG.background = "rgba(255,255,255,0.9)";
 analysisUI.addControl(analysisBG);
 const analysisTexture =
   BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(analysisSubSign);
+// === ARKA PLAN TABELA ===
+const rect = new BABYLON.GUI.Rectangle();
+rect.background = "white";
+rect.thickness = 0;
+rect.cornerRadius = 20;
+analysisTexture.addControl(rect);
 
-// GRID (2 sütun: ok + yazı)
+// === GRID ===
 const grid = new BABYLON.GUI.Grid();
-grid.addColumnDefinition(0.12); // ok
-grid.addColumnDefinition(0.88); // yazı
-analysisTexture.addControl(grid);
+grid.addColumnDefinition(0.12);
+grid.addColumnDefinition(0.88);
+rect.addControl(grid);
 
 // OK
 const arrowText = new BABYLON.GUI.TextBlock();
@@ -533,9 +539,9 @@ analysisText.fontSize = 64;
 analysisText.fontWeight = "bold";
 analysisText.textHorizontalAlignment =
   BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
-analysisText.paddingLeft = "10px";
 analysisText.textVerticalAlignment =
   BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+analysisText.paddingLeft = "10px";
 
 grid.addControl(analysisText, 0, 1);
 
