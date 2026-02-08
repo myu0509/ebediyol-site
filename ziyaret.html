@@ -448,8 +448,9 @@ const ANALYSIS_Z = 4;
 const analysisSubSign = BABYLON.MeshBuilder.CreatePlane(
   "analysisSubSign",
   { width: 6.5, height: 1.4 },
-  scene
-  const analysisHint = BABYLON.MeshBuilder.CreatePlane(
+  scene 
+);
+const analysisHint = BABYLON.MeshBuilder.CreatePlane(
   "analysisHint",
   { width: 0.4, height: 0.4 },
   scene
@@ -469,7 +470,6 @@ analysisHintText.fontSize = 120;
 analysisHintText.fontWeight = "bold";
 
 analysisHintTexture.addControl(analysisHintText);
-);
 
 // material (arkası görünmez)
 const analysisMat = new BABYLON.StandardMaterial("analysisMat", scene);
