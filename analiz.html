@@ -1,1 +1,140 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Analiz Merkezi</title>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="renderCanvas"></canvas>
+
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+
+  <script>
+    const canvas = document.getElementById("renderCanvas");
+    const engine = new BABYLON.Engine(canvas, true);
+
+    const createScene = function () {
+      const scene = new BABYLON.Scene(engine);
+      scene.collisionsEnabled = true;
+
+      /* === KAMERA (İÇERİDE BAŞLAR) === */
+      const camera = new BABYLON.UniversalCamera(
+        "camera",
+        new BABYLON.Vector3(0, 1.7, -4),
+        scene
+      );
+      camera.attachControl(canvas, true);
+      camera.speed = 0.15;
+      camera.checkCollisions = true;
+      camera.applyGravity = true;
+      camera.ellipsoid = new BABYLON.Vector3(0.4, 0.9, 0.4);
+
+      /* === IŞIK === */
+      const light = new BABYLON.HemisphericLight(
+        "light",
+        new BABYLON.Vector3(0, 1, 0),
+        scene
+      );
+      light.intensity = 1.2;
+
+      /* === ZEMİN === */
+      const floor = BABYLON.MeshBuilder.CreateBox(
+        "floor",
+        { width: 12, depth: 16, height: 0.1 },
+        scene
+      );
+      floor.position.y = 0;
+      floor.checkCollisions = true;
+
+      /* === DUVARLAR === */
+      function wall(name, w, h, d, x, y, z) {
+        const m = BABYLON.MeshBuilder.CreateBox(
+          name,
+          { width: w, height: h, depth: d },
+          scene
+        );
+        m.position.set(x, y, z);
+        m.checkCollisions = true;
+        return m;
+      }
+
+      wall("backWall", 12, 4, 0.1, 0, 2, 8);
+      wall("frontWall", 12, 4, 0.1, 0, 2, -8);
+      wall("leftWall", 0.1, 4, 16, -6, 2, 0);
+      wall("rightWall", 0.1, 4, 16, 6, 2, 0);
+
+      /* === TAVAN === */
+      const ceiling = BABYLON.MeshBuilder.CreateBox(
+        "ceiling",
+        { width: 12, depth: 16, height: 0.1 },
+        scene
+      );
+      ceiling.position.y = 4;
+      ceiling.checkCollisions = true;
+
+      /* === YAZI TAHTASI (MENÜ ALANI) === */
+      const board = BABYLON.MeshBuilder.CreatePlane(
+        "board",
+        { width: 6, height: 2.5 },
+        scene
+      );
+      board.position.set(0, 2.3, 7.9);
+      board.checkCollisions = false;
+
+      const boardTex =
+        BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(board);
+
+      const boardText = new BABYLON.GUI.TextBlock();
+      boardText.text =
+        "ANALİZ MENÜSÜ\n\n• Deneme Sonuçları\n• Gelişim Grafikleri\n• Raporlar";
+      boardText.color = "black";
+      boardText.fontSize = 48;
+      boardText.fontWeight = "bold";
+      boardText.textHorizontalAlignment =
+        BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+      boardText.textVerticalAlignment =
+        BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+
+      boardTex.addControl(boardText);
+
+      /* === SIRALAR (YANLARDA) === */
+      function desk(x, z) {
+        const d = BABYLON.MeshBuilder.CreateBox(
+          "desk",
+          { width: 1.2, height: 0.7, depth: 0.6 },
+          scene
+        );
+        d.position.set(x, 0.35, z);
+        d.checkCollisions = true;
+      }
+
+      for (let i = -5; i <= 3; i += 1.5) {
+        desk(-3.5, i);
+        desk(3.5, i);
+      }
+
+      return scene;
+    };
+
+    const scene = createScene();
+    engine.runRenderLoop(() => scene.render());
+
+    window.addEventListener("resize", () => engine.resize());
+  </script>
+</body>
+</html>
 
