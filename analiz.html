@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <title>Analiz Merkezi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Babylon -->
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+  <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+
   <style>
     html, body {
       width: 100%;
@@ -17,8 +24,6 @@
       touch-action: none;
     }
   </style>
-  <script src="https://cdn.babylonjs.com/babylon.js"></script>
-  <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
 </head>
 
 <body>
@@ -28,137 +33,134 @@
 const canvas = document.getElementById("renderCanvas");
 const engine = new BABYLON.Engine(canvas, true);
 
-const createScene = function () {
+const createScene = async () => {
   const scene = new BABYLON.Scene(engine);
-  scene.clearColor = new BABYLON.Color3(0.85, 0.9, 1);
+  scene.clearColor = new BABYLON.Color3(0.85, 0.9, 0.95);
 
-  // === KAMERA (avatar hissi) ===
-  const camera = new BABYLON.UniversalCamera(
-    "camera",
-    new BABYLON.Vector3(0, 1.6, -6),
+  // IŞIK
+  new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+  // KAMERA (avatar takip)
+  const camera = new BABYLON.FollowCamera(
+    "followCam",
+    new BABYLON.Vector3(0, 2, -6),
     scene
   );
+  camera.radius = 6;
+  camera.heightOffset = 2;
+  camera.rotationOffset = 180;
   camera.attachControl(canvas, true);
-  camera.speed = 0.25;
-  camera.applyGravity = true;
-  camera.ellipsoid = new BABYLON.Vector3(0.5, 0.9, 0.5);
 
-  // === IŞIK ===
-  const light = new BABYLON.HemisphericLight(
-    "light",
-    new BABYLON.Vector3(0, 1, 0),
+  // ZEMİN
+  const ground = BABYLON.MeshBuilder.CreateGround(
+    "ground",
+    { width: 20, height: 20 },
     scene
   );
-  light.intensity = 0.9;
+  const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
+  groundMat.diffuseColor = new BABYLON.Color3(0.9, 0.9, 0.85);
+  ground.material = groundMat;
 
-  // === ZEMİN (ahşap) ===
-  const floor = BABYLON.MeshBuilder.CreateBox(
-    "floor",
-    { width: 12, depth: 16, height: 0.1 },
-    scene
-  );
-  floor.position.y = 0;
+  // DUVARLAR (derslik)
+  const wallMat = new BABYLON.StandardMaterial("wallMat", scene);
+  wallMat.diffuseColor = new BABYLON.Color3(0.95, 0.95, 0.95);
 
-  const floorMat = new BABYLON.StandardMaterial("floorMat", scene);
-  floorMat.diffuseColor = new BABYLON.Color3(0.85, 0.78, 0.65);
-  floor.material = floorMat;
+  const backWall = BABYLON.MeshBuilder.CreateBox("backWall", {
+    width: 20, height: 6, depth: 0.3
+  }, scene);
+  backWall.position.z = 10;
+  backWall.position.y = 3;
+  backWall.material = wallMat;
 
-  // === DUVAR FONKSİYONU ===
-  function wall(w, h, d, x, y, z) {
-    const m = BABYLON.MeshBuilder.CreateBox(
-      "wall",
-      { width: w, height: h, depth: d },
-      scene
-    );
-    m.position.set(x, y, z);
+  const leftWall = backWall.clone("leftWall");
+  leftWall.scaling = new BABYLON.Vector3(1,1,1);
+  leftWall.rotation.y = Math.PI / 2;
+  leftWall.position.x = -10;
+  leftWall.position.z = 0;
 
-    const wallMat = new BABYLON.StandardMaterial("wallMat", scene);
-    wallMat.diffuseColor = new BABYLON.Color3(0.95, 0.93, 0.88);
-    m.material = wallMat;
-  }
+  const rightWall = leftWall.clone("rightWall");
+  rightWall.position.x = 10;
 
-  // === DUVARLAR ===
-  wall(12, 4, 0.2, 0, 2, 8);    // ön
-  wall(12, 4, 0.2, 0, 2, -8);   // arka
-  wall(0.2, 4, 16, -6, 2, 0);   // sol
-  wall(0.2, 4, 16, 6, 2, 0);    // sağ
-
-  // === TAVAN ===
-  const ceiling = BABYLON.MeshBuilder.CreateBox(
-    "ceiling",
-    { width: 12, depth: 16, height: 0.1 },
-    scene
-  );
-  ceiling.position.y = 4;
-
-  const ceilingMat = new BABYLON.StandardMaterial("ceilingMat", scene);
-  ceilingMat.diffuseColor = new BABYLON.Color3(1, 1, 1);
-  ceiling.material = ceilingMat;
-
-  // === SIRA FONKSİYONU ===
-  function desk(x, z) {
-    const d = BABYLON.MeshBuilder.CreateBox(
-      "desk",
-      { width: 1.2, height: 0.6, depth: 0.6 },
-      scene
-    );
-    d.position.set(x, 0.3, z);
-
-    const deskMat = new BABYLON.StandardMaterial("deskMat", scene);
-    deskMat.diffuseColor = new BABYLON.Color3(0.55, 0.35, 0.2);
-    d.material = deskMat;
-  }
-
-  // === SIRALAR ===
-  for (let z = -2; z <= 3; z += 1.3) {
-    desk(-2, z);
-    desk(0, z);
-    desk(2, z);
-  }
-
-  // === YAZI TAHTASI ===
+  // YAZI TAHTASI
   const board = BABYLON.MeshBuilder.CreatePlane(
     "board",
-    { width: 6, height: 2.5 },
+    { width: 8, height: 3 },
     scene
   );
-  board.position.set(0, 2.3, 7.89);
+  board.position = new BABYLON.Vector3(0, 3, 9.85);
 
   const boardMat = new BABYLON.StandardMaterial("boardMat", scene);
-  boardMat.diffuseColor = new BABYLON.Color3(0.1, 0.3, 0.1);
-  boardMat.specularColor = new BABYLON.Color3(0, 0, 0);
+  boardMat.diffuseColor = new BABYLON.Color3(0.1, 0.4, 0.1);
   board.material = boardMat;
 
-  // === TAHTA MENÜ YAZISI ===
+  // TAHTA YAZISI
   const boardUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(board);
-
   const boardText = new BABYLON.GUI.TextBlock();
   boardText.text =
     "ANALİZ MENÜSÜ\n\n" +
-    "• Deneme Sonuçları\n" +
-    "• Gelişim Grafikleri\n" +
-    "• Raporlar";
+    "▶ Deneme Sonuçları\n" +
+    "▶ Gelişim Grafikleri\n" +
+    "▶ Raporlar";
   boardText.color = "white";
-  boardText.fontSize = 52;
-  boardText.textHorizontalAlignment =
-    BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-  boardText.textVerticalAlignment =
-    BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
-
+  boardText.fontSize = 48;
+  boardText.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+  boardText.paddingLeft = "40px";
   boardUI.addControl(boardText);
+
+  // SIRALAR
+  const deskMat = new BABYLON.StandardMaterial("deskMat", scene);
+  deskMat.diffuseColor = new BABYLON.Color3(0.6, 0.4, 0.25);
+
+  for (let i = -6; i <= 6; i += 3) {
+    const leftDesk = BABYLON.MeshBuilder.CreateBox(
+      "deskL",
+      { width: 2, height: 1, depth: 1 },
+      scene
+    );
+    leftDesk.position = new BABYLON.Vector3(-4, 0.5, i);
+    leftDesk.material = deskMat;
+
+    const rightDesk = leftDesk.clone("deskR");
+    rightDesk.position.x = 4;
+  }
+
+  // AVATAR
+  const result = await BABYLON.SceneLoader.ImportMeshAsync(
+    "",
+    "",
+    "ebediyol-site/avatar.glb",
+    scene
+  );
+
+  const avatar = result.meshes[0];
+  avatar.scaling.scaleInPlace(1);
+  avatar.position = new BABYLON.Vector3(0, 0, -6);
+  camera.lockedTarget = avatar;
+
+  // MOBİL JOYSTICK
+  const ui = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("ui");
+  const joystick = new BABYLON.GUI.VirtualJoystick(true);
+  joystick.setJoystickColor("white");
+  joystick.setPosition(120, -120);
+
+  scene.onBeforeRenderObservable.add(() => {
+    avatar.moveWithCollisions(
+      new BABYLON.Vector3(
+        joystick.deltaPosition.x * 0.03,
+        0,
+        joystick.deltaPosition.y * 0.03
+      )
+    );
+  });
 
   return scene;
 };
 
-const scene = createScene();
-
-engine.runRenderLoop(function () {
-  scene.render();
+createScene().then(scene => {
+  engine.runRenderLoop(() => scene.render());
 });
 
-window.addEventListener("resize", function () {
-  engine.resize();
-});
+window.addEventListener("resize", () => engine.resize());
 </script>
 </body>
 </html>
