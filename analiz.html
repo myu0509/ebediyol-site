@@ -57,6 +57,10 @@
         { width: 12, depth: 16, height: 0.1 },
         scene
       );
+      const floorMat = new BABYLON.StandardMaterial("floorMat", scene);
+floorMat.diffuseColor = new BABYLON.Color3(0.85, 0.78, 0.65); // ahşap tonu
+floor.material = floorMat;
+
       floor.position.y = 0;
       floor.checkCollisions = true;
 
@@ -76,6 +80,9 @@
       wall("frontWall", 12, 4, 0.1, 0, 2, -8);
       wall("leftWall", 0.1, 4, 16, -6, 2, 0);
       wall("rightWall", 0.1, 4, 16, 6, 2, 0);
+      const wallMat = new BABYLON.StandardMaterial("wallMat", scene);
+wallMat.diffuseColor = new BABYLON.Color3(0.95, 0.93, 0.88); // krem
+m.material = wallMat;
 
       /* === TAVAN === */
       const ceiling = BABYLON.MeshBuilder.CreateBox(
@@ -83,6 +90,10 @@
         { width: 12, depth: 16, height: 0.1 },
         scene
       );
+      const ceilingMat = new BABYLON.StandardMaterial("ceilingMat", scene);
+ceilingMat.diffuseColor = new BABYLON.Color3(1, 1, 1);
+ceiling.material = ceilingMat;
+
       ceiling.position.y = 4;
       ceiling.checkCollisions = true;
 
