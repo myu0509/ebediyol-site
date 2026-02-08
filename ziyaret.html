@@ -503,12 +503,14 @@ const analysisBG = new BABYLON.GUI.Rectangle();
 analysisBG.thickness = 0;
 analysisBG.background = "rgba(255,255,255,0.9)";
 analysisUI.addControl(analysisBG);
+const analysisTexture =
+  BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(analysisSubSign);
 
 // yazı
 const analysisText = new BABYLON.GUI.TextBlock();
 analysisText.text = "Deneme ve gelişim analiz raporu";
 analysisText.color = "black";
-analysisText.fontSize = "64px";
+analysisText.fontSize = 64;
 analysisText.fontWeight = "bold";
 analysisText.textHorizontalAlignment =
   BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
