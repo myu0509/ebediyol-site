@@ -444,32 +444,33 @@ bg.addControl(welcomeText);
 const ANALYSIS_X = -12;
 const ANALYSIS_Z = 4;
 
-// plane
+// plane (alt başlık zaten var)
 const analysisSubSign = BABYLON.MeshBuilder.CreatePlane(
   "analysisSubSign",
   { width: 6.5, height: 1.4 },
-  scene 
+  scene
 );
+
+// === TIKLANABİLİR İŞARET ===
 const analysisHint = BABYLON.MeshBuilder.CreatePlane(
   "analysisHint",
   { width: 0.4, height: 0.4 },
   scene
 );
 
+// konum: yazının biraz üstü ve önü
 analysisHint.position = analysisSubSign.position.clone();
 analysisHint.position.y += 0.3;
 analysisHint.position.z += 0.15;
-analysisHint.isPickable = false;
+
+// her açıdan görünsün
 analysisHint.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-    const hintMat = new BABYLON.StandardMaterial("hintMat", scene);
-hintMat.emissiveColor = new BABYLON.Color3(1, 1, 1);
-    const hintMat = new BABYLON.StandardMaterial("hintMat", scene);
-hintMat.emissiveColor = new BABYLON.Color3(1, 0, 0); // KIRMIZI = GÖRÜLMESİ GARANTİ
+analysisHint.isPickable = false;
+
+// MATERYAL (KESİN GÖRÜNÜR)
+const hintMat = new BABYLON.StandardMaterial("hintMat", scene);
+hintMat.emissiveColor = new BABYLON.Color3(1, 0, 0); // KIRMIZI
 hintMat.disableLighting = true;
-hintMat.backFaceCulling = false;
-
-analysisHint.material = hintMat;
-
 hintMat.backFaceCulling = false;
 
 analysisHint.material = hintMat;
