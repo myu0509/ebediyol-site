@@ -78,6 +78,17 @@ const light = new BABYLON.HemisphericLight(
   scene
 );
 light.intensity = 1.2;
+// === ZEMİN ===
+const floor = BABYLON.MeshBuilder.CreateGround(
+  "floor",
+  { width: 20, height: 20 },
+  scene
+);
+floor.checkCollisions = true;
+
+const floorMat = new BABYLON.StandardMaterial("floorMat", scene);
+floorMat.diffuseColor = new BABYLON.Color3(0.75, 0.72, 0.68); // sınıf rengi
+floor.material = floorMat;
 
 let avatar = null;
 let moveForward=false, moveBackward=false, moveLeft=false, moveRight=false;
