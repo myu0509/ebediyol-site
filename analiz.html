@@ -224,16 +224,71 @@ const testBtn = BABYLON.MeshBuilder.CreatePlane("testBtn", {
 testBtn.position = new BABYLON.Vector3(0, 4, board.position.z + 0.05);
 testBtn.rotation.y = Math.PI;
 
-const tex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(testBtn);
+const tex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(testBtn, 1024, 512);
 const b = BABYLON.GUI.Button.CreateSimpleButton("b", "TEST BUTON");
-b.color = "black";
-b.background = "white";
+b.fontSize = 120;
+b.fontFamily = "Arial";
 tex.addControl(b);
 
 // ÖN DUVARA SABİTLE
 board.position = new BABYLON.Vector3(0, 3.2, HALF - 0.26);
 board.rotation.y = 0;
 board.material = boardMat;
+    const uiPlane = BABYLON.MeshBuilder.CreatePlane("uiPlane", {
+  width: 4,
+  height: 2
+}, scene);
+
+uiPlane.position = new BABYLON.Vector3(
+  -6,                  // sol
+  4.5,                 // üst
+  board.position.z + 0.05
+);
+
+uiPlane.rotation.y = Math.PI;
+
+const uiTex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
+  uiPlane,
+  1024,
+  512
+);
+
+const panel = new BABYLON.GUI.StackPanel();
+panel.width = "100%";
+panel.height = "100%";
+panel.paddingTop = "20px";
+uiTex.addControl(panel);
+
+// === BUTON 1 ===
+const btnHome = BABYLON.GUI.Button.CreateSimpleButton(
+  "homeBtn",
+  "Anasayfaya Dön"
+);
+btnHome.height = "80px";
+btnHome.color = "white";
+btnHome.background = "#2c7a3f";
+btnHome.fontSize = 60;
+btnHome.cornerRadius = 20;
+btnHome.onPointerClickObservable.add(() => {
+  window.location.href = "https://www.ebediyol.com";
+});
+panel.addControl(btnHome);
+
+// === BUTON 2 ===
+const btnCampus = BABYLON.GUI.Button.CreateSimpleButton(
+  "campusBtn",
+  "Kampüs Alanına Dön"
+);
+btnCampus.height = "80px";
+btnCampus.color = "white";
+btnCampus.background = "#1e5f99";
+btnCampus.fontSize = 60;
+btnCampus.cornerRadius = 20;
+btnCampus.top = "20px";
+btnCampus.onPointerClickObservable.add(() => {
+  window.location.href = "https://www.ebediyol.com/ziyaret.html";
+});
+panel.addControl(btnCampus);
 board.checkCollisions = true;
 const buttonMat = new BABYLON.StandardMaterial("buttonMat", scene);
 buttonMat.diffuseColor = new BABYLON.Color3(0.95, 0.95, 0.95);
