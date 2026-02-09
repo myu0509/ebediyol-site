@@ -165,26 +165,6 @@
     groundMat.diffuseColor = new BABYLON.Color3(0.14, 0.28, 0.16);
     ground.material = groundMat;
 
-    // Yollar (kampüs)
-    (function addCampusRoads() {
-      const roadMat = new BABYLON.StandardMaterial("roadMat", scene);
-      roadMat.diffuseColor = new BABYLON.Color3(0.55, 0.55, 0.55);
-      roadMat.specularColor = new BABYLON.Color3(0,0,0);
-
-      // girişten meydana
-      const mainRoad = BABYLON.MeshBuilder.CreateGround("mainRoad", { width: 4, height: 28 }, scene);
-      mainRoad.position.set(0, 0.021, -18);
-      mainRoad.material = roadMat;
-
-      // bina önünde yatay yol
-      const crossRoad = BABYLON.MeshBuilder.CreateGround("crossRoad", { width: 28, height: 4 }, scene);
-      crossRoad.position.set(0, 0.021, -2);
-      crossRoad.material = roadMat;
-
-      // küçük meydan
-      const plaza = BABYLON.MeshBuilder.CreateGround("plaza", { width: 10, height: 10 }, scene);
-      plaza.position.set(0, 0.022, -10);
-      plaza.material = roadMat;
     })();
 
     // === GİRİŞ DİREKLERİ + TABELA (seninki gibi) ===
