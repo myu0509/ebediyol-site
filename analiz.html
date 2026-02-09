@@ -207,6 +207,21 @@ createWall("rightWall",
   WALL_THICKNESS, WALL_HEIGHT, ROOM_SIZE,
   HALF, WALL_HEIGHT / 2, 0
 );
+// === YAZI TAHTASI ===
+const boardMat = new BABYLON.StandardMaterial("boardMat", scene);
+boardMat.diffuseColor = new BABYLON.Color3(0.05, 0.35, 0.15); // koyu yeşil
+boardMat.specularColor = BABYLON.Color3.Black();
+
+const board = BABYLON.MeshBuilder.CreatePlane("board", {
+  width: 8,
+  height: 3
+}, scene);
+
+// ÖN DUVARA SABİTLE
+board.position = new BABYLON.Vector3(0, 3.2, -HALF + 0.26);
+board.rotation.y = Math.PI;
+board.material = boardMat;
+board.checkCollisions = true;
 
 // === SINIF SIRALARI ===
 const deskMat = new BABYLON.StandardMaterial("deskMat", scene);
