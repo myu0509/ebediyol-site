@@ -187,45 +187,6 @@
       plaza.material = roadMat;
     })();
 
-    // Ağaçlar (seninki gibi çevre, daha seyrek)
-    (function addTrees() {
-      function createTree(x, z) {
-        const trunk = BABYLON.MeshBuilder.CreateCylinder("trunk", {
-          diameterTop: 0.35, diameterBottom: 0.5, height: 2
-        }, scene);
-        trunk.position.set(x, 1, z);
-        const trunkMat = new BABYLON.StandardMaterial("trunkMat", scene);
-        trunkMat.diffuseColor = new BABYLON.Color3(0.25, 0.14, 0.05);
-        trunk.material = trunkMat;
-
-        const leaves = BABYLON.MeshBuilder.CreateCylinder("leaves", {
-          diameterTop: 0.1, diameterBottom: 2.2, height: 2.8
-        }, scene);
-        leaves.position.set(x, 3, z);
-        const leavesMat = new BABYLON.StandardMaterial("leavesMat", scene);
-        leavesMat.diffuseColor = new BABYLON.Color3(0.05, 0.25, 0.1);
-        leaves.material = leavesMat;
-      }
-
-      const size = 25;
-      const step = 6;
-      // GİRİŞ TARAFI (z = -25) → ORTASI BOŞ
-for (let i = -size; i <= size; i += step) {
-
-  // 🚪 GİRİŞTE TEK AĞAÇ OLMASIN
-  if (i > -3 && i < 3) continue;
-
-  createTree(i, -size);
-}
-
-// DİĞER KENARLAR (AYNEN KALIYOR)
-for (let i = -size; i <= size; i += step) {
-  createTree(i, size);
-  createTree(-size, i);
-  createTree(size, i);
-}
-    })();
-
     // === GİRİŞ DİREKLERİ + TABELA (seninki gibi) ===
     const poleMat = new BABYLON.StandardMaterial("poleMat", scene);
     poleMat.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
