@@ -159,6 +159,67 @@ groundMat.diffuseColor = new BABYLON.Color3(0.82, 0.82, 0.80); // açık sınıf
 groundMat.specularColor = new BABYLON.Color3(0.1, 0.1, 0.1);
 ground.material = groundMat;
 
+// === SINIF DUVARLARI + TAVAN ===
+const ROOM_SIZE = 25;
+const HALF = ROOM_SIZE / 2;
+const WALL_HEIGHT = 6;
+
+// Ortak duvar materyali
+const wallMat = new BABYLON.StandardMaterial("wallMat", scene);
+wallMat.diffuseColor = wallColor;
+
+// Ortak tavan materyali
+const ceilingMat = new BABYLON.StandardMaterial("ceilingMat", scene);
+ceilingMat.diffuseColor = ceilingColor;
+
+// ARKA DUVAR
+const backWall = BABYLON.MeshBuilder.CreatePlane("backWall", {
+  width: ROOM_SIZE,
+  height: WALL_HEIGHT
+}, scene);
+backWall.position = new BABYLON.Vector3(0, WALL_HEIGHT / 2, HALF);
+backWall.rotation.y = Math.PI;
+backWall.material = wallMat;
+backWall.checkCollisions = true;
+
+// ÖN DUVAR
+const frontWall = BABYLON.MeshBuilder.CreatePlane("frontWall", {
+  width: ROOM_SIZE,
+  height: WALL_HEIGHT
+}, scene);
+frontWall.position = new BABYLON.Vector3(0, WALL_HEIGHT / 2, -HALF);
+frontWall.material = wallMat;
+frontWall.checkCollisions = true;
+
+// SOL DUVAR
+const leftWall = BABYLON.MeshBuilder.CreatePlane("leftWall", {
+  width: ROOM_SIZE,
+  height: WALL_HEIGHT
+}, scene);
+leftWall.position = new BABYLON.Vector3(-HALF, WALL_HEIGHT / 2, 0);
+leftWall.rotation.y = Math.PI / 2;
+leftWall.material = wallMat;
+leftWall.checkCollisions = true;
+
+// SAĞ DUVAR
+const rightWall = BABYLON.MeshBuilder.CreatePlane("rightWall", {
+  width: ROOM_SIZE,
+  height: WALL_HEIGHT
+}, scene);
+rightWall.position = new BABYLON.Vector3(HALF, WALL_HEIGHT / 2, 0);
+rightWall.rotation.y = -Math.PI / 2;
+rightWall.material = wallMat;
+rightWall.checkCollisions = true;
+
+// TAVAN
+const ceiling = BABYLON.MeshBuilder.CreatePlane("ceiling", {
+  width: ROOM_SIZE,
+  height: ROOM_SIZE
+}, scene);
+ceiling.position = new BABYLON.Vector3(0, WALL_HEIGHT, 0);
+ceiling.rotation.x = Math.PI / 2;
+ceiling.material = ceilingMat;
+ceiling.checkCollisions = true;
 
     // === HAREKET + KAMERA/AVATAR HİZALAMA (seninki gibi) ===
     scene.onBeforeRenderObservable.add(() => {
