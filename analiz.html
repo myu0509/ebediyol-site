@@ -359,55 +359,6 @@ for (let i = -size; i <= size; i += step) {
 
 bg.addControl(welcomeText);
 
-// PLANE
-const examSign = BABYLON.MeshBuilder.CreatePlane(
-  "examExtraSign",
-  { width: 6.5, height: 1.6 },
-  scene
-);
-
-// 🔑 MATERIAL (OLMAZSA OLMAZ)
-const examMat = new BABYLON.StandardMaterial("examMat", scene);
-examMat.diffuseColor = new BABYLON.Color3(1, 1, 1);
-examMat.backFaceCulling = true;   // 🔴 ARKASI ÇİZİLMEZ
-examSign.material = examMat;
-
-// 🔑 KONUM + YÖN (SADECE BUNU YAPIYORUZ)
-examSign.position = new BABYLON.Vector3(EXAM_X, 3.5, EXAM_Z - 3.96);
-examSign.rotation.y = 0; // 🔴 BİNANIN ÖNÜNE BAKSIN
-
-// GUI
-const examUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
-  examSign,
-  1024,
-  256
-);
-
-const examBG = new BABYLON.GUI.Rectangle();
-examBG.thickness = 0;
-examBG.background = "rgba(255,255,255,0.9)";
-examUI.addControl(examBG);
-
-// ALT BAŞLIK
-const examTitle = new BABYLON.GUI.TextBlock();
-examTitle.text = "Güncel denemelere katılmak için tıklayınız";
-examTitle.color = "black";
-examTitle.fontSize = "44px";
-examTitle.top = "-30px";
-examTitle.fontWeight = "bold";
-examBG.addControl(examTitle);
-
-// SAYAÇ
-const examCountdown = new BABYLON.GUI.TextBlock();
-examCountdown.text = "Yükleniyor...";
-examCountdown.color = "black";
-examCountdown.fontSize = "54px";
-examCountdown.top = "40px";
-examBG.addControl(examCountdown);
-
-// GLOBAL
-window.examCountdownText = examCountdown;
-
 // koçluk binası koordinatları
 const COACH_X = 12;
 const COACH_Z = 4;
@@ -510,7 +461,6 @@ coachBG.addControl(coachText);
       if (camera.position.y < 1.6) camera.position.y = 1.6;
       if (camera.position.y > 3.0) camera.position.y = 3.0;
      
-}
     });
 
     // Render döngüsü
