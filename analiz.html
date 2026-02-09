@@ -145,12 +145,20 @@
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
     light.intensity = 1.2;
 
-    // === ZEMİN (kampüse uygun) ===
-    const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 200, height: 200 }, scene);
-    ground.checkCollisions = true;
-    const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
-    groundMat.diffuseColor = new BABYLON.Color3(0.14, 0.28, 0.16);
-    ground.material = groundMat;
+    // === YENİ ZEMİN (iç mekân / sınıf tabanı) ===
+const ground = BABYLON.MeshBuilder.CreateGround(
+  "ground",
+  { width: 40, height: 40 },
+  scene
+);
+
+ground.checkCollisions = true;
+
+const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
+groundMat.diffuseColor = new BABYLON.Color3(0.82, 0.82, 0.80); // açık sınıf rengi
+groundMat.specularColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+ground.material = groundMat;
+
 
     // === HAREKET + KAMERA/AVATAR HİZALAMA (seninki gibi) ===
     scene.onBeforeRenderObservable.add(() => {
