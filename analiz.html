@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <title>Üstün Deneme Kampüsü</title>
+  <title>Üstün Deneme Analiz Merkezi</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
@@ -145,6 +146,19 @@
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
     light.intensity = 1.2;
 
+    // === ZEMİN (kampüse uygun) ===
+    const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 200, height: 200 }, scene);
+    ground.checkCollisions = true;
+    const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
+    groundMat.diffuseColor = new BABYLON.Color3(0.14, 0.28, 0.16);
+    ground.material = groundMat;
+
+    // Yollar (kampüs)
+    (function addCampusRoads() {
+      const roadMat = new BABYLON.StandardMaterial("roadMat", scene);
+      roadMat.diffuseColor = new BABYLON.Color3(0.55, 0.55, 0.55);
+      roadMat.specularColor = new BABYLON.Color3(0,0,0);
+
       // girişten meydana
       const mainRoad = BABYLON.MeshBuilder.CreateGround("mainRoad", { width: 4, height: 28 }, scene);
       mainRoad.position.set(0, 0.021, -18);
@@ -161,6 +175,37 @@
       plaza.material = roadMat;
     })();
 
+    // Ağaçlar (seninki gibi çevre, daha seyrek)
+    (function addTrees() {
+      function createTree(x, z) {
+        const trunk = BABYLON.MeshBuilder.CreateCylinder("trunk", {
+          diameterTop: 0.35, diameterBottom: 0.5, height: 2
+        }, scene);
+        trunk.position.set(x, 1, z);
+        const trunkMat = new BABYLON.StandardMaterial("trunkMat", scene);
+        trunkMat.diffuseColor = new BABYLON.Color3(0.25, 0.14, 0.05);
+        trunk.material = trunkMat;
+
+        const leaves = BABYLON.MeshBuilder.CreateCylinder("leaves", {
+          diameterTop: 0.1, diameterBottom: 2.2, height: 2.8
+        }, scene);
+        leaves.position.set(x, 3, z);
+        const leavesMat = new BABYLON.StandardMaterial("leavesMat", scene);
+        leavesMat.diffuseColor = new BABYLON.Color3(0.05, 0.25, 0.1);
+        leaves.material = leavesMat;
+      }
+
+      const size = 25;
+      const step = 6;
+      // GİRİŞ TARAFI (z = -25) → ORTASI BOŞ
+for (let i = -size; i <= size; i += step) {
+
+  // 🚪 GİRİŞTE TEK AĞAÇ OLMASIN
+  if (i > -3 && i < 3) continue;
+
+  createTree(i, -size);
+}
+
 // DİĞER KENARLAR (AYNEN KALIYOR)
 for (let i = -size; i <= size; i += step) {
   createTree(i, size);
@@ -168,6 +213,17 @@ for (let i = -size; i <= size; i += step) {
   createTree(size, i);
 }
     })();
+
+    // === ÇİTLER (giriş boşluklu) ===
+(function addFences() {
+
+  const fenceMat = new BABYLON.PBRMaterial("fenceMat", scene);
+  fenceMat.albedoColor = new BABYLON.Color3(0.25, 0.18, 0.10);
+  fenceMat.roughness = 0.9;
+  fenceMat.metallic = 0;
+
+  const GATE_MIN = -3;
+  const GATE_MAX =  3;
 
   // --- Direk ---
   function makePole(x, z) {
@@ -248,6 +304,48 @@ for (let i = -size; i <= size; i += step) {
   makeBarZ(-25, 1.2); makeBarZ(-25, 0.7); makeBarZ(-25, 0.2);
 
 })();
+
+    // === GİRİŞ DİREKLERİ + TABELA (seninki gibi) ===
+    const poleMat = new BABYLON.StandardMaterial("poleMat", scene);
+    poleMat.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+
+    const poleLeft = BABYLON.MeshBuilder.CreateCylinder("poleLeft", { diameter: 0.3, height: 6 }, scene);
+    poleLeft.position = new BABYLON.Vector3(-3.5, 3, -12);
+    poleLeft.material = poleMat;
+
+    const poleRight = BABYLON.MeshBuilder.CreateCylinder("poleRight", { diameter: 0.3, height: 6 }, scene);
+    poleRight.position = new BABYLON.Vector3(3.5, 3, -12);
+    poleRight.material = poleMat;
+
+    const welcomeSign = BABYLON.MeshBuilder.CreatePlane("welcomeSign", { width: 7.2, height: 1.8 }, scene);
+    welcomeSign.position = new BABYLON.Vector3(0, 5.4, -12);
+    welcomeSign.rotation = new BABYLON.Vector3(0, 0, 0);
+    welcomeSign.scaling.y = 1.5;
+
+    const welcomeTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(welcomeSign);
+    const bg = new BABYLON.GUI.Rectangle();
+    bg.thickness = 0;
+    bg.background = "rgba(10, 10, 20, 0.75)";
+    welcomeTexture.addControl(bg);
+
+    const welcomeText = new BABYLON.GUI.TextBlock();
+    welcomeText.text = "ÜSTÜN DENEME KAMPÜSÜNE\nHOŞGELDİNİZ";
+    welcomeText.color = "white";
+    welcomeText.fontSize = "64px";              // 🔽 biraz küçülttük
+    welcomeText.lineSpacing = "16px";            // 🔽 satırlar nefes alsın
+    welcomeText.textWrapping = true;             // 🔑 taşmayı engeller
+    welcomeText.width = "95%";                   // 🔑 direklerin içine sığar
+    welcomeText.height = "100%";
+
+    welcomeText.textHorizontalAlignment =
+      BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+    welcomeText.textVerticalAlignment =
+      BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+
+    welcomeText.outlineWidth = 6;
+    welcomeText.outlineColor = "black";
+
+bg.addControl(welcomeText);
 
     // === 3 BİNA (bina gibi: gövde + çatı + kapı + tabela) ===
     function createCampusBuilding(opts) {
