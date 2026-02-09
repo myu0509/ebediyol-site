@@ -1,249 +1,685 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<title>Analiz Merkezi</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-html, body {
-  margin: 0; padding: 0;
-  width: 100%; height: 100%;
-  overflow: hidden;
-  background: #111827;
-}
-#renderCanvas {
-  width: 100%;
-  height: 100%;
-  touch-action: none;
-}
+  <meta charset="UTF-8" />
+  <title>Üstün Deneme Kampüsü</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <style>
+    html, body { margin: 0; padding: 0; overflow: hidden; width: 100%; height: 100%; background: #0f172a; }
+    #renderCanvas { width: 100%; height: 100%; touch-action: none; }
 
-/* MOBİL KONTROLLER – AYNI */
-#mobileControls {
-  position: fixed;
-  bottom: 30px;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  z-index: 10;
-}
-.middleRow { display: flex; gap: 8px; }
-.ctrl {
-  width: 55px;
-  height: 55px;
-  font-size: 24px;
-  border-radius: 10px;
-  border: none;
-  background: rgba(255,255,255,0.35);
-  color: black;
-  font-weight: bold;
-}
-</style>
+    /* Mobil kontrol butonları (seninki) */
+    #mobileControls {
+      position: fixed;
+      bottom: 30px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 10;
+    }
+    .middleRow { display: flex; gap: 8px; }
+    .ctrl {
+      width: 55px;
+      height: 55px;
+      font-size: 24px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255,255,255,0.35);
+      color: black;
+      font-weight: bold;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      touch-action: none;
+    }
+    .ctrl:active { background: rgba(255,255,255,0.6); }
+
+    /* Basit üst bilgi (istersen kaldırırız) */
+    #hint {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      background: rgba(0,0,0,0.45);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font: 14px Arial, sans-serif;
+      z-index: 12;
+      max-width: 70vw;
+    }
+  </style>
 </head>
-
 <body>
-<canvas id="renderCanvas"></canvas>
+  <canvas id="renderCanvas"></canvas>
 
-<div id="mobileControls">
-  <button class="ctrl" id="btnUp">▲</button>
-  <div class="middleRow">
-    <button class="ctrl" id="btnLeft">◀</button>
-    <button class="ctrl" id="btnRight">▶</button>
+  <!-- (İstersen kuş sesi de kalsın; kaldırmak istersen söylerim) -->
+  <audio id="steps" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/steps.mp3?raw=1" preload="auto"></audio>
+
+  <div id="mobileControls">
+    <button class="ctrl" id="btnUp">▲</button>
+    <div class="middleRow">
+      <button class="ctrl" id="btnLeft">◀</button>
+      <button class="ctrl" id="btnRight">▶</button>
+    </div>
+    <button class="ctrl" id="btnDown">▼</button>
   </div>
-  <button class="ctrl" id="btnDown">▼</button>
-</div>
 
-<script src="https://cdn.babylonjs.com/babylon.js"></script>
-<script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
-<script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+  <!-- Babylon.js -->
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+  <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
 
-<script>
-const canvas = document.getElementById("renderCanvas");
-const engine = new BABYLON.Engine(canvas, true);
-const scene  = new BABYLON.Scene(engine);
-scene.clearColor = new BABYLON.Color3(0.92, 0.92, 0.90);
-scene.collisionsEnabled = true;
+  <script>
+    const canvas = document.getElementById("renderCanvas");
+    const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
+    const scene  = new BABYLON.Scene(engine);
+    scene.fogMode = BABYLON.Scene.FOGMODE_EXP2;
+    scene.fogDensity = 0.01;
+    scene.fogColor = new BABYLON.Color3(0.75, 0.85, 0.95);
+    scene.collisionsEnabled = true;
+    const examDate = new Date("2026-03-15T10:00:00").getTime();
+    // Sesler
+    const steps = document.getElementById("steps");
 
-/* KAMERA – AYNI MANTIK */
-const camera = new BABYLON.UniversalCamera(
-  "camera",
-  new BABYLON.Vector3(0, 2, -6),
-  scene
-);
-camera.attachControl(canvas, true);
-camera.speed = 0.5;
+    scene.clearColor = new BABYLON.Color3(0.07, 0.10, 0.16);
 
-/* IŞIK */
-new BABYLON.HemisphericLight(
-  "light",
-  new BABYLON.Vector3(0, 1, 0),
-  scene
-).intensity = 1.1;
+    // Kamera (seninki)
+    const camera = new BABYLON.UniversalCamera("camera", new BABYLON.Vector3(0, 2, -10), scene);
+    camera.attachControl(canvas, true);
+    camera.speed = 0.5;
 
-/* === DERSLİK ORTAMI === */
+    // Mobil hareket değişkenleri (seninki)
+    let moveForward = false;
+    let moveBackward = false;
+    let moveLeft = false;
+    let moveRight = false;
+    let avatar = null;
 
-// ZEMİN
-const floor = BABYLON.MeshBuilder.CreateGround(
-  "floor",
-  { width: 20, height: 20 },
-  scene
-);
-floor.checkCollisions = true;
-const floorMat = new BABYLON.StandardMaterial("floorMat", scene);
-floorMat.diffuseColor = new BABYLON.Color3(0.75, 0.72, 0.68);
-floor.material = floorMat;
+    // Avatar yükle (seninki)
+    const AVATAR_URL = "https://raw.githubusercontent.com/myu0509/ebediyol-site/main/avatar.glb";
+    BABYLON.SceneLoader.ImportMeshAsync("", "", AVATAR_URL, scene).then((res) => {
+      avatar = res.meshes[0] || res.meshes.find(m => m.name) || res.meshes.pop();
+      avatar.position = new BABYLON.Vector3(0, 0, -22);
+      avatar.scaling  = new BABYLON.Vector3(0.8, 1.3, 1);
+      avatar.rotation.y = camera.rotation.y + Math.PI;
+      avatar.checkCollisions = true;
 
-// DUVAR FONKSİYONU
-function wall(w, h, x, y, z, ry) {
-  const m = BABYLON.MeshBuilder.CreateBox(
-    "wall",
-    { width: w, height: h, depth: 0.4 },
-    scene
-  );
-  m.position.set(x, y, z);
-  m.rotation.y = ry;
-  m.checkCollisions = true;
-  const mat = new BABYLON.StandardMaterial("wmat", scene);
-  mat.diffuseColor = new BABYLON.Color3(0.96, 0.96, 0.94);
-  m.material = mat;
+      // avatarın fiziksel çarpışma hacmi
+      avatar.ellipsoid = new BABYLON.Vector3(0.6, 1.2, 0.6);
+      avatar.ellipsoidOffset = new BABYLON.Vector3(0, 1.2, 0);
+    });
+
+    // Klavye kontrol (seninki)
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "w" || e.key === "ArrowUp")    moveForward  = true;
+      if (e.key === "s" || e.key === "ArrowDown")  moveBackward = true;
+      if (e.key === "a" || e.key === "ArrowLeft")  moveLeft     = true;
+      if (e.key === "d" || e.key === "ArrowRight") moveRight    = true;
+    });
+    window.addEventListener("keyup", (e) => {
+      if (e.key === "w" || e.key === "ArrowUp")    moveForward  = false;
+      if (e.key === "s" || e.key === "ArrowDown")  moveBackward = false;
+      if (e.key === "a" || e.key === "ArrowLeft")  moveLeft     = false;
+      if (e.key === "d" || e.key === "ArrowRight") moveRight    = false;
+    });
+
+    // Butonlara dokunma (seninki)
+    const btnUp = document.getElementById("btnUp");
+    const btnDown = document.getElementById("btnDown");
+    const btnLeft = document.getElementById("btnLeft");
+    const btnRight = document.getElementById("btnRight");
+
+    btnUp.addEventListener("touchstart", () => moveForward = true);
+    btnUp.addEventListener("touchend",   () => moveForward = false);
+    btnDown.addEventListener("touchstart", () => moveBackward = true);
+    btnDown.addEventListener("touchend",   () => moveBackward = false);
+    btnLeft.addEventListener("touchstart", () => moveLeft = true);
+    btnLeft.addEventListener("touchend",   () => moveLeft = false);
+    btnRight.addEventListener("touchstart", () => moveRight = true);
+    btnRight.addEventListener("touchend",   () => moveRight = false);
+
+    // Işık
+    const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+    light.intensity = 1.2;
+
+    // Skybox (seninki)
+    (function addSkybox() {
+      const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 200 }, scene);
+      const skyboxMaterial = new BABYLON.StandardMaterial("skyBoxMat", scene);
+      skyboxMaterial.backFaceCulling = false;
+      skyboxMaterial.disableLighting = true;
+      skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("https://playground.babylonjs.com/textures/skybox", scene);
+      skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+      skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+      skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+      skybox.material = skyboxMaterial;
+    })();
+
+    // === ZEMİN (kampüse uygun) ===
+    const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 200, height: 200 }, scene);
+    ground.checkCollisions = true;
+    const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
+    groundMat.diffuseColor = new BABYLON.Color3(0.14, 0.28, 0.16);
+    ground.material = groundMat;
+
+    // Yollar (kampüs)
+    (function addCampusRoads() {
+      const roadMat = new BABYLON.StandardMaterial("roadMat", scene);
+      roadMat.diffuseColor = new BABYLON.Color3(0.55, 0.55, 0.55);
+      roadMat.specularColor = new BABYLON.Color3(0,0,0);
+
+      // girişten meydana
+      const mainRoad = BABYLON.MeshBuilder.CreateGround("mainRoad", { width: 4, height: 28 }, scene);
+      mainRoad.position.set(0, 0.021, -18);
+      mainRoad.material = roadMat;
+
+      // bina önünde yatay yol
+      const crossRoad = BABYLON.MeshBuilder.CreateGround("crossRoad", { width: 28, height: 4 }, scene);
+      crossRoad.position.set(0, 0.021, -2);
+      crossRoad.material = roadMat;
+
+      // küçük meydan
+      const plaza = BABYLON.MeshBuilder.CreateGround("plaza", { width: 10, height: 10 }, scene);
+      plaza.position.set(0, 0.022, -10);
+      plaza.material = roadMat;
+    })();
+
+    // Ağaçlar (seninki gibi çevre, daha seyrek)
+    (function addTrees() {
+      function createTree(x, z) {
+        const trunk = BABYLON.MeshBuilder.CreateCylinder("trunk", {
+          diameterTop: 0.35, diameterBottom: 0.5, height: 2
+        }, scene);
+        trunk.position.set(x, 1, z);
+        const trunkMat = new BABYLON.StandardMaterial("trunkMat", scene);
+        trunkMat.diffuseColor = new BABYLON.Color3(0.25, 0.14, 0.05);
+        trunk.material = trunkMat;
+
+        const leaves = BABYLON.MeshBuilder.CreateCylinder("leaves", {
+          diameterTop: 0.1, diameterBottom: 2.2, height: 2.8
+        }, scene);
+        leaves.position.set(x, 3, z);
+        const leavesMat = new BABYLON.StandardMaterial("leavesMat", scene);
+        leavesMat.diffuseColor = new BABYLON.Color3(0.05, 0.25, 0.1);
+        leaves.material = leavesMat;
+      }
+
+      const size = 25;
+      const step = 6;
+      // GİRİŞ TARAFI (z = -25) → ORTASI BOŞ
+for (let i = -size; i <= size; i += step) {
+
+  // 🚪 GİRİŞTE TEK AĞAÇ OLMASIN
+  if (i > -3 && i < 3) continue;
+
+  createTree(i, -size);
 }
 
-// 4 DUVAR
-wall(20, 4, 0, 2, 10, 0);
-wall(20, 4, 0, 2, -10, 0);
-wall(20, 4, 10, 2, 0, Math.PI/2);
-wall(20, 4, -10, 2, 0, Math.PI/2);
+// DİĞER KENARLAR (AYNEN KALIYOR)
+for (let i = -size; i <= size; i += step) {
+  createTree(i, size);
+  createTree(-size, i);
+  createTree(size, i);
+}
+    })();
 
-// TAVAN
-const ceiling = BABYLON.MeshBuilder.CreateGround(
-  "ceiling",
-  { width: 20, height: 20 },
+    // === ÇİTLER (giriş boşluklu) ===
+(function addFences() {
+
+  const fenceMat = new BABYLON.PBRMaterial("fenceMat", scene);
+  fenceMat.albedoColor = new BABYLON.Color3(0.25, 0.18, 0.10);
+  fenceMat.roughness = 0.9;
+  fenceMat.metallic = 0;
+
+  const GATE_MIN = -3;
+  const GATE_MAX =  3;
+
+  // --- Direk ---
+  function makePole(x, z) {
+    const pole = BABYLON.MeshBuilder.CreateBox(
+      "fPole",
+      { width: 0.09, height: 1.2, depth: 0.09 },
+      scene
+    );
+    pole.position.set(x, 0.6, z);
+    pole.material = fenceMat;
+  }
+
+  // --- Yatay bar (X doğrultusu) ---
+  function makeBarX(z, y, centerX, length) {
+    const bar = BABYLON.MeshBuilder.CreateCylinder(
+      "barX",
+      { diameter: 0.12, height: length, tessellation: 12 },
+      scene
+    );
+    bar.rotation.z = Math.PI / 2;
+    bar.position.set(centerX, y, z);
+    bar.material = fenceMat;
+  }
+
+  // --- Yatay bar (Z doğrultusu) ---
+  function makeBarZ(x, y) {
+    const bar = BABYLON.MeshBuilder.CreateCylinder(
+      "barZ",
+      { diameter: 0.12, height: 50, tessellation: 12 },
+      scene
+    );
+    bar.rotation.x = Math.PI / 2;
+    bar.position.set(x, y, 0);
+    bar.material = fenceMat;
+  }
+
+  // === DİREKLER ===
+
+  // ÜST ve ALT (ALT = giriş tarafı z = -25)
+  for (let x = -25; x <= 25; x += 2) {
+
+    // 🚪 giriş boşluğu: alt tarafta direk yok
+    if (x > GATE_MIN && x < GATE_MAX) {
+      makePole(x, 25); // üst kalsın
+      continue;
+    }
+
+    makePole(x, 25);
+    makePole(x, -25);
+  }
+
+  // SAĞ ve SOL
+  for (let z = -25; z <= 25; z += 2) {
+    makePole(25, z);
+    makePole(-25, z);
+  }
+
+  // === YATAY BARLAR ===
+
+  // ÜST KENAR (tek parça)
+  makeBarX(25, 1.2, 0, 50);
+  makeBarX(25, 0.7, 0, 50);
+  makeBarX(25, 0.2, 0, 50);
+
+  // ALT KENAR (giriş boşluklu – iki parça)
+  // sol parça
+  makeBarX(-25, 1.2, -14, 22);
+  makeBarX(-25, 0.7, -14, 22);
+  makeBarX(-25, 0.2, -14, 22);
+
+  // sağ parça
+  makeBarX(-25, 1.2,  14, 22);
+  makeBarX(-25, 0.7,  14, 22);
+  makeBarX(-25, 0.2,  14, 22);
+
+  // SAĞ ve SOL KENAR BARLARI
+  makeBarZ( 25, 1.2); makeBarZ( 25, 0.7); makeBarZ( 25, 0.2);
+  makeBarZ(-25, 1.2); makeBarZ(-25, 0.7); makeBarZ(-25, 0.2);
+
+})();
+
+    // === GİRİŞ DİREKLERİ + TABELA (seninki gibi) ===
+    const poleMat = new BABYLON.StandardMaterial("poleMat", scene);
+    poleMat.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+
+    const poleLeft = BABYLON.MeshBuilder.CreateCylinder("poleLeft", { diameter: 0.3, height: 6 }, scene);
+    poleLeft.position = new BABYLON.Vector3(-3.5, 3, -12);
+    poleLeft.material = poleMat;
+
+    const poleRight = BABYLON.MeshBuilder.CreateCylinder("poleRight", { diameter: 0.3, height: 6 }, scene);
+    poleRight.position = new BABYLON.Vector3(3.5, 3, -12);
+    poleRight.material = poleMat;
+
+    const welcomeSign = BABYLON.MeshBuilder.CreatePlane("welcomeSign", { width: 7.2, height: 1.8 }, scene);
+    welcomeSign.position = new BABYLON.Vector3(0, 5.4, -12);
+    welcomeSign.rotation = new BABYLON.Vector3(0, 0, 0);
+    welcomeSign.scaling.y = 1.5;
+
+    const welcomeTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(welcomeSign);
+    const bg = new BABYLON.GUI.Rectangle();
+    bg.thickness = 0;
+    bg.background = "rgba(10, 10, 20, 0.75)";
+    welcomeTexture.addControl(bg);
+
+    const welcomeText = new BABYLON.GUI.TextBlock();
+    welcomeText.text = "ÜSTÜN DENEME KAMPÜSÜNE\nHOŞGELDİNİZ";
+    welcomeText.color = "white";
+    welcomeText.fontSize = "64px";              // 🔽 biraz küçülttük
+    welcomeText.lineSpacing = "16px";            // 🔽 satırlar nefes alsın
+    welcomeText.textWrapping = true;             // 🔑 taşmayı engeller
+    welcomeText.width = "95%";                   // 🔑 direklerin içine sığar
+    welcomeText.height = "100%";
+
+    welcomeText.textHorizontalAlignment =
+      BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+    welcomeText.textVerticalAlignment =
+      BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+
+    welcomeText.outlineWidth = 6;
+    welcomeText.outlineColor = "black";
+
+bg.addControl(welcomeText);
+
+    // === 3 BİNA (bina gibi: gövde + çatı + kapı + tabela) ===
+    function createCampusBuilding(opts) {
+      const { id, title, x, z, bodyColor, roofColor } = opts;
+
+      const root = new BABYLON.TransformNode(id + "_root", scene);
+
+      // gövde
+      const body = BABYLON.MeshBuilder.CreateBox(id + "_body", { width: 7, height: 4.5, depth: 7 }, scene);
+      body.checkCollisions = true;
+      body.position = new BABYLON.Vector3(x, 2.25, z);
+      const bodyMat = new BABYLON.StandardMaterial(id + "_bodyMat", scene);
+      bodyMat.diffuseColor = bodyColor;
+      body.material = bodyMat;
+      body.parent = root;
+
+      // çatı (basit prizma)
+      const roof = BABYLON.MeshBuilder.CreateCylinder(id + "_roof", {
+        diameterTop: 0,
+        diameterBottom: 9.5,
+        height: 3,
+        tessellation: 4
+      }, scene);
+      roof.rotation.y = Math.PI / 4;
+      roof.position = new BABYLON.Vector3(x, 5.2, z);
+      const roofMat = new BABYLON.StandardMaterial(id + "_roofMat", scene);
+      roofMat.diffuseColor = roofColor;
+      roof.material = roofMat;
+      roof.parent = root;
+
+      // kapı
+      const door = BABYLON.MeshBuilder.CreateBox(id + "_door", { width: 1.6, height: 2.2, depth: 0.2 }, scene);
+      door.position = new BABYLON.Vector3(x, 1.1, z - 3.6);
+      const doorMat = new BABYLON.StandardMaterial(id + "_doorMat", scene);
+      doorMat.diffuseColor = new BABYLON.Color3(0.12, 0.12, 0.12);
+      door.material = doorMat;
+      door.parent = root;
+
+      // tabela (ön)
+      const sign = BABYLON.MeshBuilder.CreatePlane(id + "_sign", { width: 6.8, height: 1.2 }, scene);
+      sign.position = new BABYLON.Vector3(x, 5.1, z - 3.7);
+      sign.parent = root;
+
+      const sUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(sign, 1024, 256, false);
+      const sBG = new BABYLON.GUI.Rectangle();
+      sBG.thickness = 0;
+      sBG.background = "rgba(0,0,0,0.45)";
+      sUI.addControl(sBG);
+
+      const sT = new BABYLON.GUI.TextBlock();
+      sT.text = title;
+      sT.color = "white";
+      sT.fontSize = "120px";
+      sT.outlineWidth = 6;
+      sT.outlineColor = "black";
+      sBG.addControl(sT);
+
+      // etkileşim ipucu için imleç
+      body.isPickable = true;
+
+      return root;
+    }
+
+    createCampusBuilding({
+      id: "analysis",
+      title: "Analiz Merkezi",
+      x: -12, z: 4,
+      bodyColor: new BABYLON.Color3(0.85, 0.45, 0.10),
+      roofColor: new BABYLON.Color3(0.45, 0.75, 0.95)
+    });
+    // === ANALİZ MERKEZİ ALT BAŞLIK ===
+
+// analiz binası koordinatları
+const ANALYSIS_X = -12;
+const ANALYSIS_Z = 4;
+
+// plane
+const analysisSubSign = BABYLON.MeshBuilder.CreatePlane(
+  "analysisSubSign",
+  { width: 6.5, height: 1.4 },
   scene
 );
-ceiling.position.y = 4;
-ceiling.rotation.x = Math.PI;
-ceiling.material = floorMat;
+analysisSubSign.isPickable = true;
 
-/* SIRALAR */
-function desk(x, z) {
-  const d = BABYLON.MeshBuilder.CreateBox(
-    "desk",
-    { width: 1.8, height: 0.7, depth: 1 },
-    scene
-  );
-  d.position.set(x, 0.35, z);
-  d.checkCollisions = true;
-  const m = new BABYLON.StandardMaterial("dmat", scene);
-  m.diffuseColor = new BABYLON.Color3(0.55, 0.35, 0.18);
-  d.material = m;
-}
+analysisSubSign.actionManager = new BABYLON.ActionManager(scene);
+analysisSubSign.actionManager.registerAction(
+  new BABYLON.ExecuteCodeAction(
+    BABYLON.ActionManager.OnPickTrigger,
+    function () {
+      window.location.href = "analiz.html";
+    }
+  )
+);
 
-for (let r = 0; r < 4; r++) {
-  for (let c = -2; c <= 2; c++) {
-    desk(c * 2.2, -2 - r * 2);
+// material (arkası görünmez)
+const analysisMat = new BABYLON.StandardMaterial("analysisMat", scene);
+analysisMat.diffuseColor = new BABYLON.Color3(1, 1, 1);
+analysisMat.backFaceCulling = true;
+analysisSubSign.material = analysisMat;
+
+// konum + yön (binanın ÖN YÜZÜ)
+analysisSubSign.position = new BABYLON.Vector3(
+  ANALYSIS_X,
+  3.4,
+  ANALYSIS_Z - 3.96
+);
+analysisSubSign.rotation.y = 0;
+
+// GUI
+const analysisUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
+  analysisSubSign,
+  1024,
+  256
+);
+
+const analysisBG = new BABYLON.GUI.Rectangle();
+analysisBG.thickness = 0;
+analysisBG.background = "rgba(255,255,255,0.9)";
+analysisUI.addControl(analysisBG);
+
+// yazı
+const analysisText = new BABYLON.GUI.TextBlock();
+analysisText.text = "Deneme ve gelişim analiz raporu için tıklayınız";
+analysisText.color = "black";
+analysisText.fontSize = "44px";
+analysisText.fontWeight = "bold";
+analysisBG.addControl(analysisText);
+  // === SINAV MERKEZİ ALT BAŞLIK + SAYAÇ (DOĞRU YÖN) ===
+
+// sınav binası koordinatı
+const EXAM_X = 0;
+const EXAM_Z = 4;
+
+// PLANE
+const examSign = BABYLON.MeshBuilder.CreatePlane(
+  "examExtraSign",
+  { width: 6.5, height: 1.6 },
+  scene
+);
+
+// 🔑 MATERIAL (OLMAZSA OLMAZ)
+const examMat = new BABYLON.StandardMaterial("examMat", scene);
+examMat.diffuseColor = new BABYLON.Color3(1, 1, 1);
+examMat.backFaceCulling = true;   // 🔴 ARKASI ÇİZİLMEZ
+examSign.material = examMat;
+
+// 🔑 KONUM + YÖN (SADECE BUNU YAPIYORUZ)
+examSign.position = new BABYLON.Vector3(EXAM_X, 3.5, EXAM_Z - 3.96);
+examSign.rotation.y = 0; // 🔴 BİNANIN ÖNÜNE BAKSIN
+
+// GUI
+const examUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
+  examSign,
+  1024,
+  256
+);
+
+const examBG = new BABYLON.GUI.Rectangle();
+examBG.thickness = 0;
+examBG.background = "rgba(255,255,255,0.9)";
+examUI.addControl(examBG);
+
+// ALT BAŞLIK
+const examTitle = new BABYLON.GUI.TextBlock();
+examTitle.text = "Güncel denemelere katılmak için tıklayınız";
+examTitle.color = "black";
+examTitle.fontSize = "44px";
+examTitle.top = "-30px";
+examTitle.fontWeight = "bold";
+examBG.addControl(examTitle);
+
+// SAYAÇ
+const examCountdown = new BABYLON.GUI.TextBlock();
+examCountdown.text = "Yükleniyor...";
+examCountdown.color = "black";
+examCountdown.fontSize = "54px";
+examCountdown.top = "40px";
+examBG.addControl(examCountdown);
+
+// GLOBAL
+window.examCountdownText = examCountdown;
+
+// === BİNALAR ===
+createCampusBuilding({
+  id: "exam",
+  title: "Sınav Merkezi",
+  x: 0, z: 4,
+  bodyColor: new BABYLON.Color3(0.85, 0.45, 0.10),
+  roofColor: new BABYLON.Color3(0.45, 0.75, 0.95)
+});
+
+createCampusBuilding({
+  id: "coach",
+  title: "Koçluk Merkezi",
+  x: 12, z: 4,
+  bodyColor: new BABYLON.Color3(0.85, 0.45, 0.10),
+  roofColor: new BABYLON.Color3(0.45, 0.75, 0.95)
+});
+// === KOÇLUK MERKEZİ ALT BAŞLIK ===
+
+// koçluk binası koordinatları
+const COACH_X = 12;
+const COACH_Z = 4;
+
+// plane
+const coachSign = BABYLON.MeshBuilder.CreatePlane(
+  "coachExtraSign",
+  { width: 6.8, height: 1.5 },
+  scene
+);
+
+// material (arkadan görünmesin)
+const coachMat = new BABYLON.StandardMaterial("coachMat", scene);
+coachMat.diffuseColor = new BABYLON.Color3(1, 1, 1);
+coachMat.backFaceCulling = true;
+coachSign.material = coachMat;
+
+// konum + yön (binanın ön yüzü)
+coachSign.position = new BABYLON.Vector3(COACH_X, 3.5, COACH_Z - 3.96);
+coachSign.rotation.y = 0;
+
+// GUI
+const coachUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
+  coachSign,
+  1024,
+  256
+);
+
+const coachBG = new BABYLON.GUI.Rectangle();
+coachBG.thickness = 0;
+coachBG.background = "rgba(255,255,255,0.9)";
+coachUI.addControl(coachBG);
+
+// ALT BAŞLIK YAZISI
+const coachText = new BABYLON.GUI.TextBlock();
+coachText.text = "Bireysel rehberlik ve hedef takibi için tıklayınız";
+coachText.color = "black";
+coachText.fontSize = "44px";
+coachText.fontWeight = "bold";
+coachBG.addControl(coachText);
+    // === HAREKET + KAMERA/AVATAR HİZALAMA (seninki gibi) ===
+    scene.onBeforeRenderObservable.add(() => {
+      if (avatar) {
+        // Kamera avatarı takip etsin (senin mantığın)
+        camera.position.x = avatar.position.x - 4 * Math.sin(camera.rotation.y);
+        camera.position.z = avatar.position.z - 4 * Math.cos(camera.rotation.y);
+        camera.position.y = avatar.position.y + 1.8;
+
+        // Avatar yönünü kameraya göre ayarla (sağa sola dönme)
+        if (avatar.rotationQuaternion) avatar.rotationQuaternion = null;
+        avatar.rotation.y = camera.rotation.y;
+      }
+
+      // adım sesi (seninki)
+      if (avatar && steps) {
+        const moving = (moveForward || moveBackward);
+        if (moving) {
+          if (steps.paused) {
+            steps.currentTime = 0;
+            steps.play().catch(()=>{});
+          }
+        } else {
+          steps.pause();
+        }
+      }
+
+      // Mobil hareket uygula (seninki)
+      const moveSpeed = 0.11;
+
+      const forward = new BABYLON.Vector3(
+        Math.sin(camera.rotation.y),
+        0,
+        Math.cos(camera.rotation.y)
+      );
+
+      if (moveForward && avatar) {
+        avatar.moveWithCollisions(forward.scale(moveSpeed));
+      }
+
+      if (moveBackward && avatar) {
+        avatar.moveWithCollisions(forward.scale(-moveSpeed));
+      }
+
+      if (moveLeft)  camera.rotation.y -= 0.04;
+      if (moveRight) camera.rotation.y += 0.04;
+
+      // Sınır kontrolü (seninki)
+      if (avatar) {
+        if (avatar.position.x > 25) avatar.position.x = 25;
+        if (avatar.position.x < -25) avatar.position.x = -25;
+        if (avatar.position.z > 25) avatar.position.z = 25;
+        if (avatar.position.z < -25) avatar.position.z = -25;
+      }
+
+      if (camera.position.x > 25) camera.position.x = 25;
+      if (camera.position.x < -25) camera.position.x = -25;
+      if (camera.position.z > 25) camera.position.z = 25;
+      if (camera.position.z < -25) camera.position.z = -25;
+
+      if (camera.position.y < 1.6) camera.position.y = 1.6;
+      if (camera.position.y > 3.0) camera.position.y = 3.0;
+      // === SINAV MERKEZİ GERİ SAYIM ===
+if (window.examCountdownText) {
+  const now = Date.now();
+  const diff = examDate - now;
+
+  if (diff <= 0) {
+    window.examCountdownText.text = "Sınav Başladı";
+  } else {
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const m = Math.floor((diff / (1000 * 60)) % 60);
+
+    window.examCountdownText.text = `${d}g ${h}s ${m}dk`;
   }
 }
 
-/* YAZI TAHTASI */
-const board = BABYLON.MeshBuilder.CreatePlane(
-  "board",
-  { width: 8, height: 3 },
-  scene
-);
-board.position.set(0, 2.2, 9.6);
-board.rotation.y = Math.PI;
-board.checkCollisions = true;
+    });
 
-const boardUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
-  board, 1024, 512
-);
-
-const boardBG = new BABYLON.GUI.Rectangle();
-boardBG.background = "#1f2933";
-boardBG.thickness = 0;
-boardUI.addControl(boardBG);
-
-const boardText = new BABYLON.GUI.TextBlock();
-boardText.text = "ANALİZ MENÜSÜ\n\n• Deneme Sonuçları\n• Gelişim Grafikleri\n• PDF Raporlar";
-boardText.color = "white";
-boardText.fontSize = "60px";
-boardText.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-boardText.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
-boardBG.addControl(boardText);
-
-/* === AVATAR – AYNI DOSYA / AYNI AYAR === */
-let avatar = null;
-const AVATAR_URL =
-"https://raw.githubusercontent.com/myu0509/ebediyol-site/main/avatar.glb";
-
-BABYLON.SceneLoader.ImportMeshAsync("", "", AVATAR_URL, scene)
-.then(res => {
-  avatar = res.meshes[0];
-  avatar.position = new BABYLON.Vector3(0, 0, -6);
-  avatar.scaling = new BABYLON.Vector3(0.8, 1.3, 1);
-  avatar.checkCollisions = true;
-  avatar.ellipsoid = new BABYLON.Vector3(0.6, 1.2, 0.6);
-  avatar.ellipsoidOffset = new BABYLON.Vector3(0, 1.2, 0);
-});
-
-/* HAREKET – AYNI */
-let moveForward=false, moveBackward=false, moveLeft=false, moveRight=false;
-
-window.addEventListener("keydown", e=>{
-  if(e.key==="w"||e.key==="ArrowUp") moveForward=true;
-  if(e.key==="s"||e.key==="ArrowDown") moveBackward=true;
-  if(e.key==="a"||e.key==="ArrowLeft") moveLeft=true;
-  if(e.key==="d"||e.key==="ArrowRight") moveRight=true;
-});
-window.addEventListener("keyup", e=>{
-  if(e.key==="w"||e.key==="ArrowUp") moveForward=false;
-  if(e.key==="s"||e.key==="ArrowDown") moveBackward=false;
-  if(e.key==="a"||e.key==="ArrowLeft") moveLeft=false;
-  if(e.key==="d"||e.key==="ArrowRight") moveRight=false;
-});
-
-btnUp.ontouchstart=()=>moveForward=true;
-btnUp.ontouchend=()=>moveForward=false;
-btnDown.ontouchstart=()=>moveBackward=true;
-btnDown.ontouchend=()=>moveBackward=false;
-btnLeft.ontouchstart=()=>moveLeft=true;
-btnLeft.ontouchend=()=>moveLeft=false;
-btnRight.ontouchstart=()=>moveRight=true;
-btnRight.ontouchend=()=>moveRight=false;
-
-/* LOOP */
-scene.onBeforeRenderObservable.add(()=>{
-  if(!avatar) return;
-
-  camera.position.x = avatar.position.x - 4*Math.sin(camera.rotation.y);
-  camera.position.z = avatar.position.z - 4*Math.cos(camera.rotation.y);
-  camera.position.y = avatar.position.y + 1.8;
-
-  avatar.rotation.y = camera.rotation.y + Math.PI;
- const speed = 0.12;
-
-// KAMERAYA GÖRE İLERİ YÖN
-const forward = new BABYLON.Vector3(
-  Math.sin(camera.rotation.y),
-  0,
-  -Math.cos(camera.rotation.y)
-);
-
-if (moveForward) {
-  avatar.moveWithCollisions(forward.scale(speed));
-}
-
-if (moveBackward) {
-  avatar.moveWithCollisions(forward.scale(-speed));
-} 
-  if(moveBackward) avatar.moveWithCollisions(dir.scale(-speed));
-  if(moveLeft) camera.rotation.y -= 0.04;
-  if(moveRight) camera.rotation.y += 0.04;
-});
-
-engine.runRenderLoop(()=>scene.render());
-window.addEventListener("resize",()=>engine.resize());
-</script>
+    // Render döngüsü
+    engine.runRenderLoop(() => scene.render());
+    window.addEventListener("resize", () => engine.resize());
+  </script>
 </body>
 </html>
