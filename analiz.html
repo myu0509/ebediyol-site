@@ -222,6 +222,55 @@ board.position = new BABYLON.Vector3(0, 3.2, HALF - 0.26);
 board.rotation.y = 0;
 board.material = boardMat;
 board.checkCollisions = true;
+const buttonMat = new BABYLON.StandardMaterial("buttonMat", scene);
+buttonMat.diffuseColor = new BABYLON.Color3(0.95, 0.95, 0.95);
+buttonMat.specularColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+function createWallButton(text, x, y, z, link) {
+  const plane = BABYLON.MeshBuilder.CreatePlane("btn", {
+    width: 2.8,
+    height: 0.8
+  }, scene);
+
+  plane.position = new BABYLON.Vector3(x, y, z);
+  plane.rotation.y = 0;
+  plane.material = buttonMat;
+
+  const texture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane);
+
+  const btn = BABYLON.GUI.Button.CreateSimpleButton("btnText", text);
+  btn.color = "#333";
+  btn.fontSize = 120;
+  btn.background = "#f2f2f2";
+  btn.cornerRadius = 20;
+  btn.thickness = 3;
+  btn.onPointerUpObservable.add(() => {
+    window.location.href = link;
+  });
+
+  texture.addControl(btn);
+
+  return plane;
+}
+// Ön duvar Z konumu
+const WALL_Z = HALF - 0.24;
+
+// Anasayfa Butonu
+createWallButton(
+  "Anasayfaya Dön",
+  -8.5,      // sol
+  4.8,       // üst
+  WALL_Z,
+  "https://www.ebediyol.com"
+);
+
+// Kampüs Alanı Butonu
+createWallButton(
+  "Kampüs Alanına Dön",
+  -8.5,
+  3.7,
+  WALL_Z,
+  "https://www.ebediyol.com/ziyaret.html"
+);
 
 // === SINIF SIRALARI ===
 const deskMat = new BABYLON.StandardMaterial("deskMat", scene);
