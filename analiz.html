@@ -216,19 +216,6 @@ const board = BABYLON.MeshBuilder.CreatePlane("board", {
   width: 11,
   height: 5
 }, scene);
-const testBtn = BABYLON.MeshBuilder.CreatePlane("testBtn", {
-  width: 3,
-  height: 1
-}, scene);
-
-testBtn.position = new BABYLON.Vector3(0, 4, board.position.z + 0.05);
-testBtn.rotation.y = Math.PI;
-
-const tex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(testBtn, 1024, 512);
-const b = BABYLON.GUI.Button.CreateSimpleButton("b", "TEST BUTON");
-b.fontSize = 120;
-b.fontFamily = "Arial";
-tex.addControl(b);
 
 // ÖN DUVARA SABİTLE
 board.position = new BABYLON.Vector3(0, 3.2, HALF - 0.26);
@@ -240,12 +227,12 @@ board.material = boardMat;
 }, scene);
 
 uiPlane.position = new BABYLON.Vector3(
-  -6,                  // sol
-  4.5,                 // üst
-  board.position.z + 0.05
+  -5.2,              // sola
+  4.6,               // yukarı
+  board.position.z + 0.06
 );
 
-uiPlane.rotation.y = Math.PI;
+uiPlane.rotation.y = 0;
 
 const uiTex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
   uiPlane,
@@ -290,14 +277,8 @@ btnCampus.onPointerClickObservable.add(() => {
 });
 panel.addControl(btnCampus);
 board.checkCollisions = true;
-const buttonMat = new BABYLON.StandardMaterial("buttonMat", scene);
 buttonMat.diffuseColor = new BABYLON.Color3(0.95, 0.95, 0.95);
 buttonMat.specularColor = new BABYLON.Color3(0.1, 0.1, 0.1);
-function createWallButton(text, x, y, z, link) {
-  const plane = BABYLON.MeshBuilder.CreatePlane("btn", {
-    width: 2.8,
-    height: 0.8
-  }, scene);
 
   plane.position = new BABYLON.Vector3(x, y, z);
   plane.rotation.y = Math.PI;
