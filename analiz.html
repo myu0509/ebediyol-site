@@ -209,28 +209,6 @@ for (let i = -size; i <= size; i += step) {
 }
     })();
 
-    // === ÇİTLER (giriş boşluklu) ===
-(function addFences() {
-
-  const fenceMat = new BABYLON.PBRMaterial("fenceMat", scene);
-  fenceMat.albedoColor = new BABYLON.Color3(0.25, 0.18, 0.10);
-  fenceMat.roughness = 0.9;
-  fenceMat.metallic = 0;
-
-  const GATE_MIN = -3;
-  const GATE_MAX =  3;
-
-  // --- Direk ---
-  function makePole(x, z) {
-    const pole = BABYLON.MeshBuilder.CreateBox(
-      "fPole",
-      { width: 0.09, height: 1.2, depth: 0.09 },
-      scene
-    );
-    pole.position.set(x, 0.6, z);
-    pole.material = fenceMat;
-  }
-
   // --- Yatay bar (X doğrultusu) ---
   function makeBarX(z, y, centerX, length) {
     const bar = BABYLON.MeshBuilder.CreateCylinder(
