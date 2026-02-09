@@ -216,6 +216,19 @@ const board = BABYLON.MeshBuilder.CreatePlane("board", {
   width: 11,
   height: 5
 }, scene);
+const testBtn = BABYLON.MeshBuilder.CreatePlane("testBtn", {
+  width: 3,
+  height: 1
+}, scene);
+
+testBtn.position = new BABYLON.Vector3(0, 4, board.position.z + 0.05);
+testBtn.rotation.y = Math.PI;
+
+const tex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(testBtn);
+const b = BABYLON.GUI.Button.CreateSimpleButton("b", "TEST BUTON");
+b.color = "black";
+b.background = "white";
+tex.addControl(b);
 
 // ÖN DUVARA SABİTLE
 board.position = new BABYLON.Vector3(0, 3.2, HALF - 0.26);
