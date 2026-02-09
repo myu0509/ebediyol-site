@@ -145,15 +145,12 @@
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
     light.intensity = 1.2;
 
-      // girişten meydana
-      const mainRoad = BABYLON.MeshBuilder.CreateGround("mainRoad", { width: 4, height: 28 }, scene);
-      mainRoad.position.set(0, 0.021, -18);
-      mainRoad.material = roadMat;
-
-      // bina önünde yatay yol
-      const crossRoad = BABYLON.MeshBuilder.CreateGround("crossRoad", { width: 28, height: 4 }, scene);
-      crossRoad.position.set(0, 0.021, -2);
-      crossRoad.material = roadMat;
+    // === ZEMİN (kampüse uygun) ===
+    const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 200, height: 200 }, scene);
+    ground.checkCollisions = true;
+    const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
+    groundMat.diffuseColor = new BABYLON.Color3(0.14, 0.28, 0.16);
+    ground.material = groundMat;
 
       // küçük meydan
       const plaza = BABYLON.MeshBuilder.CreateGround("plaza", { width: 10, height: 10 }, scene);
