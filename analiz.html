@@ -232,7 +232,7 @@ function createWallButton(text, x, y, z, link) {
   }, scene);
 
   plane.position = new BABYLON.Vector3(x, y, z);
-  plane.rotation.y = 0;
+  plane.rotation.y = Math.PI;
   plane.material = buttonMat;
 
   const texture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane);
@@ -252,7 +252,7 @@ function createWallButton(text, x, y, z, link) {
   return plane;
 }
 // Ön duvar Z konumu
-const WALL_Z = HALF - 0.24;
+const WALL_Z = board.position.z + 0.05;
 
 // Anasayfa Butonu
 createWallButton(
