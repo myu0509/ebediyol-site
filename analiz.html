@@ -136,7 +136,7 @@ scene.onBeforeRenderObservable.add(()=>{
   camera.position.z = avatar.position.z - 4*Math.cos(camera.rotation.y);
   camera.position.y = avatar.position.y + 1.8;
 
-  avatar.rotation.y = camera.rotation.y;
+  avatar.rotation.y = camera.rotation.y + Math.PI;
 
   const forward = new BABYLON.Vector3(
     Math.sin(camera.rotation.y),0,Math.cos(camera.rotation.y)
