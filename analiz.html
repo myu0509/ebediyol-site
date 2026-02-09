@@ -392,13 +392,6 @@ coachBG.thickness = 0;
 coachBG.background = "rgba(255,255,255,0.9)";
 coachUI.addControl(coachBG);
 
-// ALT BAŞLIK YAZISI
-const coachText = new BABYLON.GUI.TextBlock();
-coachText.text = "Bireysel rehberlik ve hedef takibi için tıklayınız";
-coachText.color = "black";
-coachText.fontSize = "44px";
-coachText.fontWeight = "bold";
-coachBG.addControl(coachText);
     // === HAREKET + KAMERA/AVATAR HİZALAMA (seninki gibi) ===
     scene.onBeforeRenderObservable.add(() => {
       if (avatar) {
