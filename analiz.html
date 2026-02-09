@@ -207,6 +207,46 @@ createWall("rightWall",
   HALF, WALL_HEIGHT / 2, 0
 );
 
+    // === SINIF SIRALARI ===
+const deskMat = new BABYLON.StandardMaterial("deskMat", scene);
+deskMat.diffuseColor = new BABYLON.Color3(0.55, 0.35, 0.2); // ahşap rengi
+
+const DESK_WIDTH  = 2.2;
+const DESK_HEIGHT = 1.1;
+const DESK_DEPTH  = 1.2;
+
+const ROWS = 4;     // önden arkaya
+const COLS = 4;     // soldan sağa
+const GAP_X = 3.2;  // sağ-sol boşluk (yürüme alanı)
+const GAP_Z = 3.5;  // ön-arka boşluk
+
+const startX = -((COLS - 1) * GAP_X) / 2;
+const startZ = -2; // tahtaya çok yaklaşmasın diye biraz geriden
+
+function createDesk(x, z) {
+  const desk = BABYLON.MeshBuilder.CreateBox("desk", {
+    width: DESK_WIDTH,
+    height: DESK_HEIGHT,
+    depth: DESK_DEPTH
+  }, scene);
+
+  desk.position = new BABYLON.Vector3(x, DESK_HEIGHT / 2, z);
+  desk.material = deskMat;
+  desk.checkCollisions = true;
+
+  return desk;
+}
+
+// Sıraları diz
+for (let r = 0; r < ROWS; r++) {
+  for (let c = 0; c < COLS; c++) {
+    createDesk(
+      startX + c * GAP_X,
+      startZ + r * GAP_Z
+    );
+  }
+}
+
 // TAVAN
 const ceiling = BABYLON.MeshBuilder.CreatePlane("ceiling", {
   width: ROOM_SIZE,
