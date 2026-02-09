@@ -136,8 +136,6 @@ scene.onBeforeRenderObservable.add(()=>{
   camera.position.z = avatar.position.z - 4*Math.cos(camera.rotation.y);
   camera.position.y = avatar.position.y + 1.8;
 
-  avatar.rotation.y = camera.rotation.y + Math.PI;
-
   const forward = camera.getForwardRay().direction;
 forward.y = 0;
 forward.normalize();
