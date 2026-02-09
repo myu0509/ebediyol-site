@@ -231,7 +231,7 @@ function createDesk(x, z) {
     depth: DESK_DEPTH
   }, scene);
 
-  desk.position = new BABYLON.Vector3(x, DESK_HEIGHT / 2, z);
+  desk.position = new BABYLON.Vector3(x, DESK_HEIGHT / 2, z - 4);
   desk.material = deskMat;
   desk.checkCollisions = true;
 
