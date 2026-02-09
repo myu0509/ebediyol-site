@@ -142,19 +142,6 @@
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
     light.intensity = 1.2;
 
-    // Skybox (seninki)
-    (function addSkybox() {
-      const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 200 }, scene);
-      const skyboxMaterial = new BABYLON.StandardMaterial("skyBoxMat", scene);
-      skyboxMaterial.backFaceCulling = false;
-      skyboxMaterial.disableLighting = true;
-      skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("https://playground.babylonjs.com/textures/skybox", scene);
-      skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-      skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-      skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-      skybox.material = skyboxMaterial;
-    })();
-
     // === ZEMİN (kampüse uygun) ===
     const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 200, height: 200 }, scene);
     ground.checkCollisions = true;
