@@ -214,6 +214,8 @@ const ceiling = BABYLON.MeshBuilder.CreatePlane("ceiling", {
 }, scene);
 ceiling.position = new BABYLON.Vector3(0, WALL_HEIGHT, 0);
 ceiling.rotation.x = Math.PI / 2;
+    const ceilingMat = new BABYLON.StandardMaterial("ceilingMat", scene);
+ceilingMat.diffuseColor = new BABYLON.Color3(1.0, 0.9, 0.6);
 ceiling.material = ceilingMat;
 ceiling.checkCollisions = true;
 
