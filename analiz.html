@@ -138,12 +138,20 @@ scene.onBeforeRenderObservable.add(()=>{
 
   avatar.rotation.y = camera.rotation.y + Math.PI;
 
-  const forward = new BABYLON.Vector3(
-    Math.sin(camera.rotation.y),0,Math.cos(camera.rotation.y)
-  );
+  const forward = camera.getForwardRay().direction;
+forward.y = 0;
+forward.normalize();
 
-  if(moveForward) avatar.moveWithCollisions(forward.scale(0.12));
-  if(moveBackward) avatar.moveWithCollisions(forward.scale(-0.12));
+if (moveForward) {
+  avatar.moveWithCollisions(forward.scale(speed));
+  avatar.rotation.y = Math.atan2(forward.x, forward.z);
+}
+
+if (moveBackward) {
+  avatar.moveWithCollisions(forward.scale(-speed));
+  avatar.rotation.y = Math.atan2(forward.x, forward.z) + Math.PI;
+}
+
   if(moveLeft) camera.rotation.y -= 0.04;
   if(moveRight) camera.rotation.y += 0.04;
 });
