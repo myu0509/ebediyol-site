@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -151,6 +152,22 @@
     const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
     groundMat.diffuseColor = new BABYLON.Color3(0.14, 0.28, 0.16);
     ground.material = groundMat;
+
+    // Yollar (kampüs)
+    (function addCampusRoads() {
+      const roadMat = new BABYLON.StandardMaterial("roadMat", scene);
+      roadMat.diffuseColor = new BABYLON.Color3(0.55, 0.55, 0.55);
+      roadMat.specularColor = new BABYLON.Color3(0,0,0);
+
+      // girişten meydana
+      const mainRoad = BABYLON.MeshBuilder.CreateGround("mainRoad", { width: 4, height: 28 }, scene);
+      mainRoad.position.set(0, 0.021, -18);
+      mainRoad.material = roadMat;
+
+      // bina önünde yatay yol
+      const crossRoad = BABYLON.MeshBuilder.CreateGround("crossRoad", { width: 28, height: 4 }, scene);
+      crossRoad.position.set(0, 0.021, -2);
+      crossRoad.material = roadMat;
 
       // küçük meydan
       const plaza = BABYLON.MeshBuilder.CreateGround("plaza", { width: 10, height: 10 }, scene);
@@ -499,14 +516,6 @@ examTitle.fontSize = "44px";
 examTitle.top = "-30px";
 examTitle.fontWeight = "bold";
 examBG.addControl(examTitle);
-
-// SAYAÇ
-const examCountdown = new BABYLON.GUI.TextBlock();
-examCountdown.text = "Yükleniyor...";
-examCountdown.color = "black";
-examCountdown.fontSize = "54px";
-examCountdown.top = "40px";
-examBG.addControl(examCountdown);
 
 // GLOBAL
 window.examCountdownText = examCountdown;
