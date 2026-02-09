@@ -152,51 +152,9 @@
     groundMat.diffuseColor = new BABYLON.Color3(0.14, 0.28, 0.16);
     ground.material = groundMat;
 
-    // === GİRİŞ DİREKLERİ + TABELA (seninki gibi) ===
-    const poleMat = new BABYLON.StandardMaterial("poleMat", scene);
-    poleMat.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+    
 
-    const poleLeft = BABYLON.MeshBuilder.CreateCylinder("poleLeft", { diameter: 0.3, height: 6 }, scene);
-    poleLeft.position = new BABYLON.Vector3(-3.5, 3, -12);
-    poleLeft.material = poleMat;
 
-    const poleRight = BABYLON.MeshBuilder.CreateCylinder("poleRight", { diameter: 0.3, height: 6 }, scene);
-    poleRight.position = new BABYLON.Vector3(3.5, 3, -12);
-    poleRight.material = poleMat;
-
-    const welcomeSign = BABYLON.MeshBuilder.CreatePlane("welcomeSign", { width: 7.2, height: 1.8 }, scene);
-    welcomeSign.position = new BABYLON.Vector3(0, 5.4, -12);
-    welcomeSign.rotation = new BABYLON.Vector3(0, 0, 0);
-    welcomeSign.scaling.y = 1.5;
-
-    const welcomeTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(welcomeSign);
-    const bg = new BABYLON.GUI.Rectangle();
-    bg.thickness = 0;
-    bg.background = "rgba(10, 10, 20, 0.75)";
-    welcomeTexture.addControl(bg);
-
-    const welcomeText = new BABYLON.GUI.TextBlock();
-    welcomeText.text = "ÜSTÜN DENEME KAMPÜSÜNE\nHOŞGELDİNİZ";
-    welcomeText.color = "white";
-    welcomeText.fontSize = "64px";              // 🔽 biraz küçülttük
-    welcomeText.lineSpacing = "16px";            // 🔽 satırlar nefes alsın
-    welcomeText.textWrapping = true;             // 🔑 taşmayı engeller
-    welcomeText.width = "95%";                   // 🔑 direklerin içine sığar
-    welcomeText.height = "100%";
-
-    welcomeText.textHorizontalAlignment =
-      BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-    welcomeText.textVerticalAlignment =
-      BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
-
-    welcomeText.outlineWidth = 6;
-    welcomeText.outlineColor = "black";
-
-bg.addControl(welcomeText);
-
-// koçluk binası koordinatları
-const COACH_X = 12;
-const COACH_Z = 4;
 
 // plane
 const coachSign = BABYLON.MeshBuilder.CreatePlane(
@@ -204,28 +162,6 @@ const coachSign = BABYLON.MeshBuilder.CreatePlane(
   { width: 6.8, height: 1.5 },
   scene
 );
-
-// material (arkadan görünmesin)
-const coachMat = new BABYLON.StandardMaterial("coachMat", scene);
-coachMat.diffuseColor = new BABYLON.Color3(1, 1, 1);
-coachMat.backFaceCulling = true;
-coachSign.material = coachMat;
-
-// konum + yön (binanın ön yüzü)
-coachSign.position = new BABYLON.Vector3(COACH_X, 3.5, COACH_Z - 3.96);
-coachSign.rotation.y = 0;
-
-// GUI
-const coachUI = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
-  coachSign,
-  1024,
-  256
-);
-
-const coachBG = new BABYLON.GUI.Rectangle();
-coachBG.thickness = 0;
-coachBG.background = "rgba(255,255,255,0.9)";
-coachUI.addControl(coachBG);
 
     // === HAREKET + KAMERA/AVATAR HİZALAMA (seninki gibi) ===
     scene.onBeforeRenderObservable.add(() => {
