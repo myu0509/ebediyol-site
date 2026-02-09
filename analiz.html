@@ -196,12 +196,6 @@
       // GİRİŞ TARAFI (z = -25) → ORTASI BOŞ
 for (let i = -size; i <= size; i += step) {
 
-  // 🚪 GİRİŞTE TEK AĞAÇ OLMASIN
-  if (i > -3 && i < 3) continue;
-
-  createTree(i, -size);
-}
-
 // DİĞER KENARLAR (AYNEN KALIYOR)
 for (let i = -size; i <= size; i += step) {
   createTree(i, size);
