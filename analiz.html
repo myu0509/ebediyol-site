@@ -208,21 +208,25 @@ createWall("rightWall",
   HALF, WALL_HEIGHT / 2, 0
 );
 
-    // === SINIF SIRALARI ===
+// === SINIF SIRALARI ===
 const deskMat = new BABYLON.StandardMaterial("deskMat", scene);
-deskMat.diffuseColor = new BABYLON.Color3(0.55, 0.35, 0.2); // ahşap rengi
+deskMat.diffuseColor = new BABYLON.Color3(0.55, 0.35, 0.2);
 
 const DESK_WIDTH  = 1.9;
 const DESK_HEIGHT = 0.8;
 const DESK_DEPTH  = 1.0;
 
 const ROWS = 4;     // önden arkaya
-const COLS = 4;     // soldan sağa
-const GAP_X = 3.2;  // sağ-sol boşluk (yürüme alanı)
-const GAP_Z = 3.5;  // ön-arka boşluk
+const COLS = 4;     // toplam sıra (2 sol + 2 sağ)
 
-const startX = -((COLS - 1) * GAP_X) / 2;
-const startZ = -2; // tahtaya çok yaklaşmasın diye biraz geriden
+const GAP_Z = 3.5;  // ön-arka boşluk
+const AISLE_WIDTH = 2.5; // ORTA KORİDOR
+
+const startZ = -2;
+
+// SOL ve SAĞ BLOKLARIN X POZİSYONLARI
+const leftBaseX  = -AISLE_WIDTH / 2 - DESK_WIDTH;
+const rightBaseX =  AISLE_WIDTH / 2 + DESK_WIDTH;
 
 function createDesk(x, z) {
   const desk = BABYLON.MeshBuilder.CreateBox("desk", {
@@ -238,14 +242,17 @@ function createDesk(x, z) {
   return desk;
 }
 
-// Sıraları diz
+// === SIRALARI DİZ ===
 for (let r = 0; r < ROWS; r++) {
-  for (let c = 0; c < COLS; c++) {
-    createDesk(
-      startX + c * GAP_X,
-      startZ + r * GAP_Z
-    );
-  }
+  const z = startZ + r * GAP_Z;
+
+  // SOL TARAF (2 SIRA)
+  createDesk(leftBaseX - 1.1, z);
+  createDesk(leftBaseX + 1.1, z);
+
+  // SAĞ TARAF (2 SIRA)
+  createDesk(rightBaseX - 1.1, z);
+  createDesk(rightBaseX + 1.1, z);
 }
 
 // TAVAN
