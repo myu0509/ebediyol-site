@@ -276,32 +276,6 @@ btnCampus.onPointerClickObservable.add(() => {
   window.location.href = "https://www.ebediyol.com/ziyaret.html";
 });
 panel.addControl(btnCampus);
-board.checkCollisions = true;
-buttonMat.diffuseColor = new BABYLON.Color3(0.95, 0.95, 0.95);
-buttonMat.specularColor = new BABYLON.Color3(0.1, 0.1, 0.1);
-
-  plane.position = new BABYLON.Vector3(x, y, z);
-  plane.rotation.y = Math.PI;
-  plane.material = buttonMat;
-
-  const texture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane);
-
-  const btn = BABYLON.GUI.Button.CreateSimpleButton("btnText", text);
-  btn.color = "#333";
-  btn.fontSize = 120;
-  btn.background = "#f2f2f2";
-  btn.cornerRadius = 20;
-  btn.thickness = 3;
-  btn.onPointerUpObservable.add(() => {
-    window.location.href = link;
-  });
-
-  texture.addControl(btn);
-
-  return plane;
-}
-// Ön duvar Z konumu
-const WALL_Z = board.position.z + 0.05;
 
 // Anasayfa Butonu
 createWallButton(
