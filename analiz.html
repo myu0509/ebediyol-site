@@ -227,7 +227,7 @@ board.material = boardMat;
 }, scene);
 
 uiPlane.position.z = board.position.z + 0.06;
-uiPlane.rotation.y = 0;
+uiPlane.rotation.y = Math.PI;
 const uiTex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
   uiPlane,
   1024,
