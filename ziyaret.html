@@ -441,8 +441,6 @@ bg.addControl(welcomeText);
       roofColor: new BABYLON.Color3(0.45, 0.75, 0.95)
     });
     // === ANALİZ MERKEZİ ALT BAŞLIK ===
-
-// analiz binası koordinatları
 const ANALYSIS_X = -12;
 const ANALYSIS_Z = 4;
 
@@ -452,22 +450,14 @@ const analysisSubSign = BABYLON.MeshBuilder.CreatePlane(
   { width: 6.5, height: 1.4 },
   scene
 );
-analysisSubSign.isPickable = true;
-analysisSubSign.actionManager = new BABYLON.ActionManager(scene);
-analysisSubSign.actionManager.registerAction(
-  new BABYLON.ExecuteCodeAction(
-    BABYLON.ActionManager.OnPickTrigger,
-    function () {
-      analysisBuilding.onPointerPickObservable.add(() => {
-  goWithFade("analiz.html");
-});
-// material (arkası görünmez)
+
+// material
 const analysisMat = new BABYLON.StandardMaterial("analysisMat", scene);
 analysisMat.diffuseColor = new BABYLON.Color3(1, 1, 1);
 analysisMat.backFaceCulling = true;
 analysisSubSign.material = analysisMat;
 
-// konum + yön (binanın ÖN YÜZÜ)
+// konum
 analysisSubSign.position = new BABYLON.Vector3(
   ANALYSIS_X,
   3.4,
@@ -487,14 +477,24 @@ analysisBG.thickness = 0;
 analysisBG.background = "rgba(255,255,255,0.9)";
 analysisUI.addControl(analysisBG);
 
-// yazı
 const analysisText = new BABYLON.GUI.TextBlock();
 analysisText.text = "Deneme ve gelişim analiz raporu için tıklayınız";
 analysisText.color = "black";
 analysisText.fontSize = "44px";
 analysisText.fontWeight = "bold";
 analysisBG.addControl(analysisText);
-  // === SINAV MERKEZİ ALT BAŞLIK + SAYAÇ (DOĞRU YÖN) ===
+
+// 🔑 TIKLAMA (TEK VE DOĞRU YER)
+analysisSubSign.isPickable = true;
+analysisSubSign.actionManager = new BABYLON.ActionManager(scene);
+analysisSubSign.actionManager.registerAction(
+  new BABYLON.ExecuteCodeAction(
+    BABYLON.ActionManager.OnPickTrigger,
+    function () {
+      goWithFade("analiz.html");
+    }
+  )
+);
 
 // sınav binası koordinatı
 const EXAM_X = 0;
