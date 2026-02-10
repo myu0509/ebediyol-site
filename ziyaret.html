@@ -453,14 +453,6 @@ const analysisSubSign = BABYLON.MeshBuilder.CreatePlane(
   scene
 );
 analysisSubSign.isPickable = true;
-function goWithFade(url) {
-  const fade = document.getElementById("fade");
-  fade.classList.add("active");
-
-  setTimeout(() => {
-    window.location.href = url;
-  }, 900);
-}
 analysisSubSign.actionManager = new BABYLON.ActionManager(scene);
 analysisSubSign.actionManager.registerAction(
   new BABYLON.ExecuteCodeAction(
@@ -697,6 +689,14 @@ if (window.examCountdownText) {
     // Render döngüsü
     engine.runRenderLoop(() => scene.render());
     window.addEventListener("resize", () => engine.resize());
+      function goWithFade(url) {
+  const fade = document.getElementById("fade");
+  fade.classList.add("active");
+
+  setTimeout(() => {
+    window.location.href = url;
+  }, 900);
+}
   </script>
 </body>
 </html>
