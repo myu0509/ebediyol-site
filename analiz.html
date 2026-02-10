@@ -218,7 +218,7 @@ const board = BABYLON.MeshBuilder.CreatePlane("board", {
 }, scene);
 
 // ÖN DUVARA SABİTLE
-board.position = new BABYLON.Vector3(0, 3.2, -HALF + 0.26);
+board.position = new BABYLON.Vector3(0, -3.2, -HALF + 0.26);
 board.rotation.y = 0;
 board.material = boardMat;
     const uiPlane = BABYLON.MeshBuilder.CreatePlane("uiPlane", {
@@ -227,7 +227,7 @@ board.material = boardMat;
 }, scene);
 
 uiPlane.position.z = board.position.z - 0.06;
-uiPlane.rotation.y = Math.PI;
+uiPlane.rotation.y = 0;
 const uiTex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
   uiPlane,
   1024,
