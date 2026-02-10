@@ -218,7 +218,7 @@ const board = BABYLON.MeshBuilder.CreatePlane("board", {
 }, scene);
 
 // ÖN DUVARA SABİTLE
-board.position = new BABYLON.Vector3(0, 3.2, HALF - 0.26);
+board.position = new BABYLON.Vector3(0, 3.2, -HALF + 0.26);
 board.rotation.y = 0;
 board.material = boardMat;
     const uiPlane = BABYLON.MeshBuilder.CreatePlane("uiPlane", {
@@ -276,24 +276,6 @@ btnCampus.onPointerClickObservable.add(() => {
   window.location.href = "https://www.ebediyol.com/ziyaret.html";
 });
 panel.addControl(btnCampus);
-
-// Anasayfa Butonu
-createWallButton(
-  "Anasayfaya Dön",
-  -8.5,      // sol
-  4.8,       // üst
-  WALL_Z,
-  "https://www.ebediyol.com"
-);
-
-// Kampüs Alanı Butonu
-createWallButton(
-  "Kampüs Alanına Dön",
-  -8.5,
-  3.7,
-  WALL_Z,
-  "https://www.ebediyol.com/ziyaret.html"
-);
 
 // === SINIF SIRALARI ===
 const deskMat = new BABYLON.StandardMaterial("deskMat", scene);
