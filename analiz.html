@@ -50,10 +50,24 @@
       z-index: 12;
       max-width: 70vw;
     }
+    #fade {
+  position: fixed;
+  inset: 0;
+  background: #020617;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.9s ease;
+  z-index: 999;
+}
+
+#fade.active {
+  opacity: 1;
+}
   </style>
 </head>
 <body>
   <canvas id="renderCanvas"></canvas>
+<div id="fade"></div>
 
   <!-- (İstersen kuş sesi de kalsın; kaldırmak istersen söylerim) -->
   <audio id="steps" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/steps.mp3?raw=1" preload="auto"></audio>
@@ -244,6 +258,14 @@ panel.width = "100%";
 panel.height = "100%";
 panel.paddingTop = "20px";
 uiTex.addControl(panel);
+function goWithFade(url) {
+  const fade = document.getElementById("fade");
+  fade.classList.add("active");
+
+  setTimeout(() => {
+    window.location.href = url;
+  }, 900);
+}
 
 // === BUTON 1 ===
 const btnHome = BABYLON.GUI.Button.CreateSimpleButton(
@@ -256,7 +278,7 @@ btnHome.background = "#2c7a3f";
 btnHome.fontSize = 60;
 btnHome.cornerRadius = 20;
 btnHome.onPointerClickObservable.add(() => {
-  window.location.href = "https://www.ebediyol.com";
+  goWithFade("https://www.ebediyol.com");
 });
 panel.addControl(btnHome);
 
@@ -272,7 +294,7 @@ btnCampus.fontSize = 60;
 btnCampus.cornerRadius = 20;
 btnCampus.top = "20px";
 btnCampus.onPointerClickObservable.add(() => {
-  window.location.href = "https://www.ebediyol.com/ziyaret.html";
+  goWithFade("https://www.ebediyol.com/ziyaret.html");
 });
 panel.addControl(btnCampus);
 
