@@ -219,15 +219,20 @@ const board = BABYLON.MeshBuilder.CreatePlane("board", {
 
 // ÖN DUVARA SABİTLE
 board.position = new BABYLON.Vector3(0, 3.2, -HALF + 0.26);
-board.rotation.y = 0;
+board.rotation.y = Math.PI;
 board.material = boardMat;
-    const uiPlane = BABYLON.MeshBuilder.CreatePlane("uiPlane", {
+const uiPlane = BABYLON.MeshBuilder.CreatePlane("uiPlane", {
   width: 4,
   height: 2
 }, scene);
 
-uiPlane.position.z = board.position.z - 0.06;
+// 🔴 EN KRİTİK SATIR
+uiPlane.parent = board;
+
+// tahtaya göre lokal konum
+uiPlane.position = new BABYLON.Vector3(0, 1.6, -0.05);
 uiPlane.rotation.y = 0;
+
 const uiTex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
   uiPlane,
   1024,
