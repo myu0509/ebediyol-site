@@ -225,6 +225,9 @@ board.material = boardMat;
   width: 4,
   height: 2
 }, scene);
+uiPlane.position.x = -4.8;          // tahtanın sol tarafı
+uiPlane.position.y = 4.6;           // tahtanın üstü
+uiPlane.rotation.y = Math.PI;       // karşı duvara bak
 
 uiPlane.position.z = board.position.z + 0.06;
 uiPlane.rotation.y = 0;
