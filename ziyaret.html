@@ -50,12 +50,24 @@
       z-index: 12;
       max-width: 70vw;
     }
+    #fade {
+  position: fixed;
+  inset: 0;
+  background: #020617;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.9s ease;
+  z-index: 999;
+}
+#fade.active {
+  opacity: 1;
+}
   </style>
 </head>
 <body>
   <canvas id="renderCanvas"></canvas>
-
-  <!-- (İstersen kuş sesi de kalsın; kaldırmak istersen söylerim) -->
+<div id="fade"></div>
+ <!-- (İstersen kuş sesi de kalsın; kaldırmak istersen söylerim) -->
   <audio id="steps" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/steps.mp3?raw=1" preload="auto"></audio>
 
   <div id="mobileControls">
@@ -441,17 +453,22 @@ const analysisSubSign = BABYLON.MeshBuilder.CreatePlane(
   scene
 );
 analysisSubSign.isPickable = true;
+function goWithFade(url) {
+  const fade = document.getElementById("fade");
+  fade.classList.add("active");
 
+  setTimeout(() => {
+    window.location.href = url;
+  }, 900);
+}
 analysisSubSign.actionManager = new BABYLON.ActionManager(scene);
 analysisSubSign.actionManager.registerAction(
   new BABYLON.ExecuteCodeAction(
     BABYLON.ActionManager.OnPickTrigger,
     function () {
-      window.location.href = "analiz.html";
-    }
-  )
-);
-
+      analysisBuilding.onPointerPickObservable.add(() => {
+  goWithFade("analiz.html");
+});
 // material (arkası görünmez)
 const analysisMat = new BABYLON.StandardMaterial("analysisMat", scene);
 analysisMat.diffuseColor = new BABYLON.Color3(1, 1, 1);
