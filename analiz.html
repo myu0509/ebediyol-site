@@ -226,10 +226,10 @@ const uiPlane = BABYLON.MeshBuilder.CreatePlane("uiPlane", {
   height: 2
 }, scene);
 
-uiPlane.position.x = -4.8;          // sol üst
-uiPlane.position.y = 4.6;           // yukarı
+uiPlane.position.x = -1.8;          // sol üst
+uiPlane.position.y = 1.6;           // yukarı
 uiPlane.position.z = board.position.z + 0.06; // tahtanın önünde
-uiPlane.rotation.y = Math.PI;       // KARŞI DUVARA BAK
+uiPlane.rotation.y = 0;            // KARŞI DUVARA BAK
 
 const uiTex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
   uiPlane,
