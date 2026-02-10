@@ -258,6 +258,40 @@ panel.width = "100%";
 panel.height = "100%";
 panel.paddingTop = "20px";
 uiTex.addControl(panel);
+    panel.isVertical = true;
+panel.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+panel.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+function createBoardTitle(text) {
+  const title = new BABYLON.GUI.TextBlock();
+  title.text = text;
+  title.height = "80px";
+  title.color = "#f8fafc";
+  title.fontSize = "52px";
+  title.fontWeight = "bold";
+  title.textHorizontalAlignment =
+    BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+
+  // hover efekti
+  title.onPointerEnterObservable.add(() => {
+    title.color = "#22d3ee";
+  });
+
+  title.onPointerOutObservable.add(() => {
+    title.color = "#f8fafc";
+  });
+
+  // tıklama (şimdilik sadece test)
+  title.onPointerClickObservable.add(() => {
+    console.log(text + " tıklandı");
+  });
+
+  panel.addControl(title);
+}
+createBoardTitle("📊 DENEME GENEL ÖZETİ");
+createBoardTitle("🧠 KONU BAZLI BAŞARI");
+createBoardTitle("⚠️ YANLIŞ & BOŞ ANALİZİ");
+createBoardTitle("🚀 GELİŞİM VE HEDEF TAKİBİ");
+
 function goWithFade(url) {
   const fade = document.getElementById("fade");
   fade.classList.add("active");
