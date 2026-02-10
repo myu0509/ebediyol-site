@@ -218,19 +218,16 @@ const board = BABYLON.MeshBuilder.CreatePlane("board", {
 }, scene);
 
 // ÖN DUVARA SABİTLE
-board.position = new BABYLON.Vector3(0, 3.2, HALF - 0.26);
+board.position = new BABYLON.Vector3(0, 3.2, -HALF + 0.26);
 board.rotation.y = 0;
 board.material = boardMat;
-const uiPlane = BABYLON.MeshBuilder.CreatePlane("uiPlane", {
+    const uiPlane = BABYLON.MeshBuilder.CreatePlane("uiPlane", {
   width: 4,
   height: 2
 }, scene);
 
-uiPlane.position.x = -1.8;          // sol üst
-uiPlane.position.y = 1.6;           // yukarı
-uiPlane.position.z = board.position.z + 0.06; // tahtanın önünde
-uiPlane.rotation.y = 0;            // KARŞI DUVARA BAK
-
+uiPlane.position.z = board.position.z + 0.06;
+uiPlane.rotation.y = 0;
 const uiTex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
   uiPlane,
   1024,
@@ -243,33 +240,33 @@ panel.height = "100%";
 panel.paddingTop = "20px";
 uiTex.addControl(panel);
 
+// === BUTON 1 ===
 const btnHome = BABYLON.GUI.Button.CreateSimpleButton(
-  "btnHome",
+  "homeBtn",
   "Anasayfaya Dön"
 );
-btnHome.width = "90%";
-btnHome.height = "70px";
+btnHome.height = "80px";
 btnHome.color = "white";
-btnHome.background = "#2c3e50";
+btnHome.background = "#2c7a3f";
+btnHome.fontSize = 60;
 btnHome.cornerRadius = 20;
-btnHome.fontSize = "28px";
-btnHome.onPointerUpObservable.add(() => {
+btnHome.onPointerClickObservable.add(() => {
   window.location.href = "https://www.ebediyol.com";
 });
 panel.addControl(btnHome);
 
+// === BUTON 2 ===
 const btnCampus = BABYLON.GUI.Button.CreateSimpleButton(
-  "btnCampus",
+  "campusBtn",
   "Kampüs Alanına Dön"
 );
-btnCampus.width = "90%";
-btnCampus.height = "70px";
+btnCampus.height = "80px";
 btnCampus.color = "white";
-btnCampus.background = "#16a085";
+btnCampus.background = "#1e5f99";
+btnCampus.fontSize = 60;
 btnCampus.cornerRadius = 20;
-btnCampus.fontSize = "28px";
 btnCampus.top = "20px";
-btnCampus.onPointerUpObservable.add(() => {
+btnCampus.onPointerClickObservable.add(() => {
   window.location.href = "https://www.ebediyol.com/ziyaret.html";
 });
 panel.addControl(btnCampus);
