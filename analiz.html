@@ -218,8 +218,8 @@ const board = BABYLON.MeshBuilder.CreatePlane("board", {
 }, scene);
 
 // ÖN DUVARA SABİTLE
-board.position = new BABYLON.Vector3(0, 3.2, -HALF + 0.26);
-board.rotation.y = Math.PI;
+board.position = new BABYLON.Vector3(0, 3.2, HALF - 0.26);   // iç tarafa doğru hafif kaydır
+board.rotation.y = 0;           // ← önemli! Artık dönmeye gerek yok
 board.material = boardMat;
 const uiPlane = BABYLON.MeshBuilder.CreatePlane("uiPlane", {
   width: 4,
