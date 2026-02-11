@@ -272,8 +272,7 @@ const buttonPlane = BABYLON.MeshBuilder.CreatePlane("buttonPlane", {
 buttonPlane.parent = board;
 
 /* 👇 TAHTANIN ALT KENARI */
-buttonPlane.position = new BABYLON.Vector3(0, -1.1, -0.05);
-
+buttonPlane.position = new BABYLON.Vector3(0, -1.7, -0.05);
 buttonPlane.rotation.y = 0;
 const buttonTex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
   buttonPlane,
@@ -287,9 +286,6 @@ bottomPanel.width = "100%";
 bottomPanel.verticalAlignment =
   BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
 bottomPanel.height = "220px";
-
-/* ✅ BUTONLARI AŞAĞI İT */
-bottomPanel.top = "160px";   // ← ASIL OLAY BU
 
 buttonTex.addControl(bottomPanel);
 
