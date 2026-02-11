@@ -269,15 +269,12 @@ const bottomPanel = new BABYLON.GUI.StackPanel();
 bottomPanel.width = "100%";
 bottomPanel.isVertical = true;
 
-/* 👇 TAHTANIN ALTINA ZORLA */
+/* ❌ hizalama ile uğraşmıyoruz */
 bottomPanel.verticalAlignment =
-  BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+  BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 
-/* 👇 ALT KENARDAN BOŞLUK */
-bottomPanel.paddingBottom = "40px";
-
-/* 👇 ÜSTTEKİ MENÜ İLE ÇAKIŞMASIN */
-bottomPanel.height = "35%";
+/* ✅ BUTONLARI AŞAĞI İT */
+bottomPanel.top = "160px";   // ← ASIL OLAY BU
 
 uiTex.addControl(bottomPanel);
 
