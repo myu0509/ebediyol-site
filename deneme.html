@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <title>Üstün Deneme Sınav Merkezi</title>
+  <title>Üstün Deneme Analiz Merkezi</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
@@ -50,10 +51,24 @@
       z-index: 12;
       max-width: 70vw;
     }
+    #fade {
+  position: fixed;
+  inset: 0;
+  background: #020617;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.9s ease;
+  z-index: 999;
+}
+
+#fade.active {
+  opacity: 1;
+}
   </style>
 </head>
 <body>
   <canvas id="renderCanvas"></canvas>
+<div id="fade"></div>
 
   <!-- (İstersen kuş sesi de kalsın; kaldırmak istersen söylerim) -->
   <audio id="steps" src="https://raw.githubusercontent.com/myu0509/ebediyol-site/main/sounds/steps.mp3?raw=1" preload="auto"></audio>
@@ -239,44 +254,114 @@ const uiTex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
   512
 );
 
-const panel = new BABYLON.GUI.StackPanel();
-panel.width = "100%";
-panel.height = "100%";
-panel.paddingTop = "20px";
-uiTex.addControl(panel);
+// === ORTA PANEL (ANALİZ BAŞLIKLARI) ===
+const centerPanel = new BABYLON.GUI.StackPanel();
+centerPanel.width = "100%";
+centerPanel.isVertical = true;
+centerPanel.horizontalAlignment =
+  BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+centerPanel.verticalAlignment =
+  BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+
+uiTex.addControl(centerPanel);
+const buttonPlane = BABYLON.MeshBuilder.CreatePlane("buttonPlane", {
+  width: 4,
+  height: 1.4
+}, scene);
+
+/* 🔗 TAHTAYA BAĞLA */
+buttonPlane.parent = board;
+
+/* 👇 TAHTANIN ALT KENARI */
+buttonPlane.position = new BABYLON.Vector3(0, -1.7, -0.05);
+buttonPlane.rotation.y = 0;
+const buttonTex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
+  buttonPlane,
+  1024,
+  256
+);
+
+// === ALT PANEL (BUTONLAR) ===
+const bottomPanel = new BABYLON.GUI.StackPanel();
+bottomPanel.width = "100%";
+bottomPanel.verticalAlignment =
+  BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+bottomPanel.height = "220px";
+
+buttonTex.addControl(bottomPanel);
+
+function createBoardTitle(text) {
+  const title = new BABYLON.GUI.TextBlock();
+  title.text = text;
+  title.height = "80px";
+  title.color = "#f8fafc";
+  title.fontSize = "52px";
+  title.fontWeight = "bold";
+
+  title.textHorizontalAlignment =
+    BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+
+  title.paddingTop = "12px";
+  title.paddingBottom = "12px";
+
+  title.onPointerEnterObservable.add(() => {
+    title.color = "#22d3ee";
+  });
+
+  title.onPointerOutObservable.add(() => {
+    title.color = "#f8fafc";
+  });
+
+  title.onPointerClickObservable.add(() => {
+    console.log(text + " tıklandı");
+  });
+
+  centerPanel.addControl(title);
+}
+createBoardTitle("📊 DENEME GENEL ÖZETİ");
+createBoardTitle("🧠 KONU BAZLI BAŞARI");
+createBoardTitle("⚠️ YANLIŞ & BOŞ ANALİZİ");
+createBoardTitle("🚀 GELİŞİM VE HEDEF TAKİBİ");
+
+function goWithFade(url) {
+  const fade = document.getElementById("fade");
+  fade.classList.add("active");
+
+  setTimeout(() => {
+    window.location.href = url;
+  }, 900);
+}
 
 // === BUTON 1 ===
 const btnHome = BABYLON.GUI.Button.CreateSimpleButton(
   "homeBtn",
   "Anasayfaya Dön"
 );
-btnHome.height = "80px";
+btnHome.height = "60px";
 btnHome.color = "white";
 btnHome.background = "#2c7a3f";
-btnHome.fontSize = 60;
-btnHome.cornerRadius = 20;
+btnHome.fontSize = 30;
+btnHome.cornerRadius = 12;
 btnHome.onPointerClickObservable.add(() => {
-  window.location.href = "https://www.ebediyol.com";
+  goWithFade("https://www.ebediyol.com");
 });
-panel.addControl(btnHome);
+bottomPanel.addControl(btnHome);
 
 // === BUTON 2 ===
 const btnCampus = BABYLON.GUI.Button.CreateSimpleButton(
   "campusBtn",
   "Kampüs Alanına Dön"
 );
-btnCampus.height = "80px";
+btnCampus.height = "60px";
 btnCampus.color = "white";
 btnCampus.background = "#1e5f99";
-btnCampus.fontSize = 60;
-btnCampus.cornerRadius = 20;
-btnCampus.top = "20px";
+btnCampus.fontSize = 30;
+btnCampus.cornerRadius = 12;
 btnCampus.onPointerClickObservable.add(() => {
-  window.location.href = "https://www.ebediyol.com/ziyaret.html";
+  goWithFade("https://www.ebediyol.com/ziyaret.html");
 });
-panel.addControl(btnCampus);
-
-// === SINIF SIRALARI ===
+bottomPanel.addControl(btnCampus);
+    // === SINIF SIRALARI ===
 const deskMat = new BABYLON.StandardMaterial("deskMat", scene);
 deskMat.diffuseColor = new BABYLON.Color3(0.55, 0.35, 0.2);
 
@@ -322,7 +407,6 @@ for (let r = 0; r < ROWS; r++) {
   createDesk(rightBaseX - 1.4, z);
   createDesk(rightBaseX + 1.4, z);
 }
-
 // TAVAN
 const ceiling = BABYLON.MeshBuilder.CreatePlane("ceiling", {
   width: ROOM_SIZE,
