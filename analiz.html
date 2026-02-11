@@ -284,11 +284,9 @@ const buttonTex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
 // === ALT PANEL (BUTONLAR) ===
 const bottomPanel = new BABYLON.GUI.StackPanel();
 bottomPanel.width = "100%";
-bottomPanel.isVertical = true;
-
-/* ❌ hizalama ile uğraşmıyoruz */
 bottomPanel.verticalAlignment =
-  BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+  BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+bottomPanel.height = "220px";
 
 /* ✅ BUTONLARI AŞAĞI İT */
 bottomPanel.top = "160px";   // ← ASIL OLAY BU
@@ -362,7 +360,6 @@ btnCampus.color = "white";
 btnCampus.background = "#1e5f99";
 btnCampus.fontSize = 60;
 btnCampus.cornerRadius = 20;
-btnCampus.top = "20px";
 btnCampus.onPointerClickObservable.add(() => {
   goWithFade("https://www.ebediyol.com/ziyaret.html");
 });
