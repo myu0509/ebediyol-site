@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <title>Üstün Deneme Koçluk Merkezi</title>
+  <title>Üstün Deneme Analiz Merkezi</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
@@ -175,7 +175,7 @@ groundMat.specularColor = new BABYLON.Color3(0.1, 0.1, 0.1);
 ground.material = groundMat;
 
     // RENKLER
-const wallColor = new BABYLON.Color3(1.0, 0.95, 0.8)
+const wallColor = new BABYLON.Color3(1.0, 0.75, 0.2);   // turuncuya yakın sarı
 const ceilingColor = new BABYLON.Color3(1.0, 0.9, 0.6); // açık sarı
 // === SINIF DUVARLARI (BOX İLE - SORUNSUZ) ===
 const ROOM_SIZE = 25;
@@ -184,7 +184,7 @@ const WALL_HEIGHT = 6;
 const WALL_THICKNESS = 0.5;
 
 const wallMat = new BABYLON.StandardMaterial("wallMat", scene);
-wallMat.diffuseColor = new BABYLON.Color3(1.0, 0.75, 0.2); // turuncuya yakın sarı
+wallMat.diffuseColor = new BABYLON.Color3(1.0, 0.95, 0.8)
 
 function createWall(name, w, h, d, x, y, z) {
   const wall = BABYLON.MeshBuilder.CreateBox(name, {
