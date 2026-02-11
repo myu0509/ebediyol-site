@@ -184,7 +184,7 @@ const WALL_HEIGHT = 6;
 const WALL_THICKNESS = 0.5;
 
 const wallMat = new BABYLON.StandardMaterial("wallMat", scene);
-wallMat.diffuseColor = new BABYLON.Color3(0.4, 0.6, 0.9); // açık mavi
+wallMat.diffuseColor = new BABYLON.Color3(0.4, 0.7, 0.95) // açık mavi
 
 function createWall(name, w, h, d, x, y, z) {
   const wall = BABYLON.MeshBuilder.CreateBox(name, {
