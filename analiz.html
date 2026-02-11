@@ -263,6 +263,23 @@ centerPanel.verticalAlignment =
   BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 
 uiTex.addControl(centerPanel);
+const buttonPlane = BABYLON.MeshBuilder.CreatePlane("buttonPlane", {
+  width: 4,
+  height: 1.4
+}, scene);
+
+/* 🔗 TAHTAYA BAĞLA */
+buttonPlane.parent = board;
+
+/* 👇 TAHTANIN ALT KENARI */
+buttonPlane.position = new BABYLON.Vector3(0, -1.9, -0.05);
+
+buttonPlane.rotation.y = 0;
+const buttonTex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
+  buttonPlane,
+  1024,
+  256
+);
 
 // === ALT PANEL (BUTONLAR) ===
 const bottomPanel = new BABYLON.GUI.StackPanel();
@@ -274,9 +291,9 @@ bottomPanel.verticalAlignment =
   BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 
 /* ✅ BUTONLARI AŞAĞI İT */
-bottomPanel.top = "350px";   // ← ASIL OLAY BU
+bottomPanel.top = "160px";   // ← ASIL OLAY BU
 
-uiTex.addControl(bottomPanel);
+buttonTex.addControl(bottomPanel);
 
 function createBoardTitle(text) {
   const title = new BABYLON.GUI.TextBlock();
