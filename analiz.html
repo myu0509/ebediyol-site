@@ -256,11 +256,13 @@ const uiTex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
 const panel = new BABYLON.GUI.StackPanel();
 panel.width = "100%";
 panel.height = "100%";
-panel.paddingTop = "20px";
 uiTex.addControl(panel);
     panel.isVertical = true;
-panel.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
-panel.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+panel.horizontalAlignment =
+  BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+
+panel.verticalAlignment =
+  BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 function createBoardTitle(text) {
   const title = new BABYLON.GUI.TextBlock();
   title.text = text;
@@ -268,10 +270,13 @@ function createBoardTitle(text) {
   title.color = "#f8fafc";
   title.fontSize = "52px";
   title.fontWeight = "bold";
+
   title.textHorizontalAlignment =
     BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
 
-  // hover efekti
+  title.paddingTop = "12px";
+  title.paddingBottom = "12px";
+
   title.onPointerEnterObservable.add(() => {
     title.color = "#22d3ee";
   });
@@ -280,7 +285,6 @@ function createBoardTitle(text) {
     title.color = "#f8fafc";
   });
 
-  // tıklama (şimdilik sadece test)
   title.onPointerClickObservable.add(() => {
     console.log(text + " tıklandı");
   });
