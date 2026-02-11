@@ -267,10 +267,20 @@ uiTex.addControl(centerPanel);
 // === ALT PANEL (BUTONLAR) ===
 const bottomPanel = new BABYLON.GUI.StackPanel();
 bottomPanel.width = "100%";
+bottomPanel.isVertical = true;
+
+/* 👇 TAHTANIN ALTINA ZORLA */
 bottomPanel.verticalAlignment =
   BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
-bottomPanel.paddingBottom = "20px";
-    uiTex.addControl(bottomPanel);
+
+/* 👇 ALT KENARDAN BOŞLUK */
+bottomPanel.paddingBottom = "40px";
+
+/* 👇 ÜSTTEKİ MENÜ İLE ÇAKIŞMASIN */
+bottomPanel.height = "35%";
+
+uiTex.addControl(bottomPanel);
+
 function createBoardTitle(text) {
   const title = new BABYLON.GUI.TextBlock();
   title.text = text;
