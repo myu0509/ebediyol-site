@@ -253,10 +253,29 @@ const uiTex = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
   512
 );
 
-const panel = new BABYLON.GUI.StackPanel();
-panel.width = "100%";
-panel.height = "100%";
-uiTex.addControl(panel);
+// === ORTA PANEL (ANALİZ BAŞLIKLARI) ===
+const centerPanel = new BABYLON.GUI.StackPanel();
+centerPanel.width = "100%";
+centerPanel.isVertical = true;
+centerPanel.horizontalAlignment =
+  BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+centerPanel.verticalAlignment =
+  BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+
+uiTex.addControl(centerPanel);
+
+// === ALT PANEL (BUTONLAR) ===
+const bottomPanel = new BABYLON.GUI.StackPanel();
+bottomPanel.width = "100%";
+bottomPanel.isVertical = true;
+bottomPanel.horizontalAlignment =
+  BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+bottomPanel.verticalAlignment =
+  BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+bottomPanel.paddingBottom = "20px";
+
+uiTex.addControl(bottomPanel);
+
     panel.isVertical = true;
 panel.horizontalAlignment =
   BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
@@ -289,7 +308,7 @@ function createBoardTitle(text) {
     console.log(text + " tıklandı");
   });
 
-  panel.addControl(title);
+  centerPanel.addControl(title);
 }
 createBoardTitle("📊 DENEME GENEL ÖZETİ");
 createBoardTitle("🧠 KONU BAZLI BAŞARI");
@@ -318,7 +337,7 @@ btnHome.cornerRadius = 20;
 btnHome.onPointerClickObservable.add(() => {
   goWithFade("https://www.ebediyol.com");
 });
-panel.addControl(btnHome);
+bottomPanel.addControl(btnHome);
 
 // === BUTON 2 ===
 const btnCampus = BABYLON.GUI.Button.CreateSimpleButton(
@@ -334,7 +353,7 @@ btnCampus.top = "20px";
 btnCampus.onPointerClickObservable.add(() => {
   goWithFade("https://www.ebediyol.com/ziyaret.html");
 });
-panel.addControl(btnCampus);
+bottomPanel.addControl(btnCampus);
 // TAVAN
 const ceiling = BABYLON.MeshBuilder.CreatePlane("ceiling", {
   width: ROOM_SIZE,
